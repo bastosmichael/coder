@@ -1,8 +1,8 @@
-# Ephemyral Code
+# Ephemyral Coder
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Ephemyral Code is an AI-powered code generation tool designed to help developers ship code faster. It leverages artificial intelligence to generate pull requests based on project issues, streamlining the development process and boosting productivity.
+Ephemyral Coder is an AI-powered code generation tool designed to help developers ship code faster. It leverages artificial intelligence to generate pull requests based on project issues, streamlining the development process and boosting productivity.
 
 ## Table of Contents
 
@@ -46,8 +46,8 @@ Follow these instructions to set up a simple environment that supports AI featur
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/bastosmichael/ephemyral-code.git
-   cd ephemyral-code
+   git clone https://github.com/bastosmichael/ephemyral-coder.git
+   cd ephemyral-coder
    ```
 
 2. **Install Dependencies**
@@ -84,7 +84,7 @@ For a full-fledged development environment, follow the setup instructions for Ad
 
 ## Usage
 
-To maximize productivity with Ephemyral Code, follow these steps to utilize its AI features effectively:
+To maximize productivity with Ephemyral Coder, follow these steps to utilize its AI features effectively:
 
 1. **Create a Workspace**: Start by creating a new workspace to organize your projects effectively.
 2. **Add a Project**: Within your workspace, create a new project and connect it to a GitHub repository.
@@ -100,7 +100,7 @@ To deploy Ephemyral to Vercel and utilize its AI capabilities:
 2. Sign up for a [Vercel account](https://vercel.com/signup) if you haven't already.
 3. Click the button below to start the deployment process:
 
-   [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fbastosmichael%2Fephemyral-code-code&env=NEXT_PUBLIC_APP_MODE,ANTHROPIC_API_KEY,OPENAI_API_KEY,DATABASE_URL,GITHUB_PAT)
+   [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fbastosmichael%2Fephemyral-coder&env=NEXT_PUBLIC_APP_MODE,ANTHROPIC_API_KEY,OPENAI_API_KEY,DATABASE_URL,GITHUB_PAT)
 
 4. Follow the prompts to configure your deployment, ensuring all required environment variables are set. 
 5. After deployment, set up your database and run migrations:
@@ -110,7 +110,7 @@ To deploy Ephemyral to Vercel and utilize its AI capabilities:
    npm run db:migrate
    ```
 
-For more detailed deployment instructions, including advanced configurations, please refer to our [deployment guide](https://docs.ephemyral-code.ai/deployment).
+For more detailed deployment instructions, including advanced configurations, please refer to our [deployment guide](https://docs.ephemyral-coder.ai/deployment).
 
 ## Contributing
 
@@ -135,7 +135,7 @@ A: Yes, Ephemyral takes security seriously. We do not store your code, and all p
 **Q: Can I use Ephemyral with private repositories?**
 A: Yes, Ephemyral supports both public and private GitHub repositories.
 
-For more frequently asked questions, visit our [FAQ page](https://docs.ephemyral-code.ai/faq).
+For more frequently asked questions, visit our [FAQ page](https://docs.ephemyral-coder.ai/faq).
 
 ## License
 
