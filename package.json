@@ -109,7 +109,7 @@
     "drizzle-kit": "^0.31.1",
     "eslint": "^8.57.1",
     "eslint-config-next": "15.3.3",
-    "eslint-config-prettier": "^10.1.0",
+    "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-tailwindcss": "^3.18.0",
     "gpt-tokenizer": "^3.0.1",
     "husky": "^9.1.7",
