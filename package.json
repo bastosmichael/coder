@@ -27,7 +27,7 @@
     "@ai-sdk/openai": "^1.2.2",
     "@anthropic-ai/sdk": "^0.53.0",
     "@clerk/nextjs": "^5.7.5",
-    "@clerk/themes": "^2.2.20",
+    "@clerk/themes": "^2.2.49",
     "@hookform/resolvers": "^5.1.1",
     "@neondatabase/serverless": "^0.10.4",
     "@octokit/auth-app": "^8.0.1",
