@@ -1,14 +1,15 @@
-import { generateOpenAIResponse } from '../../../actions/ai/generate-openai-response'
-import OpenAI from 'openai'
-import { calculateLLMCost } from '../../../lib/ai/calculate-llm-cost'
-
-jest.mock('openai')
-jest.mock('../../../lib/ai/calculate-llm-cost')
-
 const mockCreate = jest.fn()
-;(OpenAI as unknown as jest.Mock).mockImplementation(() => ({
-  chat: { completions: { create: mockCreate } }
-}))
+jest.mock('openai', () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation(() => ({
+    chat: { completions: { create: mockCreate } },
+    embeddings: { create: mockCreate }
+  })),
+  mockCreate
+}), { virtual: true })
+jest.mock('../../../lib/ai/calculate-llm-cost')
+import { generateOpenAIResponse } from '../../../actions/ai/generate-openai-response'
+import { calculateLLMCost } from '../../../lib/ai/calculate-llm-cost'
 ;(calculateLLMCost as jest.Mock).mockReturnValue(0)
 
 describe('generateOpenAIResponse', () => {

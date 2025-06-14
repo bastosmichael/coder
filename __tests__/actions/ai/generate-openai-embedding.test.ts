@@ -1,13 +1,15 @@
-import { generateEmbedding } from '../../../actions/ai/generate-openai-embedding'
-import OpenAI from 'openai'
-import { EPHEMYRAL_EMBEDDING_MODEL, EPHEMYRAL_EMBEDDING_DIMENSIONS } from '../../../lib/constants/ephemyral-coder-config'
-
-jest.mock('openai')
-
 const mockCreate = jest.fn()
-;(OpenAI as unknown as jest.Mock).mockImplementation(() => ({
-  embeddings: { create: mockCreate }
-}))
+jest.mock('openai', () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation(() => ({
+    embeddings: { create: mockCreate },
+    chat: { completions: { create: mockCreate } }
+  })),
+  mockCreate
+}), { virtual: true })
+
+import { generateEmbedding } from '../../../actions/ai/generate-openai-embedding'
+import { EPHEMYRAL_EMBEDDING_MODEL, EPHEMYRAL_EMBEDDING_DIMENSIONS } from '../../../lib/constants/ephemyral-coder-config'
 
 describe('generateEmbedding', () => {
   it('returns embedding when request succeeds', async () => {

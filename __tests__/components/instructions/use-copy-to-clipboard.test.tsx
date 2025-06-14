@@ -8,7 +8,9 @@ describe('useCopyToClipboard', () => {
     ;(global as any).navigator = { clipboard: { writeText } }
 
     const { result } = renderHook(() => useCopyToClipboard({ timeout: 1000 }))
-    act(() => result.current.copyToClipboard('hello'))
+    await act(async () => {
+      result.current.copyToClipboard('hello')
+    })
     expect(writeText).toHaveBeenCalledWith('hello')
     expect(result.current.isCopied).toBe(true)
 
