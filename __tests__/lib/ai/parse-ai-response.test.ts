@@ -40,4 +40,28 @@ file2.ts
     expect(result.prTitle).toBe('Test PR');
     expect(result.prDescription).toBe('Some description');
   });
+
+  it('handles missing sections gracefully', () => {
+    const response = `
+<file>
+  <file_path>file.txt</file_path>
+  <file_content language="txt">
+  Hello
+  </file_content>
+  <file_status>modified</file_status>
+</file>`
+
+    const result = parseAIResponse(response)
+    expect(result.fileList).toEqual([])
+    expect(result.files).toEqual([
+      {
+        path: 'file.txt',
+        language: 'txt',
+        content: 'Hello\n',
+        status: 'modified',
+      },
+    ])
+    expect(result.prTitle).toBe('')
+    expect(result.prDescription).toBe('')
+  })
 });

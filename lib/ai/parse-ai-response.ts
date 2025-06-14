@@ -2,6 +2,7 @@ import { AIFileInfo, AIParsedResponse } from "@/types/ai"
 
 export function parseAIResponse(response: string): AIParsedResponse {
   const files: AIFileInfo[] = []
+
   const fileListMatch = response.match(/<file_list>([\s\S]*?)<\/file_list>/)
   const fileList = fileListMatch
     ? fileListMatch[1]
@@ -10,39 +11,27 @@ export function parseAIResponse(response: string): AIParsedResponse {
         .map(file => file.trim())
     : []
 
-  const fileMatches = response.matchAll(
-    /<file>[\s\S]*?<file_path>(.*?)<\/file_path>[\s\S]*?<file_content language="(.*?)">([\s\S]*?)<\/file_content>[\s\S]*?<file_status>(.*?)<\/file_status>[\s\S]*?<\/file>/g
-  )
+  const fileBlocks = response.match(/<file>[\s\S]*?<\/file>/g) || []
+  for (const block of fileBlocks) {
+    const path = block.match(/<file_path>(.*?)<\/file_path>/)?.[1].trim() || ""
+    const status =
+      (block.match(/<file_status>(.*?)<\/file_status>/)?.[1].trim() ??
+        "modified") as "new" | "modified" | "deleted"
+    const contentMatch = block.match(
+      /<file_content language="(.*?)">([\s\S]*?)<\/file_content>/
+    )
 
-  for (const match of fileMatches) {
-    const [_, path, language, content, status] = match
-    let trimmedContent = content.trim()
-
-    if (!trimmedContent.endsWith("\n")) {
-      trimmedContent += "\n"
+    let language = ""
+    let content = ""
+    if (contentMatch) {
+      language = contentMatch[1].trim()
+      content = contentMatch[2].trim()
+      if (!content.endsWith("\n")) {
+        content += "\n"
+      }
     }
 
-    files.push({
-      path: path.trim(),
-      language: language.trim(),
-      content: trimmedContent,
-      status: status.trim() as "new" | "modified" | "deleted"
-    })
-  }
-
-  // Handle deleted files (which don't have content)
-  const deletedFileMatches = response.matchAll(
-    /<file>[\s\S]*?<file_path>(.*?)<\/file_path>[\s\S]*?<file_status>deleted<\/file_status>[\s\S]*?<\/file>/g
-  )
-
-  for (const match of deletedFileMatches) {
-    const [_, path] = match
-    files.push({
-      path: path.trim(),
-      language: "",
-      content: "",
-      status: "deleted"
-    })
+    files.push({ path, language, content, status })
   }
 
   const prTitleMatch = response.match(/<pr_title>([\s\S]*?)<\/pr_title>/)
