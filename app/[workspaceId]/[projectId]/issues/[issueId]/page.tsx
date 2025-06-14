@@ -7,18 +7,23 @@ import { getProjectById } from "@/db/queries/projects-queries"
 export const revalidate = 0
 
 export default async function IssuePage({
-  params
+  params,
 }: {
-  params: { issueId: string; projectId: string; workspaceId: string }
+  params: Promise<{
+    workspaceId: string
+    projectId: string
+    issueId: string
+  }>
 }) {
-  const issue = await getIssueById(params.issueId)
+  // unwrap the actual params
+  const { workspaceId, projectId, issueId } = await params
 
+  const issue = await getIssueById(issueId)
   if (!issue) {
     return <NotFound message="Issue not found" />
   }
 
-  const project = await getProjectById(issue.projectId)
-
+  const project = await getProjectById(projectId)
   if (!project) {
     return <NotFound message="Project not found" />
   }
@@ -30,7 +35,7 @@ export default async function IssuePage({
       item={issue}
       project={project}
       attachedInstructions={attachedInstructions}
-      workspaceId={params.workspaceId}
+      workspaceId={workspaceId}
     />
   )
 }

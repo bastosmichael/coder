@@ -6,12 +6,19 @@ import { getInstructionById } from "@/db/queries/instructions-queries"
 export const revalidate = 0
 
 export default async function EditInstructionPage({
-  params
+  params,
 }: {
-  params: { id: string }
+  // params is a Promise of the full route-segment object
+  params: Promise<{
+    workspaceId: string
+    projectId: string
+    id: string
+  }>
 }) {
-  const instruction = await getInstructionById(params.id)
+  // await the promise to get your actual strings
+  const { id } = await params
 
+  const instruction = await getInstructionById(id)
   if (!instruction) {
     return <NotFound message="Instruction not found" />
   }
