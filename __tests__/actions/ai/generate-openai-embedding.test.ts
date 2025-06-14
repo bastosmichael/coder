@@ -1,12 +1,14 @@
-const mockCreate = jest.fn()
-jest.mock('openai', () => ({
-  __esModule: true,
-  default: jest.fn().mockImplementation(() => ({
-    embeddings: { create: mockCreate },
-    chat: { completions: { create: mockCreate } }
-  })),
-  mockCreate
-}), { virtual: true })
+let mockCreate: jest.Mock
+jest.mock('openai', () => {
+  mockCreate = jest.fn()
+  return {
+    __esModule: true,
+    default: jest.fn().mockImplementation(() => ({
+      embeddings: { create: mockCreate },
+      chat: { completions: { create: mockCreate } }
+    }))
+  }
+}, { virtual: true })
 
 import { generateEmbedding } from '../../../actions/ai/generate-openai-embedding'
 import { EPHEMYRAL_EMBEDDING_MODEL, EPHEMYRAL_EMBEDDING_DIMENSIONS } from '../../../lib/constants/ephemyral-coder-config'

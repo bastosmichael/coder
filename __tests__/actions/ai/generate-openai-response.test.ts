@@ -1,12 +1,14 @@
-const mockCreate = jest.fn()
-jest.mock('openai', () => ({
-  __esModule: true,
-  default: jest.fn().mockImplementation(() => ({
-    chat: { completions: { create: mockCreate } },
-    embeddings: { create: mockCreate }
-  })),
-  mockCreate
-}), { virtual: true })
+let mockCreate: jest.Mock
+jest.mock('openai', () => {
+  mockCreate = jest.fn()
+  return {
+    __esModule: true,
+    default: jest.fn().mockImplementation(() => ({
+      chat: { completions: { create: mockCreate } },
+      embeddings: { create: mockCreate }
+    }))
+  }
+}, { virtual: true })
 jest.mock('../../../lib/ai/calculate-llm-cost')
 import { generateOpenAIResponse } from '../../../actions/ai/generate-openai-response'
 import { calculateLLMCost } from '../../../lib/ai/calculate-llm-cost'

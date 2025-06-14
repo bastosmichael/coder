@@ -5,7 +5,7 @@ describe('useCopyToClipboard', () => {
   it('copies text and resets after timeout', async () => {
     jest.useFakeTimers()
     const writeText = jest.fn(() => Promise.resolve())
-    ;(global as any).navigator = { clipboard: { writeText } }
+    Object.assign(navigator, { clipboard: { writeText } })
 
     const { result } = renderHook(() => useCopyToClipboard({ timeout: 1000 }))
     await act(async () => {
