@@ -7,21 +7,27 @@ import { getTemplateWithInstructionById } from "@/db/queries/templates-queries"
 export const revalidate = 0
 
 export default async function EditTemplatePage({
-  params
+  params,
 }: {
-  params: { id: string; projectId: string }
+  params: Promise<{
+    workspaceId: string
+    projectId: string
+    id: string
+  }>
 }) {
-  const template = await getTemplateWithInstructionById(params.id)
+  // unwrap the promise to get your route params
+  const { id, projectId } = await params
 
+  const template = await getTemplateWithInstructionById(id)
   if (!template) {
     return <NotFound message="Template not found" />
   }
 
-  const instructions = await getInstructionsByProjectId(params.projectId)
+  const instructions = await getInstructionsByProjectId(projectId)
 
   return (
     <CRUDPage
-      pageTitle="New template"
+      pageTitle="Edit template"
       backText="Back to templates"
       backLink=".."
     >

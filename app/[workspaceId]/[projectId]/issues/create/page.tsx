@@ -4,17 +4,23 @@ import { IssueCreation } from "@/components/issues/issue-creation"
 export const revalidate = 0
 
 export default async function CreateIssuePage({
-  params
+  params,
 }: {
-  params: { projectId: string }
+  params: Promise<{
+    workspaceId: string
+    projectId: string
+  }>
 }) {
+  // unwrap the promise to get your route values
+  const { projectId } = await params
+
   return (
     <CRUDPage
       pageTitle="New issue"
       backText="Back to issues"
       backLink="../issues"
     >
-      <IssueCreation projectId={params.projectId} />
+      <IssueCreation projectId={projectId} />
     </CRUDPage>
   )
 }

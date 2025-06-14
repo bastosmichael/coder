@@ -6,24 +6,30 @@ export const revalidate = 0
 
 export default async function WorkspaceLayout({
   children,
-  params
+  params,
 }: {
   children: React.ReactNode
-  params: { workspaceId: string; projectId: string }
+  params: Promise<{
+    workspaceId: string
+    projectId?: string
+  }>
 }) {
+  // unwrap the params promise
+  const { workspaceId, projectId } = await params
+
   const workspaces = await getWorkspacesByUserId()
-  const projects = await getProjectsByWorkspaceId(params.workspaceId)
+  const projects = await getProjectsByWorkspaceId(workspaceId)
 
   const IntegrationStatus = {
-    isGitHubConnected: false
+    isGitHubConnected: false,
   }
 
   return (
     <Dashboard
       IntegrationStatus={IntegrationStatus}
       workspaces={workspaces}
-      workspaceId={params.workspaceId}
-      projectId={params.projectId}
+      workspaceId={workspaceId}
+      projectId={projectId}
       projects={projects}
     >
       {children}

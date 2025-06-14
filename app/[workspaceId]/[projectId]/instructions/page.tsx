@@ -3,12 +3,17 @@ import { getInstructionsByProjectId } from "@/db/queries/instructions-queries"
 
 export const revalidate = 0
 
-export default async function InstructionPage({
-  params
+export default async function InstructionListPage({
+  params,
 }: {
-  params: { projectId: string }
+  params: Promise<{
+    workspaceId: string
+    projectId: string
+  }>
 }) {
-  const instructions = await getInstructionsByProjectId(params.projectId)
+  // unwrap the promise to get your actual route values
+  const { projectId } = await params
 
+  const instructions = await getInstructionsByProjectId(projectId)
   return <InstructionsList instructions={instructions} />
 }

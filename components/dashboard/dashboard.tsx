@@ -41,7 +41,7 @@ interface DashboardProps {
   IntegrationStatus: IntegrationStatus
   workspaces: SelectWorkspace[]
   workspaceId: string
-  projectId: string
+  projectId?: string
   projects: SelectProject[]
 }
 
