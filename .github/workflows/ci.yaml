@@ -97,7 +97,9 @@ jobs:
         run: echo "PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
 
       - name: Set up environment variables
-        run: echo "DATABASE_URL=postgres://postgres@localhost:5432/postgres" >> $GITHUB_ENV
+        run: |
+          echo "DATABASE_URL=postgres://postgres@localhost:5432/postgres" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_APP_MODE=simple" >> $GITHUB_ENV
 
       - name: Run database migrations
         run: npm run db:migrate
@@ -168,7 +170,9 @@ jobs:
         run: echo "PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
 
       - name: Set up environment variables
-        run: echo "DATABASE_URL=postgres://postgres@localhost:5432/postgres" >> $GITHUB_ENV
+        run: |
+          echo "DATABASE_URL=postgres://postgres@localhost:5432/postgres" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_APP_MODE=simple" >> $GITHUB_ENV
 
       - name: Run database migrations
         run: npm run db:migrate
