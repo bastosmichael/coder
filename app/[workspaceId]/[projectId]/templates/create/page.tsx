@@ -5,11 +5,17 @@ import { getInstructionsByProjectId } from "@/db/queries/instructions-queries"
 export const revalidate = 0
 
 export default async function CreateTemplatePage({
-  params
+  params,
 }: {
-  params: { projectId: string }
+  params: Promise<{
+    workspaceId: string
+    projectId: string
+  }>
 }) {
-  const instructions = await getInstructionsByProjectId(params.projectId)
+  // unwrap the route params promise
+  const { projectId } = await params
+
+  const instructions = await getInstructionsByProjectId(projectId)
 
   return (
     <CRUDPage

@@ -3,17 +3,19 @@ import { getWorkspaceById } from "@/db/queries/workspaces-queries"
 export const revalidate = 0
 
 export default async function WorkspacePage({
-  params
+  params,
 }: {
-  params: { workspaceId: string }
+  params: Promise<{
+    workspaceId: string
+  }>
 }) {
-  const { workspaceId } = params
+  // await to unwrap the actual workspaceId
+  const { workspaceId } = await params
 
-  const workspaces = await getWorkspaceById(workspaceId)
-
-  if (!workspaces) {
+  const workspace = await getWorkspaceById(workspaceId)
+  if (!workspace) {
     return <div>Workspace not found</div>
   }
 
-  return <div>{workspaces.name}</div>
+  return <div>{workspace.name}</div>
 }

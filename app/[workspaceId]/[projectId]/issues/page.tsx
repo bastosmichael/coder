@@ -4,11 +4,16 @@ import { getIssuesByProjectId } from "@/db/queries/issues-queries"
 export const revalidate = 0
 
 export default async function IssuesPage({
-  params
+  params,
 }: {
-  params: { projectId: string }
+  params: Promise<{
+    workspaceId: string
+    projectId: string
+  }>
 }) {
-  const issues = await getIssuesByProjectId(params.projectId)
+  // unwrap the promise to get the real params
+  const { projectId } = await params
 
+  const issues = await getIssuesByProjectId(projectId)
   return <IssuesList issues={issues} />
 }

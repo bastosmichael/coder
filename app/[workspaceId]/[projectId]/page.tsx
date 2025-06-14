@@ -3,12 +3,17 @@ import { getProjectById } from "@/db/queries/projects-queries"
 export const revalidate = 0
 
 export default async function ProjectPage({
-  params
+  params,
 }: {
-  params: { projectId: string; workspaceId: string }
+  params: Promise<{
+    workspaceId: string
+    projectId: string
+  }>
 }) {
-  const project = await getProjectById(params.projectId)
+  // unwrap the route params promise
+  const { projectId } = await params
 
+  const project = await getProjectById(projectId)
   if (!project) {
     return <div>Project not found</div>
   }
