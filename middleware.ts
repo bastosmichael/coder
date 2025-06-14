@@ -22,9 +22,7 @@ export default async function middleware() {
       return redirectToSignIn({ returnBackUrl: "/login" })
     }
 
-    if (userId && isProtected) {
-      return NextResponse.next()
-    }
+    return NextResponse.next()
   })
 }
 
