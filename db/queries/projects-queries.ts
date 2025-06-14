@@ -281,13 +281,75 @@ async function createSampleIssues(
 
   // 2. If the repo has no GitHub issues, create a single local “sample” issue
   if (existingGitHubIssues.length === 0) {
-    const sampleIssueData: InsertIssue = {
-      projectId,
-      userId,
-      name: `Sample Issue for ${repo.name}`,
-      content: `This is a sample issue created for the repository ${repo.full_name}.`
-    }
+     const sampleIssueData: InsertIssue = {
+  projectId,
+  userId,
+  name: `Add and Improve Documentation for ${repo.name}`,
+  content: `# 📘 Improve Documentation for ${repo.full_name}
 
+## 🧭 Goal
+Create or update the repository documentation to clearly explain:
+- What this project does,
+- Who it's for,
+- How to set it up locally,
+- And how to contribute or run it.
+
+This is the first step toward making the project more accessible for developers, users, and contributors.
+
+---
+
+## 📋 Task Breakdown
+
+### 1. **Overview**
+Write a short summary of what the application is, what problems it solves, and what technologies it might use (if discoverable from the codebase).
+
+### 2. **Setup & Dependencies**
+Document how to set up the project after cloning. Try to detect:
+- Any install commands (e.g., dependency managers like pip, npm, cargo, etc.)
+- Required environment variables or configuration files
+- Any prerequisite software or tools
+
+Use placeholder commands or abstract steps like:
+\`\`\`
+Install dependencies using the appropriate package manager.
+Configure the environment as needed (e.g., create a .env file).
+\`\`\`
+
+### 3. **Run Instructions**
+Include how to launch or execute the application (if applicable), such as:
+- Running a local server
+- Starting a CLI
+- Building the project
+
+Again, use abstract phrasing unless the tooling is clearly defined.
+
+### 4. **Testing or Validation (Optional)**
+If test scripts or validation tools are found, describe how to run them.
+
+### 5. **Contribution & Deployment (Optional)**
+Add placeholders for:
+- Contribution guidelines
+- CI/CD setup or deployment steps
+- License information
+
+---
+
+## 🤖 Prompt Use (LLM Context)
+Treat this issue as a seed prompt for generating an initial \`README.md\` or documentation update. Explore the codebase and generate a clean, markdown-formatted file that helps a new user or developer get started.
+
+Use generic language when the specific technology is unclear. Be explicit when it can be inferred from the files (e.g., presence of \`package.json\`, \`requirements.txt\`, \`Makefile\`, etc.).
+
+---
+
+## ✅ Completion Criteria
+- The repo has a well-structured \`README.md\` file.
+- Setup, usage, and purpose are clearly documented.
+- Placeholder instructions are included where tooling is ambiguous.
+- Markdown is clean and readable.
+
+This documentation will be the foundation for future code generation or automated workflows.`
+    }
+    
     const [issue] = await db
       .insert(issuesTable)
       .values(sampleIssueData)
