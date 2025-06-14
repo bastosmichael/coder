@@ -6,10 +6,16 @@ import { SelectInstruction, SelectTemplate } from "@/db/schema"
 export const revalidate = 0
 
 export default async function TemplatesPage({
-  params
+  params,
 }: {
-  params: { projectId: string }
+  params: Promise<{
+    workspaceId: string
+    projectId: string
+  }>
 }) {
+  // unwrap the promise to get your route params
+  const { projectId } = await params
+
   let templatesWithInstructions: (SelectTemplate & {
     templatesToInstructions: {
       templateId: string
@@ -18,8 +24,6 @@ export default async function TemplatesPage({
     }[]
   })[] = []
   let instructions: SelectInstruction[] = []
-
-  const { projectId } = params
 
   try {
     templatesWithInstructions =

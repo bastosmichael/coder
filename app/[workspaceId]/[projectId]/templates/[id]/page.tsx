@@ -5,12 +5,18 @@ import { getTemplateWithInstructionById } from "@/db/queries/templates-queries"
 export const revalidate = 0
 
 export default async function TemplatePage({
-  params
+  params,
 }: {
-  params: { id: string; projectId: string }
+  params: Promise<{
+    workspaceId: string
+    projectId: string
+    id: string
+  }>
 }) {
-  const template = await getTemplateWithInstructionById(params.id)
+  // unwrap the route params
+  const { id } = await params
 
+  const template = await getTemplateWithInstructionById(id)
   if (!template) {
     return <NotFound message="Template not found" />
   }
