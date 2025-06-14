@@ -1,5 +1,5 @@
 import { encode } from 'gpt-tokenizer';
-import { estimateClaudeSonnet3_5TokenCount } from '../../lib/ai/estimate-claude-tokens';
+import { estimateClaudeSonnet3_5TokenCount } from '../../../lib/ai/estimate-claude-tokens';
 
 describe('estimateClaudeSonnet3_5TokenCount', () => {
   it('estimates token count as 1.4 times gpt-tokenizer length', () => {

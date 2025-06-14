@@ -1,10 +1,10 @@
-jest.mock('../../lib/ai/limit-tokens', () => ({
+jest.mock('../../../lib/ai/limit-tokens', () => ({
   limitTokens: jest.fn(() => ({ prompt: 'LIMITED', includedFiles: [], tokensUsed: 5 }))
 }));
 
-import { buildCodePlanPrompt } from '../../lib/ai/build-plan-prompt';
-import { buildCodeGenPrompt } from '../../lib/ai/build-codegen-prompt';
-import { limitTokens } from '../../lib/ai/limit-tokens';
+import { buildCodePlanPrompt } from '../../../lib/ai/build-plan-prompt';
+import { buildCodeGenPrompt } from '../../../lib/ai/build-codegen-prompt';
+import { limitTokens } from '../../../lib/ai/limit-tokens';
 
 describe('build prompt helpers', () => {
   beforeEach(() => {

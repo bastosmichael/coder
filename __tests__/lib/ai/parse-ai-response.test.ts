@@ -1,4 +1,4 @@
-import { parseAIResponse } from '../../lib/ai/parse-ai-response';
+import { parseAIResponse } from '../../../lib/ai/parse-ai-response';
 
 describe('parseAIResponse', () => {
   it('parses files, titles and descriptions correctly', () => {

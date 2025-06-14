@@ -1,4 +1,4 @@
-import { getLLMById, calculateLLMCost } from '../../lib/ai/calculate-llm-cost';
+import { getLLMById, calculateLLMCost } from '../../../lib/ai/calculate-llm-cost';
 
 describe('LLM helpers', () => {
   it('retrieves model by id', () => {

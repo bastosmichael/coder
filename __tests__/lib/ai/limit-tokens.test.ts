@@ -1,12 +1,12 @@
-jest.mock('../../lib/constants/ephemyral-coder-config', () => ({
+jest.mock('../../../lib/constants/ephemyral-coder-config', () => ({
   EPHEMYRAL_MAX_INPUT_TOKENS: 30
 }));
 
-jest.mock('../../lib/ai/estimate-claude-tokens', () => ({
+jest.mock('../../../lib/ai/estimate-claude-tokens', () => ({
   estimateClaudeSonnet3_5TokenCount: (text: string) => text.length
 }));
 
-import { limitTokens } from '../../lib/ai/limit-tokens';
+import { limitTokens } from '../../../lib/ai/limit-tokens';
 
 describe('limitTokens', () => {
   it('includes files until the token limit is reached', () => {
@@ -26,13 +26,13 @@ describe('limitTokens', () => {
 
   it('returns no files when base prompt exceeds limit', async () => {
     jest.resetModules();
-    jest.doMock('../../lib/constants/ephemyral-coder-config', () => ({
+    jest.doMock('../../../lib/constants/ephemyral-coder-config', () => ({
       EPHEMYRAL_MAX_INPUT_TOKENS: 10
     }));
-    jest.doMock('../../lib/ai/estimate-claude-tokens', () => ({
+    jest.doMock('../../../lib/ai/estimate-claude-tokens', () => ({
       estimateClaudeSonnet3_5TokenCount: (text: string) => text.length
     }));
-    const { limitTokens: limited } = await import('../../lib/ai/limit-tokens');
+    const { limitTokens: limited } = await import('../../../lib/ai/limit-tokens');
     const result = limited('verylongprompt', [{ path: 'x.ts', content: 'c' }]);
     expect(result.includedFiles).toEqual([]);
     expect(result.prompt).toContain('No codebase files.');
