@@ -1,5 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
-import { NextResponse, type NextRequest } from "next/server"
+import { NextResponse, type NextRequest, type NextFetchEvent } from "next/server"
 
 const isSimpleMode = process.env.NEXT_PUBLIC_APP_MODE === "simple"
 
@@ -20,12 +20,12 @@ const clerkAuthMiddleware = clerkMiddleware((auth, req) => {
     return NextResponse.next()
   })
 
-export default function middleware(req: NextRequest) {
+export default function middleware(req: NextRequest, ev: NextFetchEvent) {
   if (isSimpleMode) {
     return NextResponse.next()
   }
 
-  return clerkAuthMiddleware(req)
+  return clerkAuthMiddleware(req, ev)
 }
 
 export const config = {
