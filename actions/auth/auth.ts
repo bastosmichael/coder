@@ -10,7 +10,7 @@ export async function getUserId() {
     return SIMPLE_USER_ID
   }
 
-  const { userId } = auth()
+  const { userId } = await auth()
 
   if (!userId) {
     throw new Error("User not authenticated")

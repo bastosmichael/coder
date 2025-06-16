@@ -7,8 +7,8 @@ const isProtectedRoute = createRouteMatcher(["/onboarding(.*)", "/projects(.*)"]
 const uuidRegex =
   /^\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}(\/.*)?$/
 
-const clerkAuthMiddleware = clerkMiddleware((auth, req) => {
-    const { userId, redirectToSignIn } = auth()
+const clerkAuthMiddleware = clerkMiddleware(async (auth, req) => {
+    const { userId, redirectToSignIn } = await auth()
     const path = req.nextUrl.pathname
 
     const isProtected = isProtectedRoute(req) || uuidRegex.test(path)
