@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent } from '@testing-library/react'
+import { render, fireEvent, waitFor } from '@testing-library/react'
 import { CRUDForm } from '../../../../components/dashboard/reusable/crud-form'
 
 jest.mock('next/navigation', () => ({ useRouter: () => ({ back: jest.fn() }) }))
@@ -15,7 +15,7 @@ describe('CRUDForm', () => {
     fireEvent.change(getByPlaceholderText('Item content...'), { target: { value: 'B' } })
     fireEvent.click(getByText('Save'))
 
-    expect(onSubmit).toHaveBeenCalled()
+    await waitFor(() => expect(onSubmit).toHaveBeenCalled())
   })
 
   it('does not submit when form invalid', () => {

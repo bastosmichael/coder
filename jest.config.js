@@ -5,7 +5,7 @@ const createJestConfig = nextJest({
 });
 
 const customJestConfig = {
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'], // or '<rootDir>/jest.setup.ts' if using TypeScript
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'], // or '<rootDir>/jest.setup.ts' if using TypeScript
   testEnvironment: 'jest-environment-jsdom',
   collectCoverage: true,
   coverageDirectory: 'coverage',
@@ -30,6 +30,9 @@ const customJestConfig = {
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'], // Ensure TS files are recognized
   transform: {
     '^.+\\.(ts|tsx)$': 'babel-jest', // Use babel-jest for TS files
+  },
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/$1',
   },
 };
 
