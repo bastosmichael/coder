@@ -1,10 +1,8 @@
 jest.mock('../../../actions/github/auth', () => ({ getAuthenticatedOctokit: jest.fn() }));
 jest.mock('../../../actions/github/fetch-codebase', () => ({ fetchWithRetry: jest.fn() }));
-import * as utils from '@/lib/utils'
-
-// Spy on sanitizeFileContent rather than mocking the whole module to avoid
-// path alias issues with ESM modules.
-const sanitizeSpy = jest.spyOn(utils, 'sanitizeFileContent').mockImplementation((c: string) => c)
+jest.mock('@/lib/utils', () => ({
+  sanitizeFileContent: jest.fn((c: string) => c)
+}));
 
 import { fetchFiles } from '../../../actions/github/fetch-files';
 import { getAuthenticatedOctokit } from '../../../actions/github/auth';
