@@ -4,12 +4,15 @@ import '@testing-library/jest-dom'
 const originalError = console.error
 const originalWarn = console.warn
 
+let errorSpy: jest.SpyInstance
+let warnSpy: jest.SpyInstance
+
 beforeAll(() => {
-  console.error = jest.fn()
-  console.warn = jest.fn()
+  errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+  warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {})
 })
 
 afterAll(() => {
-  console.error = originalError
-  console.warn = originalWarn
+  errorSpy.mockRestore()
+  warnSpy.mockRestore()
 })

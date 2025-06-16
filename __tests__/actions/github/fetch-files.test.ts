@@ -1,13 +1,10 @@
 jest.mock('../../../actions/github/auth', () => ({ getAuthenticatedOctokit: jest.fn() }));
 jest.mock('../../../actions/github/fetch-codebase', () => ({ fetchWithRetry: jest.fn() }));
-jest.mock('@/lib/utils', () => ({
-  sanitizeFileContent: jest.fn((c: string) => c)
-}));
+import * as utils from '@/lib/utils';
 
 import { fetchFiles } from '../../../actions/github/fetch-files';
 import { getAuthenticatedOctokit } from '../../../actions/github/auth';
 import { fetchWithRetry } from '../../../actions/github/fetch-codebase';
-import { sanitizeFileContent } from '@/lib/utils';
 
 describe('fetchFiles', () => {
   const mockOctokit = {} as any;
@@ -16,6 +13,7 @@ describe('fetchFiles', () => {
     jest.resetAllMocks();
     (getAuthenticatedOctokit as jest.Mock).mockResolvedValue(mockOctokit);
     (fetchWithRetry as jest.Mock).mockResolvedValue({ data: { content: Buffer.from('hello').toString('base64') } });
+    jest.spyOn(utils, 'sanitizeFileContent').mockImplementation((c: string) => c);
   });
 
   it('filters excluded files and returns sanitized content', async () => {
@@ -27,7 +25,7 @@ describe('fetchFiles', () => {
 
     const result = await fetchFiles(1, files);
     expect(result).toEqual([{ name: 'keep.ts', path: 'src/keep.ts', content: 'hello' }]);
-    expect(sanitizeFileContent).toHaveBeenCalledWith('hello');
+    expect(utils.sanitizeFileContent).toHaveBeenCalledWith('hello');
     expect(fetchWithRetry).toHaveBeenCalledTimes(1);
   });
 
