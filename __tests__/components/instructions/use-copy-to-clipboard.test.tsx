@@ -16,8 +16,10 @@ describe('useCopyToClipboard', () => {
     expect(result.current.isCopied).toBe(true)
 
     // Fast-forward timers and pending microtasks
-    jest.runAllTimers()
-    await Promise.resolve()
+    await act(async () => {
+      jest.runAllTimers()
+      await Promise.resolve()
+    })
     expect(result.current.isCopied).toBe(false)
     jest.useRealTimers()
   })
