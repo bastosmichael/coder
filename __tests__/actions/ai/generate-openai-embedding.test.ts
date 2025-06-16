@@ -1,4 +1,4 @@
-let mockCreate: jest.Mock
+var mockCreate: jest.Mock
 jest.mock('openai', () => {
   mockCreate = jest.fn()
   return {

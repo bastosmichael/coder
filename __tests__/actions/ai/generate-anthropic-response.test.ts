@@ -1,4 +1,4 @@
-let mockCreate: jest.Mock
+var mockCreate: jest.Mock
 jest.mock('@anthropic-ai/sdk', () => {
   mockCreate = jest.fn()
   return {
