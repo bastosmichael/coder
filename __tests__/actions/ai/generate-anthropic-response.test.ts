@@ -8,14 +8,22 @@ jest.mock('@anthropic-ai/sdk', () => {
     }))
   }
 }, { virtual: true })
-jest.mock('../../../lib/ai/calculate-llm-cost')
+jest.mock('../../../lib/ai/calculate-llm-cost', () => {
+  const models = [
+    { id: 'model1', tokenLimits: { TPD: 100, RPD: 1 }, name: 'm1', inputCost: 1, outputCost: 1 },
+    { id: 'model2', tokenLimits: { TPD: 200, RPD: 2 }, name: 'm2', inputCost: 1, outputCost: 1 }
+  ]
+  return {
+    __esModule: true,
+    calculateLLMCost: jest.fn(),
+    ANTHROPIC_LLMS: models,
+    getLLMById: (id: string) => models.find(m => m.id === id)
+  }
+})
 import { generateAnthropicResponse } from '../../../actions/ai/generate-anthropic-response'
-import { calculateLLMCost, ANTHROPIC_LLMS } from '../../../lib/ai/calculate-llm-cost'
+import { calculateLLMCost } from '../../../lib/ai/calculate-llm-cost'
 
 ;(calculateLLMCost as jest.Mock).mockReturnValue(0)
-
-// Provide a simplified model list for deterministic tests
-;(ANTHROPIC_LLMS as unknown as any[]).splice(0, ANTHROPIC_LLMS.length, { id: 'model1', tokenLimits: { TPD: 100, RPD: 1 }, name: 'm1', inputCost:1, outputCost:1 }, { id: 'model2', tokenLimits: { TPD: 200, RPD: 2 }, name: 'm2', inputCost:1, outputCost:1 })
 
 describe('generateAnthropicResponse', () => {
   beforeEach(() => mockCreate.mockReset())

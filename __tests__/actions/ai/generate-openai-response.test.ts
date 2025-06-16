@@ -15,6 +15,7 @@ import { calculateLLMCost } from '../../../lib/ai/calculate-llm-cost'
 ;(calculateLLMCost as jest.Mock).mockReturnValue(0)
 
 describe('generateOpenAIResponse', () => {
+  beforeEach(() => mockCreate.mockReset())
   it('returns text and calculates cost on success', async () => {
     mockCreate.mockResolvedValue({
       choices: [{ message: { content: 'hi' } }],
@@ -32,7 +33,7 @@ describe('generateOpenAIResponse', () => {
   })
 
   it('throws formatted error when context limit exceeded', async () => {
-    const error = { error: { message: "This model's maximum context length is 50 tokens. However, your messages resulted in 55 tokens." } }
+    const error = { error: { message: "This model's maximum context length is 50 tokens. However, your messages resulted in 55 tokens. Please reduce the length of the messages." } }
     mockCreate.mockRejectedValue(error)
 
     await expect(generateOpenAIResponse([])).rejects.toThrow(/EXCEED_CONTEXT/)
