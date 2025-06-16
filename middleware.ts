@@ -1,18 +1,13 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
-import { NextResponse } from "next/server"
+import { NextResponse, type NextRequest, type NextFetchEvent } from "next/server"
 
 const isSimpleMode = process.env.NEXT_PUBLIC_APP_MODE === "simple"
 
-const isProtectedRoute = createRouteMatcher(["/onboarding(.*), /projects(.*)"])
+const isProtectedRoute = createRouteMatcher(["/onboarding(.*)", "/projects(.*)"])
 const uuidRegex =
   /^\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}(\/.*)?$/
 
-export default async function middleware() {
-  if (isSimpleMode) {
-    return NextResponse.next()
-  }
-
-  return clerkMiddleware(async (auth, req) => {
+const clerkAuthMiddleware = clerkMiddleware((auth, req) => {
     const { userId, redirectToSignIn } = auth()
     const path = req.nextUrl.pathname
 
@@ -22,10 +17,15 @@ export default async function middleware() {
       return redirectToSignIn({ returnBackUrl: "/login" })
     }
 
-    if (userId && isProtected) {
-      return NextResponse.next()
-    }
+    return NextResponse.next()
   })
+
+export default function middleware(req: NextRequest, ev: NextFetchEvent) {
+  if (isSimpleMode) {
+    return NextResponse.next()
+  }
+
+  return clerkAuthMiddleware(req, ev)
 }
 
 export const config = {
