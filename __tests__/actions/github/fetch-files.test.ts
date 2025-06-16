@@ -14,7 +14,7 @@ describe('fetchFiles', () => {
   const mockOctokit = {} as any;
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
     (getAuthenticatedOctokit as jest.Mock).mockResolvedValue(mockOctokit);
     (fetchWithRetry as jest.Mock).mockResolvedValue({ data: { content: Buffer.from('hello').toString('base64') } });
   });
