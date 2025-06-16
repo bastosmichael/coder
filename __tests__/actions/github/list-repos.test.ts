@@ -25,8 +25,8 @@ describe('listRepos', () => {
       updated_at: '2023-01-01'
     }
     mockOctokit.apps.listReposAccessibleToInstallation
-      .mockResolvedValueOnce({ data: { repositories: [repo] } })
-      .mockResolvedValueOnce({ data: { repositories: [] } })
+      .mockResolvedValueOnce({ data: { repositories: [repo], length: 1 } })
+      .mockResolvedValueOnce({ data: { repositories: [], length: 0 } })
 
     const result = await listRepos(1, null)
     expect(result).toEqual([
@@ -45,8 +45,8 @@ describe('listRepos', () => {
   it('lists repos for user when no installation id', async () => {
     const repo = { full_name: 'o/r', html_url: 'url', id: 1, name: 'b', private: true, description: 'd', updated_at: '2023-01-01' }
     mockOctokit.request
-      .mockResolvedValueOnce({ data: [repo] })
-      .mockResolvedValueOnce({ data: [] })
+      .mockResolvedValueOnce({ data: [repo], length: 1 })
+      .mockResolvedValueOnce({ data: [], length: 0 })
 
     const result = await listRepos(null, null)
     expect(result).toEqual([

@@ -21,7 +21,8 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "types": ["jest", "@testing-library/jest-dom", "node"], // Ensure these types are included
+    "types": ["jest", "@testing-library/jest-dom", "node"],
+    "typeRoots": ["./types"],
     "outDir": "./dist",
     "rootDir": ".",
     "target": "ESNext"
