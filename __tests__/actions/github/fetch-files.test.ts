@@ -1,6 +1,6 @@
 jest.mock('../../../actions/github/auth', () => ({ getAuthenticatedOctokit: jest.fn() }));
 jest.mock('../../../actions/github/fetch-codebase', () => ({ fetchWithRetry: jest.fn() }));
-jest.mock('../../../lib/utils', () => ({
+jest.mock('@/lib/utils', () => ({
   __esModule: true,
   sanitizeFileContent: jest.fn((c: string) => c)
 }));
@@ -8,7 +8,7 @@ jest.mock('../../../lib/utils', () => ({
 import { fetchFiles } from '../../../actions/github/fetch-files';
 import { getAuthenticatedOctokit } from '../../../actions/github/auth';
 import { fetchWithRetry } from '../../../actions/github/fetch-codebase';
-import { sanitizeFileContent } from '../../../lib/utils';
+import { sanitizeFileContent } from '@/lib/utils';
 
 describe('fetchFiles', () => {
   const mockOctokit = {} as any;
