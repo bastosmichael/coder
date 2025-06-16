@@ -1,13 +1,10 @@
-let mockCreate: jest.Mock
-jest.mock('@anthropic-ai/sdk', () => {
-  mockCreate = jest.fn()
-  return {
-    __esModule: true,
-    default: jest.fn().mockImplementation(() => ({
-      messages: { create: mockCreate }
-    }))
-  }
-}, { virtual: true })
+const mockCreate = jest.fn()
+jest.mock('@anthropic-ai/sdk', () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation(() => ({
+    messages: { create: mockCreate }
+  }))
+}), { virtual: true })
 jest.mock('../../../lib/ai/calculate-llm-cost')
 import { generateAnthropicResponse } from '../../../actions/ai/generate-anthropic-response'
 import { calculateLLMCost, ANTHROPIC_LLMS } from '../../../lib/ai/calculate-llm-cost'

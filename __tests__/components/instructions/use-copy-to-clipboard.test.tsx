@@ -10,12 +10,14 @@ describe('useCopyToClipboard', () => {
     const { result } = renderHook(() => useCopyToClipboard({ timeout: 1000 }))
     await act(async () => {
       result.current.copyToClipboard('hello')
+      await Promise.resolve()
     })
     expect(writeText).toHaveBeenCalledWith('hello')
     expect(result.current.isCopied).toBe(true)
 
-    // Fast-forward timers
+    // Fast-forward timers and pending microtasks
     jest.runAllTimers()
+    await Promise.resolve()
     expect(result.current.isCopied).toBe(false)
     jest.useRealTimers()
   })
