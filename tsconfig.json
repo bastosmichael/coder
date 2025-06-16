@@ -21,7 +21,6 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "types": ["jest", "@testing-library/jest-dom", "node"],
     "typeRoots": ["./types"],
     "outDir": "./dist",
     "rootDir": ".",
