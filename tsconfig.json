@@ -28,11 +28,7 @@
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "scripts/**/*.ts",
-    "jest-setup.d.ts" // Add this if you created a custom type declaration file
+    "types/**/*.d.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules","**/*.test.ts","**/*.test.tsx","app","components","actions","db","lib"]
 }
