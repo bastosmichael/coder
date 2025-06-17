@@ -285,6 +285,48 @@ async function createSampleIssues(
       {
         projectId,
         userId,
+        name: `Create AGENTS.md for ${repo.name}`,
+        content: `# 🧠 Create \`AGENTS.md\` to Document AI-Powered Codebase Agents
+
+## Objective
+Document the roles, triggers, behavior, and outputs of any LLM-based or autonomous agents used in this project. This file will act as a reference for contributors and AI tooling alike.
+
+## Tasks
+- Create a top-level \`AGENTS.md\` file
+- Identify all LLM-based or automated agent functions in the codebase
+  - Example: agents that generate README files, templates, test cases, CI workflows, etc.
+- For each agent, include:
+  - ✅ Name
+  - ✅ Description of what it does
+  - ✅ What triggers it (issues, commands, CI events)
+  - ✅ Inputs and outputs
+  - ✅ Where the logic lives (e.g., \`/agents/doc-writer.ts\`)
+  - ✅ Review or audit process (if applicable)
+
+## Suggested Sections
+- Overview of agents in this repo
+- Table of agents with name + description + trigger
+- Detailed breakdown of each agent
+- How to invoke each agent (via CLI, CI, or prompts)
+- Future agent proposals (optional)
+- Contribution instructions for new agents
+
+## Prompt Guidance
+If using an LLM to generate this file:
+- Look for repeated logic patterns or utilities used to create or respond to issues, templates, or test generation
+- Cross-reference \`createSampleIssues\`, instruction logic, or \`addInstructionToX\` files to infer agent behavior
+
+## ✅ Completion Criteria
+- A complete \`AGENTS.md\` exists at the repo root
+- All currently known agents are listed
+- Information is accurate and human-readable
+- Structure follows markdown best practices
+
+This file will help guide contributors and support reproducibility of LLM agent behavior in the future.`
+      },
+      {
+        projectId,
+        userId,
         name: `Add and Improve Documentation for ${repo.name}`,
         content: `# 📘 Improve Documentation for ${repo.full_name}
 
