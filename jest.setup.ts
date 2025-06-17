@@ -16,3 +16,13 @@ afterAll(() => {
   errorSpy.mockRestore()
   warnSpy.mockRestore()
 })
+
+// Basic ResizeObserver mock for components relying on it
+class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+// @ts-ignore
+global.ResizeObserver = global.ResizeObserver || ResizeObserver
