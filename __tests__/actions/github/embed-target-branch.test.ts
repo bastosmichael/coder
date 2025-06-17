@@ -18,7 +18,7 @@ jest.mock('../../../actions/github/auth', () => ({ getAuthenticatedOctokit: jest
 describe('embedTargetBranch', () => {
   const mockOctokit = {
     repos: {
-      getBranch: jest.fn().mockResolvedValue({ data: { commit: { sha: 'sha1' } } })
+      getBranch: jest.fn()
     }
   }
 
@@ -32,6 +32,7 @@ describe('embedTargetBranch', () => {
   beforeEach(() => {
     jest.resetAllMocks()
     ;(getAuthenticatedOctokit as jest.Mock).mockResolvedValue(mockOctokit)
+    mockOctokit.repos.getBranch.mockResolvedValue({ data: { commit: { sha: 'sha1' } } })
   })
 
   it('creates and embeds new branch when none exists', async () => {

@@ -1,3 +1,7 @@
+jest.mock('@octokit/auth-app', () => ({ createAppAuth: jest.fn() }))
+jest.mock('@octokit/rest', () => ({ Octokit: jest.fn() }))
+jest.mock('../../../actions/github/auth', () => ({ getAuthenticatedOctokit: jest.fn() }))
+
 import { fetchWithRetry } from '../../../actions/github/fetch-codebase'
 
 describe('fetchWithRetry', () => {
