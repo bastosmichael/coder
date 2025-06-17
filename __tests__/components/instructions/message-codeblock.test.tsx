@@ -29,7 +29,10 @@ describe("MessageCodeBlock", () => {
   it("downloads file when download button clicked", () => {
     window.prompt = jest.fn(() => "file.js")
     const link: any = document.createElement("a")
-    jest.spyOn(document, "createElement").mockReturnValue(link)
+    const origCreate = document.createElement
+    jest.spyOn(document, "createElement").mockImplementation((tag: string) => {
+      return tag === "a" ? link : origCreate.call(document, tag)
+    })
     const clickSpy = jest.spyOn(link, "click")
     ;(window.URL as any).createObjectURL = jest.fn(() => "blob:url")
     ;(window.URL as any).revokeObjectURL = jest.fn()

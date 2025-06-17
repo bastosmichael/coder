@@ -9,13 +9,42 @@ jest.mock("../../../components/instructions/message-codeblock", () => ({
   MessageCodeBlock: jest.fn(() => <div data-testid="codeblock" />)
 }))
 
-jest.mock("../../../components/instructions/message-markdown-memoized", () => ({
-  MessageMarkdownMemoized: ({ children, ...props }: any) => (
-    <div data-testid="memo" {...props}>
-      {children}
-    </div>
-  )
-}))
+jest.mock("../../../components/instructions/message-markdown-memoized", () => {
+  const React = require("react")
+  return {
+    MessageMarkdownMemoized: ({ children, components, className }: any) => {
+      const Code = components?.code
+      let content
+      if (typeof children === "string" && children.startsWith("```")) {
+        const [first, ...rest] = children.split("\n")
+        const lang = first.replace(/```/, "")
+        const code = rest.join("\n").replace(/```$/, "")
+        content = (
+          <Code className={`language-${lang}`}>{code + "\n"}</Code>
+        )
+      } else if (typeof children === "string") {
+        const match = /`([^`]+)`/.exec(children)
+        if (match) {
+          content = (
+            <p className="mb-2 last:mb-0">
+              {children.replace(/`([^`]+)`/, "")}
+              <code>{match[1]}</code>
+            </p>
+          )
+        } else {
+          content = <p className="mb-2 last:mb-0">{children}</p>
+        }
+      } else {
+        content = children
+      }
+      return (
+        <div data-testid="memo" className={className}>
+          {content}
+        </div>
+      )
+    }
+  }
+})
 
 describe("MessageMarkdown", () => {
   it("renders inline code and paragraphs", () => {
