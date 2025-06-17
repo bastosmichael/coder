@@ -31,7 +31,7 @@ import {
   fetchOpenGitHubRepoIssues,
   fetchOpenGitHubRepoPullRequests,
   getGitHubAccessToken
-} from '../../../app/api/auth/callback/github/api'
+} from '../../../../app/api/auth/callback/github/api'
 
 describe('github api helpers', () => {
   beforeEach(() => {
