@@ -48,7 +48,7 @@ describe("NewIssueForm", () => {
     ;(createIssue as jest.Mock).mockResolvedValue({ id: "i" })
     const router = useRouter() as any
 
-    const { getByRole, getByText } = render(
+    const { getByRole, getByText, getByPlaceholderText } = render(
       <NewIssueForm templates={templates as any} />
     )
 
