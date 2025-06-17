@@ -80,14 +80,10 @@ export const Dashboard: FC<DashboardProps> = ({
   projects
 }) => {
   const pathname = usePathname()
-  const [openProjects, setOpenProjects] = useState<string[]>([])
+  const [openProject, setOpenProject] = useState<string | null>(null)
 
   const toggleProject = (projectId: string) => {
-    setOpenProjects(prev =>
-      prev.includes(projectId)
-        ? prev.filter(id => id !== projectId)
-        : [...prev, projectId]
-    )
+    setOpenProject(prev => (prev === projectId ? null : projectId))
   }
 
   const filteredProjectLinks = PROJECT_LINKS.map(link => ({
@@ -100,7 +96,7 @@ export const Dashboard: FC<DashboardProps> = ({
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       {/* BEGIN DESKTOP  */}
       <div className="bg-background hidden border-r md:block">
-        <div className="flex h-full max-h-screen flex-col gap-2">
+        <div className="flex h-full max-h-screen flex-col gap-2 overflow-y-auto">
           <div className="flex h-14 items-center border-b px-2 lg:h-[60px]">
             <WorkspaceSelect workspaces={workspaces} />
           </div>
@@ -119,13 +115,13 @@ export const Dashboard: FC<DashboardProps> = ({
                 {projects.map(project => (
                   <Collapsible
                     key={project.id}
-                    open={openProjects.includes(project.id)}
+                    open={openProject === project.id}
                     onOpenChange={() => toggleProject(project.id)}
                   >
                     <CollapsibleTrigger className="hover:bg-secondary/80 flex w-full items-center justify-between rounded px-2 py-1 text-sm font-semibold">
                       <span>{project.name}</span>
 
-                      {openProjects.includes(project.id) ? (
+                      {openProject === project.id ? (
                         <ChevronDown className="size-4" />
                       ) : (
                         <ChevronRight className="size-4" />
@@ -202,13 +198,13 @@ export const Dashboard: FC<DashboardProps> = ({
             {projects.map(project => (
               <Collapsible
                 key={project.id}
-                open={openProjects.includes(project.id)}
+                open={openProject === project.id}
                 onOpenChange={() => toggleProject(project.id)}
               >
                 <CollapsibleTrigger className="flex w-full items-center justify-between py-2">
                   <span>{project.name}</span>
 
-                  {openProjects.includes(project.id) ? (
+                  {openProject === project.id ? (
                     <ChevronDown className="size-4" />
                   ) : (
                     <ChevronRight className="size-4" />
