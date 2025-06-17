@@ -4,6 +4,14 @@ jest.mock('../../../actions/github/auth', () => ({ getAuthenticatedOctokit: jest
 
 import { fetchWithRetry } from '../../../actions/github/fetch-codebase'
 
+beforeEach(() => {
+  jest.spyOn(console, 'warn').mockImplementation(() => {})
+})
+
+afterEach(() => {
+  ;(console.warn as jest.Mock).mockRestore()
+})
+
 describe('fetchWithRetry', () => {
   it('retries when hitting secondary rate limit', async () => {
     jest.useFakeTimers()
@@ -13,8 +21,7 @@ describe('fetchWithRetry', () => {
     octokit.repos.getContent.mockResolvedValue({ success: true })
 
     const promise = fetchWithRetry(octokit, {})
-    jest.advanceTimersByTime(1000)
-    await Promise.resolve()
+    await jest.runOnlyPendingTimersAsync()
     const result = await promise
     expect(result).toEqual({ success: true })
     expect(octokit.repos.getContent).toHaveBeenCalledTimes(2)
