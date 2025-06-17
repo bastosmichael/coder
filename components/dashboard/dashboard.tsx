@@ -104,7 +104,7 @@ export const Dashboard: FC<DashboardProps> = ({
             <WorkspaceSelect workspaces={workspaces} />
           </div>
 
-          <div className="px-4">
+          <div className="px-4 flex h-full flex-col">
             <div className="flex items-center justify-between py-2">
               <div className="text-muted-foreground text-xs font-semibold">
                 Your Projects
@@ -113,7 +113,7 @@ export const Dashboard: FC<DashboardProps> = ({
               <CreateProjectButton params={{ workspaceId }} />
             </div>
 
-            <div className="flex-1 overflow-auto">
+            <div className="flex-1 overflow-y-auto">
               <div className="grid items-start gap-1">
                 {projects.map(project => (
                   <Collapsible
