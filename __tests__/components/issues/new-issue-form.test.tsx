@@ -18,9 +18,10 @@ jest.mock("../../../components/ui/multi-select", () => ({
     <button onClick={() => onToggleSelect(["i2"])}>ms</button>
   )
 }))
+const router = { push: jest.fn(), refresh: jest.fn() }
 jest.mock("next/navigation", () => ({
   useParams: () => ({ projectId: "p" }),
-  useRouter: () => ({ push: jest.fn(), refresh: jest.fn() })
+  useRouter: () => router
 }))
 import { useRouter } from "next/navigation"
 import {
@@ -58,9 +59,17 @@ describe("NewIssueForm", () => {
       expect(getInstructionsForTemplate).toHaveBeenCalledWith("t1")
     )
 
+    await waitFor(() =>
+      expect(getByPlaceholderText("Issue name") as HTMLInputElement).toHaveValue("T")
+    )
+
+    const createButton = getByText("Create") as HTMLButtonElement
+
+    await waitFor(() => expect(createButton).not.toBeDisabled())
+
     await waitFor(() => getByText("ms"))
     fireEvent.click(getByText("ms"))
-    fireEvent.click(getByText("Create"))
+    fireEvent.click(createButton)
 
     await waitFor(() =>
       expect(createIssue).toHaveBeenCalledWith({
