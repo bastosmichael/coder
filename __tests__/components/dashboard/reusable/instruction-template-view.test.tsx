@@ -14,7 +14,7 @@ describe("InstructionTemplateView", () => {
   it("displays content and handles delete", async () => {
     const onDelete = jest.fn()
     const router = useRouter() as any
-    const { getByText } = render(
+    const { getByText, getAllByText } = render(
       <InstructionTemplateView
         item={{ id: "1", name: "A", content: "B", projectId: "p" }}
         type="instruction"
@@ -27,7 +27,7 @@ describe("InstructionTemplateView", () => {
     fireEvent.click(getByText("Edit"))
     expect(router.push).toHaveBeenCalledWith("./1/edit")
     fireEvent.click(getByText("Delete"))
-    fireEvent.click(getByText("Delete"))
+    fireEvent.click(getAllByText("Delete")[1])
     expect(onDelete).toHaveBeenCalledWith("1")
   })
 })
