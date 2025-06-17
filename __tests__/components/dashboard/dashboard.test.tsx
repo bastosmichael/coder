@@ -10,6 +10,8 @@ jest.mock('../../../actions/github/auth', () => ({
   }))
 }))
 jest.mock('../../../actions/github/list-repos', () => ({ listRepos: jest.fn(() => Promise.resolve([])) }))
+// Avoid importing the heavy Octokit-based API route
+jest.mock('../../../app/api/auth/callback/github/api', () => ({ fetchGitHubRepoIssues: jest.fn(() => Promise.resolve([])) }))
 
 import { TextEncoder, TextDecoder } from 'util'
 // polyfill before requiring Dashboard and Next utilities
