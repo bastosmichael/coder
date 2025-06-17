@@ -6,8 +6,8 @@ jest.mock('@clerk/nextjs', () => ({
   SignUp: () => <div>sign up</div>
 }));
 
-import LoginPage from '../app/(auth)/login/[[...login]]/page';
-import SignUpPage from '../app/(auth)/signup/[[...signup]]/page';
+import LoginPage from '../../app/(auth)/login/[[...login]]/page';
+import SignUpPage from '../../app/(auth)/signup/[[...signup]]/page';
 
 describe('auth pages', () => {
   afterEach(() => {

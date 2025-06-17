@@ -1,6 +1,6 @@
-import { GET } from '../../app/api/auth/callback/github/route';
+import { GET } from '../../../app/api/auth/callback/github/route';
 
-jest.mock('../../db/queries/projects-queries', () => ({
+jest.mock('../../../db/queries/projects-queries', () => ({
   getProjectById: jest.fn(),
   updateProject: jest.fn()
 }));
@@ -9,7 +9,7 @@ jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }));
 
 jest.mock('next/navigation', () => ({ redirect: jest.fn() }));
 
-import { getProjectById, updateProject } from '../../db/queries/projects-queries';
+import { getProjectById, updateProject } from '../../../db/queries/projects-queries';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 

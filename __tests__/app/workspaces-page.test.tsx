@@ -1,12 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-jest.mock('../db/queries/workspaces-queries', () => ({
+jest.mock('../../db/queries/workspaces-queries', () => ({
   getWorkspacesByUserId: jest.fn(),
   createWorkspace: jest.fn()
 }));
 
-jest.mock('../db/queries/projects-queries', () => ({
+jest.mock('../../db/queries/projects-queries', () => ({
   createProject: jest.fn()
 }));
 
@@ -19,8 +19,8 @@ jest.mock('next/link', () => ({
   default: ({ href, children }: any) => <a href={href}>{children}</a>
 }));
 
-import WorkspacesPage from '../app/workspaces/page';
-import { getWorkspacesByUserId } from '../db/queries/workspaces-queries';
+import WorkspacesPage from '../../app/workspaces/page';
+import { getWorkspacesByUserId } from '../../db/queries/workspaces-queries';
 
 describe('WorkspacesPage', () => {
   it('shows empty message when no workspaces', async () => {

@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-jest.mock('../components/profiles/profile-creator', () => ({
+jest.mock('../../components/profiles/profile-creator', () => ({
   ProfileCreator: () => <div>creator</div>
 }));
 
-jest.mock('../db/queries/profiles-queries', () => ({
+jest.mock('../../db/queries/profiles-queries', () => ({
   getProfileByUserId: jest.fn()
 }));
 
@@ -13,8 +13,8 @@ jest.mock('next/navigation', () => ({
   redirect: jest.fn()
 }));
 
-import OnboardingPage from '../app/(auth)/onboarding/page';
-import { getProfileByUserId } from '../db/queries/profiles-queries';
+import OnboardingPage from '../../app/(auth)/onboarding/page';
+import { getProfileByUserId } from '../../db/queries/profiles-queries';
 import { redirect } from 'next/navigation';
 
 describe('OnboardingPage', () => {
