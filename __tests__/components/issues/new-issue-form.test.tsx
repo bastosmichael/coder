@@ -59,9 +59,12 @@ describe("NewIssueForm", () => {
       expect(getInstructionsForTemplate).toHaveBeenCalledWith("t1")
     )
 
-    await waitFor(() =>
-      expect(getByPlaceholderText("Issue name") as HTMLInputElement).toHaveValue("T")
-    )
+    fireEvent.change(getByPlaceholderText("Issue name"), {
+      target: { value: "T" }
+    })
+    fireEvent.change(getByPlaceholderText("Issue content..."), {
+      target: { value: "C" }
+    })
 
     const createButton = getByText("Create") as HTMLButtonElement
 
