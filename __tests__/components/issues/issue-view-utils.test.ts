@@ -26,10 +26,8 @@ if (!global.TextEncoder) global.TextEncoder = TextEncoder
 // @ts-ignore
 if (!global.TextDecoder) global.TextDecoder = TextDecoder
 
-import {
-  sanitizeAndConvertXMLToMarkdown,
-  updateMessageWithSanitization
-} from '../../../components/issues/issue-view'
+let sanitizeAndConvertXMLToMarkdown: any
+let updateMessageWithSanitization: any
 import { parseStringPromise } from 'xml2js'
 import { updateIssueMessage } from '../../../db/queries'
 
@@ -43,6 +41,9 @@ const mockedUpdate = updateIssueMessage as jest.Mock
 
 beforeAll(() => {
   process.env.OPENAI_API_KEY = 'test-key'
+  const mod = require('../../../components/issues/issue-view')
+  sanitizeAndConvertXMLToMarkdown = mod.sanitizeAndConvertXMLToMarkdown
+  updateMessageWithSanitization = mod.updateMessageWithSanitization
 })
 
 describe('issue-view utilities', () => {
