@@ -28,3 +28,43 @@ describe('fetchWithRetry', () => {
     jest.useRealTimers()
   })
 })
+import * as fc from '../../../actions/github/fetch-codebase'
+import { getAuthenticatedOctokit } from '../../../actions/github/auth'
+
+jest.mock('../../../actions/github/auth', () => ({ getAuthenticatedOctokit: jest.fn() }))
+
+describe('fetchCodebaseForBranch', () => {
+  const mockOctokit = { repos: { getContent: jest.fn() } }
+  const baseParams = { githubRepoFullName: 'o/r', path: '', branch: 'main', installationId: 1 }
+
+  beforeEach(() => {
+    jest.resetAllMocks()
+    ;(getAuthenticatedOctokit as jest.Mock).mockResolvedValue(mockOctokit)
+  })
+
+  it('returns files from nested directories', async () => {
+    jest.spyOn(fc, 'fetchWithRetry').mockImplementationOnce(async () => ({ data: [
+      { type: 'file', name: 'a.ts', path: 'a.ts' },
+      { type: 'dir', name: 'sub', path: 'sub' }
+    ] }))
+    jest.spyOn(fc, 'fetchWithRetry').mockImplementationOnce(async () => ({ data: [
+      { type: 'file', name: 'b.ts', path: 'sub/b.ts' }
+    ] }))
+
+    const result = await fc.fetchCodebaseForBranch(baseParams)
+    expect(result).toEqual([
+      { type: 'file', name: 'a.ts', path: 'a.ts', owner: 'o', repo: 'r', ref: 'main' },
+      { type: 'file', name: 'b.ts', path: 'sub/b.ts', owner: 'o', repo: 'r', ref: 'main' }
+    ])
+  })
+
+  it('throws on nested fetch error', async () => {
+    const error = new Error('fail')
+    jest.spyOn(fc, 'fetchWithRetry').mockImplementationOnce(async () => ({ data: [
+      { type: 'dir', name: 'sub', path: 'sub' }
+    ] }))
+    jest.spyOn(fc, 'fetchWithRetry').mockImplementationOnce(() => Promise.reject(error))
+
+    await expect(fc.fetchCodebaseForBranch(baseParams)).rejects.toThrow('fail')
+  })
+})
