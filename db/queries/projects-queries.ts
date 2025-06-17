@@ -279,13 +279,14 @@ async function createSampleIssues(
   // 1. Pull down all GitHub issues for the repository
   const existingGitHubIssues = await fetchGitHubRepoIssues(repo.full_name)
 
-  // 2. If the repo has no GitHub issues, create a single local “sample” issue
+  // 2. If the repo has no GitHub issues, create a series of local bootstrap issues
   if (existingGitHubIssues.length === 0) {
-     const sampleIssueData: InsertIssue = {
-  projectId,
-  userId,
-  name: `Add and Improve Documentation for ${repo.name}`,
-  content: `# 📘 Improve Documentation for ${repo.full_name}
+    const bootstrapIssues: InsertIssue[] = [
+      {
+        projectId,
+        userId,
+        name: `Add and Improve Documentation for ${repo.name}`,
+        content: `# 📘 Improve Documentation for ${repo.full_name}
 
 ## 🧭 Goal
 Create or update the repository documentation to clearly explain:
@@ -294,73 +295,90 @@ Create or update the repository documentation to clearly explain:
 - How to set it up locally,
 - And how to contribute or run it.
 
-This is the first step toward making the project more accessible for developers, users, and contributors.
-
----
-
 ## 📋 Task Breakdown
+1. Overview of the app
+2. Setup instructions
+3. Run instructions
+4. Testing steps
+5. Contribution guidelines
 
-### 1. **Overview**
-Write a short summary of what the application is, what problems it solves, and what technologies it might use (if discoverable from the codebase).
-
-### 2. **Setup & Dependencies**
-Document how to set up the project after cloning. Try to detect:
-- Any install commands (e.g., dependency managers like pip, npm, cargo, etc.)
-- Required environment variables or configuration files
-- Any prerequisite software or tools
-
-Use placeholder commands or abstract steps like:
-\`\`\`
-Install dependencies using the appropriate package manager.
-Configure the environment as needed (e.g., create a .env file).
-\`\`\`
-
-### 3. **Run Instructions**
-Include how to launch or execute the application (if applicable), such as:
-- Running a local server
-- Starting a CLI
-- Building the project
-
-Again, use abstract phrasing unless the tooling is clearly defined.
-
-### 4. **Testing or Validation (Optional)**
-If test scripts or validation tools are found, describe how to run them.
-
-### 5. **Contribution & Deployment (Optional)**
-Add placeholders for:
-- Contribution guidelines
-- CI/CD setup or deployment steps
-- License information
-
----
-
-## 🤖 Prompt Use (LLM Context)
-Treat this issue as a seed prompt for generating an initial \`README.md\` or documentation update. Explore the codebase and generate a clean, markdown-formatted file that helps a new user or developer get started.
-
-Use generic language when the specific technology is unclear. Be explicit when it can be inferred from the files (e.g., presence of \`package.json\`, \`requirements.txt\`, \`Makefile\`, etc.).
-
----
+## 🤖 LLM Prompt Context
+Generate a README.md with placeholders if needed. Be general where tech is unclear, and specific where recognizable.
 
 ## ✅ Completion Criteria
-- The repo has a well-structured \`README.md\` file.
-- Setup, usage, and purpose are clearly documented.
-- Placeholder instructions are included where tooling is ambiguous.
-- Markdown is clean and readable.
+- Well-structured \`README.md\`
+- Clean, markdown formatted
+- Covers setup, usage, and contribution steps`
+      },
+      {
+        projectId,
+        userId,
+        name: `Generate Auto Documentation for ${repo.name}`,
+        content: `# 📄 Generate Code Documentation Using Built-In Tools
 
-This documentation will be the foundation for future code generation or automated workflows.`
+## Objective
+Use built-in tooling or comment-based generators (e.g., JSDoc, docstrings, etc.) to create auto documentation artifacts.
+
+## Tasks
+- Add missing doc comments to source files
+- Generate API/index or module reference documentation
+- Output to /docs or integrate into README
+
+## ✅ Completion Criteria
+- Includes a /docs folder or equivalent
+- Documentation generation steps are documented
+- Core functions/classes/modules are described`
+      },
+      {
+        projectId,
+        userId,
+        name: `Add CI/CD GitHub Actions Workflow to ${repo.name}`,
+        content: `# 🚀 Setup GitHub Actions for CI/CD
+
+## Goal
+Create a workflow that runs on push and pull requests to validate the codebase.
+
+## Tasks
+- Add lint, build, and test steps
+- Use project language or detect tooling automatically
+- Name file: \`.github/workflows/ci.yml\`
+
+## ✅ Completion Criteria
+- CI runs successfully on PRs
+- Workflow includes lint/build/test jobs`
+      },
+      {
+        projectId,
+        userId,
+        name: `Add Initial Unit Test and Coverage for ${repo.name}`,
+        content: `# 🧪 Add Unit Test & Coverage
+
+## Objective
+Add at least one unit test and setup test coverage tooling.
+
+## Tasks
+- Identify a small function or entry point to test
+- Use default test framework if one exists, or scaffold one
+- Ensure test passes and produces coverage output
+
+## ✅ Completion Criteria
+- Test file exists and passes
+- Coverage output is generated
+- Test command documented in README or package script`
+      }
+    ]
+
+    const insertedIssues: SelectIssue[] = []
+    for (const issueData of bootstrapIssues) {
+      const [issue] = await db.insert(issuesTable).values(issueData).returning()
+      insertedIssues.push(issue)
     }
-    
-    const [issue] = await db
-      .insert(issuesTable)
-      .values(sampleIssueData)
-      .returning()
 
-    return [issue] // Return array with one newly created sample issue
+    return insertedIssues
   }
 
-  // 3. If there are existing GitHub issues, create local copies for each (OR skip if you don't want duplicates)
+  // 3. If there are existing GitHub issues, mirror them locally
   const createdIssues: SelectIssue[] = []
-
   for (const ghIssue of existingGitHubIssues) {
     const issueData: InsertIssue = {
       projectId,
@@ -369,11 +387,7 @@ This documentation will be the foundation for future code generation or automate
       content: ghIssue.body || "No content provided."
     }
 
-    const [localIssue] = await db
-      .insert(issuesTable)
-      .values(issueData)
-      .returning()
-
+    const [localIssue] = await db.insert(issuesTable).values(issueData).returning()
     createdIssues.push(localIssue)
   }
 
