@@ -1,4 +1,4 @@
-let listForAuthUser: jest.Mock
+var listForAuthUser: jest.Mock
 
 jest.mock('@octokit/rest', () => {
   listForAuthUser = jest.fn()
