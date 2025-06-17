@@ -26,6 +26,13 @@ export const MessageMarkdown: FC<MessageMarkdownProps> = ({
         img({ ...props }) {
           return <img className="max-w-[67%]" {...props} />
         },
+        a({ href, children, ...props }) {
+          return (
+            <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
+              {children}
+            </a>
+          )
+        },
         code({ className, children, ...props }) {
           const childArray = React.Children.toArray(children)
           const firstChild = childArray[0] as React.ReactElement
