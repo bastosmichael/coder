@@ -19,6 +19,18 @@ jest.mock('../../../actions/github/tokenize-files', () => ({ tokenizeFiles: jest
 jest.mock('../../../lib/constants/ephemyral-coder-config', () => ({ MAX_RETRY_ATTEMPTS: 2, RETRY_DELAY: 1 }))
 
 describe('embedBranch', () => {
+  let consoleErrorSpy: jest.SpyInstance
+
+  beforeAll(() => {
+    consoleErrorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => {})
+  })
+
+  afterAll(() => {
+    consoleErrorSpy.mockRestore()
+  })
+
   beforeEach(() => jest.clearAllMocks())
 
   it('embeds branch and retries insert', async () => {
@@ -30,7 +42,6 @@ describe('embedBranch', () => {
       .mockRejectedValueOnce(new Error('fail'))
       .mockResolvedValueOnce(undefined)
 
-    jest.useFakeTimers()
     const promise = embedBranch({
       projectId: 'p',
       githubRepoFullName: 'r',
@@ -38,10 +49,8 @@ describe('embedBranch', () => {
       embeddedBranchId: 'e',
       installationId: 1
     })
-    jest.runAllTimers()
     await promise
     expect(deleteAllEmbeddedFilesByEmbeddedBranchId).toHaveBeenCalledWith('e')
     expect(createEmbeddedFiles).toHaveBeenCalledTimes(2)
-    jest.useRealTimers()
   })
 })
