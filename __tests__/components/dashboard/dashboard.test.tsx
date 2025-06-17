@@ -1,9 +1,10 @@
 import { fireEvent, render } from '@testing-library/react'
-import { Dashboard } from '../../../components/dashboard/dashboard'
 
 jest.mock('@clerk/nextjs', () => ({ UserButton: () => <div>User</div> }))
-
+jest.mock('@clerk/nextjs/server', () => ({ auth: jest.fn(() => ({ userId: 'u1' })) }))
 jest.mock('next/navigation', () => ({ usePathname: () => '/' }))
+
+import { Dashboard } from '../../../components/dashboard/dashboard'
 
 const workspaces = [{ id: 'w1', name: 'W1' }]
 const projects = [{ id: 'p1', name: 'P1' }]

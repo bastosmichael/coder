@@ -1,3 +1,14 @@
+// Mock AI helpers to avoid importing real OpenAI clients
+jest.mock('../../../actions/ai/generate-openai-response', () => ({
+  generateOpenAIResponse: jest.fn()
+}))
+jest.mock('../../../actions/ai/generate-anthropic-response', () => ({
+  generateAnthropicResponse: jest.fn()
+}))
+jest.mock('../../../actions/ai/generate-grok-response', () => ({
+  generateGrokResponse: jest.fn()
+}))
+
 import {
   sanitizeAndConvertXMLToMarkdown,
   updateMessageWithSanitization
@@ -12,6 +23,10 @@ jest.mock('../../../db/queries', () => ({ updateIssueMessage: jest.fn() }))
 
 const mockedParse = parseStringPromise as jest.Mock
 const mockedUpdate = updateIssueMessage as jest.Mock
+
+beforeAll(() => {
+  process.env.OPENAI_API_KEY = 'test-key'
+})
 
 describe('issue-view utilities', () => {
   beforeEach(() => {
