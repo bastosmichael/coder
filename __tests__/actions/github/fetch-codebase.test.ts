@@ -14,6 +14,7 @@ describe('fetchWithRetry', () => {
 
     const promise = fetchWithRetry(octokit, {})
     jest.advanceTimersByTime(1000)
+    await Promise.resolve()
     const result = await promise
     expect(result).toEqual({ success: true })
     expect(octokit.repos.getContent).toHaveBeenCalledTimes(2)
