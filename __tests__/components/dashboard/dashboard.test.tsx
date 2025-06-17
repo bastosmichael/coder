@@ -4,10 +4,12 @@ jest.mock('@clerk/nextjs', () => ({ UserButton: () => <div>User</div> }))
 jest.mock('@clerk/nextjs/server', () => ({ auth: jest.fn(() => ({ userId: 'u1' })) }))
 jest.mock('next/navigation', () => ({ usePathname: () => '/' }))
 
-import { TextEncoder } from 'util'
+import { TextEncoder, TextDecoder } from 'util'
 // polyfill before requiring Dashboard and Next utilities
 // @ts-ignore
 if (!global.TextEncoder) global.TextEncoder = TextEncoder
+// @ts-ignore
+if (!global.TextDecoder) global.TextDecoder = TextDecoder
 // polyfill Request for next/server modules
 // @ts-ignore
 if (!global.Request) global.Request = class {}

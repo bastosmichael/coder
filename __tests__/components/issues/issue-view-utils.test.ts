@@ -19,6 +19,13 @@ jest.mock('remark-gfm', () => () => {})
 jest.mock('remark-math', () => () => {})
 jest.mock('react-markdown', () => ({ __esModule: true, default: () => null }))
 
+// polyfill encoders required by gpt-tokenizer
+import { TextEncoder, TextDecoder } from 'util'
+// @ts-ignore
+if (!global.TextEncoder) global.TextEncoder = TextEncoder
+// @ts-ignore
+if (!global.TextDecoder) global.TextDecoder = TextDecoder
+
 import {
   sanitizeAndConvertXMLToMarkdown,
   updateMessageWithSanitization
@@ -41,6 +48,11 @@ beforeAll(() => {
 describe('issue-view utilities', () => {
   beforeEach(() => {
     jest.clearAllMocks()
+    jest.spyOn(console, 'error').mockImplementation(() => {})
+  })
+
+  afterEach(() => {
+    ;(console.error as jest.Mock).mockRestore()
   })
 
   it('converts xml to markdown', async () => {
