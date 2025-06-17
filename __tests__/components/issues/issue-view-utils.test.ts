@@ -1,11 +1,14 @@
-import { sanitizeAndConvertXMLToMarkdown, updateMessageWithSanitization } from '../../components/issues/issue-view'
+import {
+  sanitizeAndConvertXMLToMarkdown,
+  updateMessageWithSanitization
+} from '../../../components/issues/issue-view'
 import { parseStringPromise } from 'xml2js'
-import { updateIssueMessage } from '../../db/queries'
+import { updateIssueMessage } from '../../../db/queries'
 
 type Message = { id: string; content: string }
 
 jest.mock('xml2js', () => ({ parseStringPromise: jest.fn() }))
-jest.mock('../../db/queries', () => ({ updateIssueMessage: jest.fn() }))
+jest.mock('../../../db/queries', () => ({ updateIssueMessage: jest.fn() }))
 
 const mockedParse = parseStringPromise as jest.Mock
 const mockedUpdate = updateIssueMessage as jest.Mock

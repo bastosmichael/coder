@@ -12,8 +12,8 @@ describe('Accordion', () => {
       </Accordion>
     )
 
-    expect(queryByText('Content')).not.toBeVisible()
+    expect(queryByText('Content')).not.toBeInTheDocument()
     fireEvent.click(getByText('Trigger'))
-    expect(queryByText('Content')).toBeVisible()
+    expect(queryByText('Content')).toBeInTheDocument()
   })
 })

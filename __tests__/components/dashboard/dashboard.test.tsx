@@ -1,6 +1,8 @@
 import { fireEvent, render } from '@testing-library/react'
 import { Dashboard } from '../../../components/dashboard/dashboard'
 
+jest.mock('@clerk/nextjs', () => ({ UserButton: () => <div>User</div> }))
+
 jest.mock('next/navigation', () => ({ usePathname: () => '/' }))
 
 const workspaces = [{ id: 'w1', name: 'W1' }]
