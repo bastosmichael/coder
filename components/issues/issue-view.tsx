@@ -66,6 +66,11 @@ let globalSequence = 1
 
 // Function to sanitize and convert XML to Markdown
 export const sanitizeAndConvertXMLToMarkdown = async (xmlContent: string) => {
+  // If the content doesn't look like XML, return it as-is to avoid parsing errors
+  if (!xmlContent.trim().startsWith("<")) {
+    return xmlContent
+  }
+
   try {
     const parsedXml = await parseStringPromise(xmlContent, { trim: true })
 
