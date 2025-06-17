@@ -17,6 +17,7 @@ jest.mock('../../../actions/retrieval/get-similar-files', () => ({
 // mock markdown plugins which are ESM modules
 jest.mock('remark-gfm', () => () => {})
 jest.mock('remark-math', () => () => {})
+jest.mock('react-markdown', () => ({ __esModule: true, default: () => null }))
 
 import {
   sanitizeAndConvertXMLToMarkdown,

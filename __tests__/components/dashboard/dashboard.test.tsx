@@ -8,6 +8,9 @@ import { TextEncoder } from 'util'
 // polyfill before requiring Dashboard and Next utilities
 // @ts-ignore
 if (!global.TextEncoder) global.TextEncoder = TextEncoder
+// polyfill Request for next/server modules
+// @ts-ignore
+if (!global.Request) global.Request = class {}
 
 const { Dashboard } = require('../../../components/dashboard/dashboard')
 
