@@ -2,16 +2,7 @@ jest.mock('@octokit/auth-app', () => ({ createAppAuth: jest.fn() }))
 jest.mock('@octokit/rest', () => ({ Octokit: jest.fn() }))
 jest.mock('../../../actions/github/auth', () => ({ getAuthenticatedOctokit: jest.fn() }))
 
-// Mock fetchWithRetry so we can control its behaviour in tests that
-// exercise fetchCodebaseForBranch while still using the real
-// implementations for the rest of the module
-jest.mock('../../../actions/github/fetch-codebase', () => {
-  const actual = jest.requireActual('../../../actions/github/fetch-codebase')
-  return { ...actual, fetchWithRetry: jest.fn() }
-})
-
-import * as fc from '../../../actions/github/fetch-codebase'
-const { fetchWithRetry: realFetchWithRetry } = jest.requireActual('../../../actions/github/fetch-codebase')
+import { fetchCodebaseForBranch, fetchWithRetry } from '../../../actions/github/fetch-codebase'
 
 beforeEach(() => {
   jest.spyOn(console, 'warn').mockImplementation(() => {})
@@ -29,7 +20,7 @@ describe('fetchWithRetry', () => {
     octokit.repos.getContent.mockRejectedValueOnce(error)
     octokit.repos.getContent.mockResolvedValue({ success: true })
 
-    const promise = realFetchWithRetry(octokit as any, {})
+    const promise = fetchWithRetry(octokit as any, {})
     await jest.runOnlyPendingTimersAsync()
     const result = await promise
     expect(result).toEqual({ success: true })
@@ -49,15 +40,16 @@ describe('fetchCodebaseForBranch', () => {
   })
 
   it('returns files from nested directories', async () => {
-    ;(fc.fetchWithRetry as jest.Mock).mockImplementationOnce(async () => ({ data: [
-      { type: 'file', name: 'a.ts', path: 'a.ts' },
-      { type: 'dir', name: 'sub', path: 'sub' }
-    ] }))
-    ;(fc.fetchWithRetry as jest.Mock).mockImplementationOnce(async () => ({ data: [
-      { type: 'file', name: 'b.ts', path: 'sub/b.ts' }
-    ] }))
+    mockOctokit.repos.getContent
+      .mockResolvedValueOnce({ data: [
+        { type: 'file', name: 'a.ts', path: 'a.ts' },
+        { type: 'dir', name: 'sub', path: 'sub' }
+      ] })
+      .mockResolvedValueOnce({ data: [
+        { type: 'file', name: 'b.ts', path: 'sub/b.ts' }
+      ] })
 
-    const result = await fc.fetchCodebaseForBranch(baseParams)
+    const result = await fetchCodebaseForBranch(baseParams)
     expect(result).toEqual([
       { type: 'file', name: 'a.ts', path: 'a.ts', owner: 'o', repo: 'r', ref: 'main' },
       { type: 'file', name: 'b.ts', path: 'sub/b.ts', owner: 'o', repo: 'r', ref: 'main' }
@@ -66,11 +58,12 @@ describe('fetchCodebaseForBranch', () => {
 
   it('throws on nested fetch error', async () => {
     const error = new Error('fail')
-    ;(fc.fetchWithRetry as jest.Mock).mockImplementationOnce(async () => ({ data: [
-      { type: 'dir', name: 'sub', path: 'sub' }
-    ] }))
-    ;(fc.fetchWithRetry as jest.Mock).mockImplementationOnce(() => Promise.reject(error))
+    mockOctokit.repos.getContent
+      .mockResolvedValueOnce({ data: [
+        { type: 'dir', name: 'sub', path: 'sub' }
+      ] })
+      .mockRejectedValueOnce(error)
 
-    await expect(fc.fetchCodebaseForBranch(baseParams)).rejects.toThrow('fail')
+    await expect(fetchCodebaseForBranch(baseParams)).rejects.toThrow('fail')
   })
 })
