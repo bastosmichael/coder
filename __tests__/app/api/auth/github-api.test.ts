@@ -1,12 +1,13 @@
 const listForAuthUser = jest.fn()
 
 jest.mock('@octokit/rest', () => ({
+  __esModule: true,
   Octokit: jest.fn().mockImplementation(() => ({
     orgs: { listForAuthenticatedUser: listForAuthUser }
   }))
 }))
 
-import { fetchGitHubOrganizations } from '../../../app/api/auth/callback/github/api'
+import { fetchGitHubOrganizations } from '../../../../app/api/auth/callback/github/api'
 
 describe('fetchGitHubOrganizations', () => {
   beforeEach(() => {

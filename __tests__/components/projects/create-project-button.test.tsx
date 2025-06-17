@@ -1,18 +1,23 @@
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { CreateProjectButton } from '../../../components/projects/create-project-button'
 
-const createProject = jest.fn()
-jest.mock('../../../db/queries/projects-queries', () => ({ createProject }))
+jest.mock('../../../db/queries/projects-queries', () => {
+  const createProject = jest.fn()
+  return { __esModule: true, createProject }
+})
+import { createProject } from '../../../db/queries/projects-queries'
 
-const push = jest.fn()
-const refresh = jest.fn()
-jest.mock('next/navigation', () => ({ useRouter: () => ({ push, refresh }) }))
+jest.mock('next/navigation', () => {
+  const router = { push: jest.fn(), refresh: jest.fn() }
+  return { __esModule: true, useRouter: () => router, router }
+})
+import { router } from 'next/navigation'
 
 describe('CreateProjectButton', () => {
   beforeEach(() => {
     createProject.mockReset()
-    push.mockReset()
-    refresh.mockReset()
+    router.push.mockReset()
+    router.refresh.mockReset()
   })
 
   it('creates project and navigates', async () => {
@@ -22,8 +27,8 @@ describe('CreateProjectButton', () => {
     )
     fireEvent.click(container.querySelector('div.cursor-pointer')!)
     await waitFor(() => expect(createProject).toHaveBeenCalled())
-    expect(push).toHaveBeenCalledWith('/w1/p1/settings')
-    expect(refresh).toHaveBeenCalled()
+    expect(router.push).toHaveBeenCalledWith('/w1/p1/settings')
+    expect(router.refresh).toHaveBeenCalled()
   })
 
   it('handles errors gracefully', async () => {
@@ -33,6 +38,6 @@ describe('CreateProjectButton', () => {
     )
     fireEvent.click(container.querySelector('div.cursor-pointer')!)
     await waitFor(() => expect(createProject).toHaveBeenCalled())
-    expect(push).not.toHaveBeenCalled()
+    expect(router.push).not.toHaveBeenCalled()
   })
 })
