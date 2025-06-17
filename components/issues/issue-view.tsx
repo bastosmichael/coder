@@ -65,7 +65,7 @@ interface IssueViewProps {
 let globalSequence = 1
 
 // Function to sanitize and convert XML to Markdown
-const sanitizeAndConvertXMLToMarkdown = async (xmlContent: string) => {
+export const sanitizeAndConvertXMLToMarkdown = async (xmlContent: string) => {
   try {
     const parsedXml = await parseStringPromise(xmlContent, { trim: true })
 
@@ -96,7 +96,7 @@ const sanitizeAndConvertXMLToMarkdown = async (xmlContent: string) => {
 }
 
 // Update message with sanitization and Markdown conversion
-const updateMessageWithSanitization = async (
+export const updateMessageWithSanitization = async (
   messageId: string,
   content: string,
   setMessages: React.Dispatch<React.SetStateAction<SelectIssueMessage[]>>
