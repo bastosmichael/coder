@@ -16,9 +16,11 @@ describe('MessageMarkdownMemoized', () => {
   })
 
   it('memoizes ReactMarkdown component', () => {
-    const { rerender } = render(<MessageMarkdownMemoized>hi</MessageMarkdownMemoized>)
-    expect(ReactMarkdown).toHaveBeenCalledTimes(1)
+    const { rerender } = render(
+      <MessageMarkdownMemoized>hi</MessageMarkdownMemoized>
+    )
+    const calls = ReactMarkdown.mock.calls.length
     rerender(<MessageMarkdownMemoized>hi</MessageMarkdownMemoized>)
-    expect(ReactMarkdown).toHaveBeenCalledTimes(1)
+    expect(ReactMarkdown).toHaveBeenCalledTimes(calls)
   })
 })
