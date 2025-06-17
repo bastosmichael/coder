@@ -12,8 +12,11 @@ describe("IssuesList", () => {
   const issues = [{ id: "1", name: "Issue", content: "", projectId: "p" }]
 
   it("renders items and deletes", () => {
-    const { getByText } = render(<IssuesList issues={issues as any} />)
+    const { getByText, getAllByRole } = render(
+      <IssuesList issues={issues as any} />
+    )
     expect(getByText("Issue")).toBeInTheDocument()
+    fireEvent.click(getAllByRole("button")[1])
     fireEvent.click(getByText("Delete"))
     expect(deleteIssue).toHaveBeenCalledWith("1")
   })

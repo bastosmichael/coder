@@ -6,11 +6,21 @@ jest.mock("../../../db/queries/projects-queries", () => ({
 }))
 import { getMostRecentIssueWithinProjects } from "../../../db/queries/projects-queries"
 
+const push = jest.fn()
+
 jest.mock("next/navigation", () => ({
-  useRouter: () => ({ push: jest.fn() }),
+  useRouter: () => ({ push }),
   useParams: () => ({ workspaceId: "w1" })
 }))
 import { useRouter } from "next/navigation"
+
+jest.mock("../../../components/workspaces/create-workspace-button", () => ({
+  CreateWorkspaceButton: () => <div>Create</div>
+}))
+
+jest.mock("../../../components/workspaces/edit-workspace-button", () => ({
+  EditWorkspaceButton: () => <div>Edit</div>
+}))
 
 const workspaces = [
   { id: "w1", name: "A" },

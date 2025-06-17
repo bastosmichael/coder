@@ -9,6 +9,10 @@ jest.mock(
 )
 import { InstructionTemplateView } from "../../../components/dashboard/reusable/instruction-template-view"
 
+jest.mock("../../../db/queries/templates-queries", () => ({
+  deleteTemplate: jest.fn()
+}))
+
 describe("Template component", () => {
   it("passes attached instructions", () => {
     const template = {
