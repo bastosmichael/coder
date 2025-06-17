@@ -31,8 +31,8 @@ describe("MessageCodeBlock", () => {
     const link: any = document.createElement("a")
     jest.spyOn(document, "createElement").mockReturnValue(link)
     const clickSpy = jest.spyOn(link, "click")
-    jest.spyOn(window.URL, "createObjectURL").mockReturnValue("blob:url")
-    jest.spyOn(window.URL, "revokeObjectURL").mockImplementation(() => {})
+    ;(window.URL as any).createObjectURL = jest.fn(() => "blob:url")
+    ;(window.URL as any).revokeObjectURL = jest.fn()
     const append = jest.spyOn(document.body, "appendChild")
     const remove = jest.spyOn(document.body, "removeChild")
 

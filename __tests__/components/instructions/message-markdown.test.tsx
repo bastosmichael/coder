@@ -3,6 +3,7 @@ import { render } from "@testing-library/react"
 import { MessageMarkdown } from "../../../components/instructions/message-markdown"
 
 jest.mock("remark-gfm", () => () => null)
+jest.mock("remark-math", () => () => null)
 
 jest.mock("../../../components/instructions/message-codeblock", () => ({
   MessageCodeBlock: jest.fn(() => <div data-testid="codeblock" />)
