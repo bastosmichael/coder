@@ -20,6 +20,7 @@ import {
   ChevronDown,
   ChevronRight,
   CircleDot,
+  ExternalLink,
   Menu,
   Pencil,
   Settings,
@@ -100,7 +101,7 @@ export const Dashboard: FC<DashboardProps> = ({
       {/* BEGIN DESKTOP  */}
       <div className="bg-background hidden border-r md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
-          <div className="l flex h-14 items-center border-b px-2 lg:h-[60px]">
+          <div className="flex h-14 items-center border-b px-2 lg:h-[60px]">
             <WorkspaceSelect workspaces={workspaces} />
           </div>
 
@@ -149,6 +150,17 @@ export const Dashboard: FC<DashboardProps> = ({
                           {link.label}
                         </Link>
                       ))}
+                      {project.githubRepoFullName && (
+                        <Link
+                          href={`https://github.com/${project.githubRepoFullName}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:bg-secondary/80 flex items-center gap-2.5 rounded-lg px-2 py-1 text-sm transition-all"
+                        >
+                          <ExternalLink className="size-4" />
+                          Repo
+                        </Link>
+                      )}
                     </CollapsibleContent>
                   </Collapsible>
                 ))}
@@ -213,6 +225,16 @@ export const Dashboard: FC<DashboardProps> = ({
                       {link.label}
                     </Link>
                   ))}
+                  {project.githubRepoFullName && (
+                    <Link
+                      href={`https://github.com/${project.githubRepoFullName}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block py-2 pl-4"
+                    >
+                      Repo
+                    </Link>
+                  )}
                 </CollapsibleContent>
               </Collapsible>
             ))}
