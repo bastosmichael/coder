@@ -17,10 +17,10 @@ describe("MessageCodeBlock", () => {
   })
 
   it("calls copyToClipboard when copy button clicked", () => {
-    const mock = (useCopyToClipboard as jest.Mock).mock.results[0].value
     const { container } = render(
       <MessageCodeBlock language="js" value="code" />
     )
+    const mock = (useCopyToClipboard as jest.Mock).mock.results[0].value
     const buttons = container.querySelectorAll("button")
     fireEvent.click(buttons[1])
     expect(mock.copyToClipboard).toHaveBeenCalledWith("code")
@@ -31,8 +31,8 @@ describe("MessageCodeBlock", () => {
     const link: any = document.createElement("a")
     jest.spyOn(document, "createElement").mockReturnValue(link)
     const clickSpy = jest.spyOn(link, "click")
-    jest.spyOn(URL, "createObjectURL").mockReturnValue("blob:url")
-    jest.spyOn(URL, "revokeObjectURL").mockImplementation(() => {})
+    jest.spyOn(window.URL, "createObjectURL").mockReturnValue("blob:url")
+    jest.spyOn(window.URL, "revokeObjectURL").mockImplementation(() => {})
     const append = jest.spyOn(document.body, "appendChild")
     const remove = jest.spyOn(document.body, "removeChild")
 
