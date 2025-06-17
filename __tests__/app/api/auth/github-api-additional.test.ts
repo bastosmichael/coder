@@ -3,6 +3,7 @@ var getRepos: jest.Mock
 var createRepo: jest.Mock
 var listIssues: jest.Mock
 var listPulls: jest.Mock
+var auth: jest.Mock
 
 jest.mock('@octokit/rest', () => {
   getAuthUser = jest.fn()
@@ -10,13 +11,15 @@ jest.mock('@octokit/rest', () => {
   createRepo = jest.fn()
   listIssues = jest.fn()
   listPulls = jest.fn()
+  auth = jest.fn()
   return {
     __esModule: true,
     Octokit: jest.fn().mockImplementation(() => ({
       users: { getAuthenticated: getAuthUser },
       repos: { listForOrg: getRepos, createInOrg: createRepo },
       issues: { listForRepo: listIssues },
-      pulls: { list: listPulls }
+      pulls: { list: listPulls },
+      auth
     }))
   }
 })
