@@ -4,14 +4,12 @@ jest.mock('@clerk/nextjs', () => ({ UserButton: () => <div>User</div> }))
 jest.mock('@clerk/nextjs/server', () => ({ auth: jest.fn(() => ({ userId: 'u1' })) }))
 jest.mock('next/navigation', () => ({ usePathname: () => '/' }))
 
-import { Dashboard } from '../../../components/dashboard/dashboard'
 import { TextEncoder } from 'util'
+// polyfill before requiring Dashboard and Next utilities
+// @ts-ignore
+if (!global.TextEncoder) global.TextEncoder = TextEncoder
 
-beforeAll(() => {
-  // polyfill for Next.js utilities requiring TextEncoder
-  // @ts-ignore
-  if (!global.TextEncoder) global.TextEncoder = TextEncoder
-})
+const { Dashboard } = require('../../../components/dashboard/dashboard')
 
 const workspaces = [{ id: 'w1', name: 'W1' }]
 const projects = [{ id: 'p1', name: 'P1' }]

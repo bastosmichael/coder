@@ -14,6 +14,9 @@ jest.mock('../../../actions/github/generate-pr', () => ({ generatePR: jest.fn() 
 jest.mock('../../../actions/retrieval/get-similar-files', () => ({
   getMostSimilarEmbeddedFiles: jest.fn()
 }))
+// mock markdown plugins which are ESM modules
+jest.mock('remark-gfm', () => () => {})
+jest.mock('remark-math', () => () => {})
 
 import {
   sanitizeAndConvertXMLToMarkdown,
