@@ -6,7 +6,11 @@ import { getAuthenticatedOctokit } from "./auth"
 export const listRepos = async (
   installationId: number | null,
   organizationId: string | null,
-  fetchCount: number = 15 // Default to fetching 10 repositories
+  /**
+   * Optionally limit the number of repositories returned. If omitted, all
+   * repositories are included.
+   */
+  fetchCount?: number
 ): Promise<GitHubRepository[]> => {
   try {
     const octokit = await getAuthenticatedOctokit(installationId)
@@ -42,12 +46,14 @@ export const listRepos = async (
       )
     }
 
-    // Sort by updated_at and take the top 'fetchCount' most recently updated
+    // Sort by updated_at and optionally limit the number returned
     repositories.sort(
       (a, b) =>
         new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
     )
-    repositories = repositories.slice(0, fetchCount)
+    if (fetchCount !== undefined) {
+      repositories = repositories.slice(0, fetchCount)
+    }
 
     return repositories
       .map(repo => ({
