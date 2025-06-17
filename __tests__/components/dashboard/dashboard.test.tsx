@@ -2,7 +2,11 @@ import { fireEvent, render } from '@testing-library/react'
 
 jest.mock('@clerk/nextjs', () => ({ UserButton: () => <div>User</div> }))
 jest.mock('@clerk/nextjs/server', () => ({ auth: jest.fn(() => ({ userId: 'u1' })) }))
-jest.mock('next/navigation', () => ({ usePathname: () => '/' }))
+jest.mock('next/navigation', () => ({
+  usePathname: () => '/',
+  useRouter: () => ({ push: jest.fn() }),
+  useParams: () => ({ workspaceId: 'w1' })
+}))
 jest.mock('../../../actions/github/auth', () => ({
   getAuthenticatedOctokit: jest.fn(() => ({
     request: jest.fn(),
