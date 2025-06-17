@@ -26,3 +26,9 @@ class ResizeObserver {
 
 // @ts-ignore
 global.ResizeObserver = global.ResizeObserver || ResizeObserver
+
+// Some components (cmdk) rely on scrollIntoView which isn't implemented in JSDOM
+if (!HTMLElement.prototype.scrollIntoView) {
+  // @ts-ignore
+  HTMLElement.prototype.scrollIntoView = jest.fn()
+}
