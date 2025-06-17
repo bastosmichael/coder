@@ -35,7 +35,7 @@ describe('SiteHeader', () => {
     process.env.NEXT_PUBLIC_APP_MODE = 'simple'
     const { getAllByRole, container } = render(<SiteHeader />)
     const button = getAllByRole('button', { name: 'Toggle menu' })[0]
-    const nav = container.querySelector('nav') as HTMLElement
+    const nav = container.querySelectorAll('nav')[1] as HTMLElement
     expect(nav.className).toContain('pointer-events-none')
     fireEvent.click(button)
     expect(nav.className).not.toContain('pointer-events-none')

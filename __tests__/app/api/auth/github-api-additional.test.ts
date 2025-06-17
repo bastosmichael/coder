@@ -1,8 +1,8 @@
-let getAuthUser: jest.Mock
-let getRepos: jest.Mock
-let createRepo: jest.Mock
-let listIssues: jest.Mock
-let listPulls: jest.Mock
+var getAuthUser: jest.Mock
+var getRepos: jest.Mock
+var createRepo: jest.Mock
+var listIssues: jest.Mock
+var listPulls: jest.Mock
 
 jest.mock('@octokit/rest', () => {
   getAuthUser = jest.fn()
