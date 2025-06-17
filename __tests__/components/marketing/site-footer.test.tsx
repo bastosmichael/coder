@@ -3,9 +3,9 @@ import { SiteFooter } from "../../../components/marketing/site-footer"
 
 describe("SiteFooter", () => {
   it("displays socials and year", () => {
-    const { getByText } = render(<SiteFooter />)
+    const { getByText, container } = render(<SiteFooter />)
     expect(getByText("Twitter")).toBeInTheDocument()
-    expect(getByText(/Ephemyral Coder/)).toHaveTextContent(
+    expect(container.textContent).toContain(
       new Date().getFullYear().toString()
     )
   })

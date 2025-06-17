@@ -53,6 +53,7 @@ describe("EditIssueForm", () => {
       expect(getInstructionsByProjectId).toHaveBeenCalledWith("p")
     )
 
+    await waitFor(() => getByText("Instruction"))
     fireEvent.click(getByText("Instruction"))
     fireEvent.change(getByPlaceholderText("Issue name"), {
       target: { value: "New" }

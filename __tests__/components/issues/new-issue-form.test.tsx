@@ -38,7 +38,9 @@ describe("NewIssueForm", () => {
   })
 
   it("creates issue with template and instructions", async () => {
-    ;(getInstructionsByProjectId as jest.Mock).mockResolvedValue([])
+    ;(getInstructionsByProjectId as jest.Mock).mockResolvedValue([
+      { id: "i1", name: "N" }
+    ])
     ;(getInstructionsForTemplate as jest.Mock).mockResolvedValue([
       { instruction: { id: "i1", name: "I" } }
     ])
@@ -56,6 +58,7 @@ describe("NewIssueForm", () => {
       expect(getInstructionsForTemplate).toHaveBeenCalledWith("t1")
     )
 
+    await waitFor(() => getByText("ms"))
     fireEvent.click(getByText("ms"))
     fireEvent.click(getByText("Create"))
 
