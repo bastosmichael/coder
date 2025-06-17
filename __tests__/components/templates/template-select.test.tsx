@@ -30,9 +30,9 @@ describe('TemplateSelect', () => {
       <TemplateSelect instructions={instructions} templateWithInstructions={template} />
     )
 
-    expect(getByRole('button')).toHaveTextContent('One')
+    expect(getByRole('combobox')).toHaveTextContent('One')
 
-    fireEvent.click(getByRole('button'))
+    fireEvent.click(getByRole('combobox'))
     fireEvent.click(getByText('Two'))
     await waitFor(() =>
       expect(updateTemplateInstructions).toHaveBeenCalledWith('t1', ['i1', 'i2'])

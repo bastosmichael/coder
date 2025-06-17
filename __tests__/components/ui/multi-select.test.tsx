@@ -13,7 +13,7 @@ describe('MultiSelect', () => {
       <MultiSelect label='instruction' data={data} selectedIds={[]} onToggleSelect={onToggle} />
     )
 
-    const button = getByRole('button')
+    const button = getByRole('combobox')
     expect(button.textContent).toContain('Select instructions...')
 
     fireEvent.click(button)
@@ -25,6 +25,6 @@ describe('MultiSelect', () => {
     const { getByRole } = render(
       <MultiSelect label='instruction' data={data} selectedIds={['1']} onToggleSelect={() => {}} />
     )
-    expect(getByRole('button').textContent).toContain('A')
+    expect(getByRole('combobox').textContent).toContain('A')
   })
 })

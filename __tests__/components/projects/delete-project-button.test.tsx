@@ -1,8 +1,13 @@
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { DeleteProjectButton } from '../../../components/projects/delete-project-button'
 
-const toast = { success: jest.fn(), error: jest.fn() }
-jest.mock('sonner', () => ({ toast }))
+jest.mock('sonner', () => ({
+  toast: {
+    success: jest.fn(),
+    error: jest.fn(),
+  },
+}))
+import { toast } from 'sonner'
 
 const deleteProject = jest.fn()
 jest.mock('../../../db/queries/projects-queries', () => ({
