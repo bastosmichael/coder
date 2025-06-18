@@ -11,6 +11,7 @@ Ephemyral Coder is an AI-powered code generation tool designed to help developer
 - [Setup](#setup)
   - [Simple Mode Setup](#simple-mode-setup)
   - [Advanced Mode Setup](#advanced-mode-setup)
+  - [Database Setup with Neon & Drizzle](#database-setup-with-neon--drizzle)
 - [Usage](#usage)
 - [Deployment](#deployment)
 - [Contributing](#contributing)
@@ -57,14 +58,15 @@ Follow these instructions to set up a simple environment that supports AI featur
    ```
 
 3. **Set Up Environment Variables**
-   Copy the `.env.example` to `.env.local` and fill in the respective values. Ensure you have:
+   Copy the `.env.example` to `.env.development.local` and fill in the respective values. Pull any existing values from Vercel so your local environment matches production:
 
    ```bash
-   cp .env.example .env.local
+   cp .env.example .env.development.local
+   vercel env pull .env.development.local
    ```
 
    Required variables:
-
+   
    - `NEXT_PUBLIC_APP_MODE=simple`
    - `ANTHROPIC_API_KEY=`
    - `OPENAI_API_KEY=`
@@ -81,6 +83,19 @@ Follow these instructions to set up a simple environment that supports AI featur
 For a full-fledged development environment, follow the setup instructions for Advanced Mode.
 
 - Additional setup steps specific to enabling more complex AI features will be provided in future updates.
+
+### Database Setup with Neon & Drizzle
+
+1. Create a Postgres database in [Neon](https://neon.tech) or open the Neon console from your Vercel project.
+2. Make sure the connection string is stored in your Vercel `DATABASE_URL` environment variable.
+3. Pull the latest environment variables locally and run the migrations with Drizzle:
+
+   ```bash
+   vercel env pull .env.development.local
+   npm run db:migrate
+   ```
+
+This ensures your local database schema matches the one deployed on Vercel.
 
 ## Usage
 
@@ -106,7 +121,7 @@ To deploy Ephemyral to Vercel and utilize its AI capabilities:
 5. After deployment, set up your database and run migrations:
 
    ```bash
-   npx vercel env pull .env.local
+   npx vercel env pull .env.development.local
    npm run db:migrate
    ```
 
