@@ -85,7 +85,18 @@ export async function createProjects(workspaces: any[]): Promise<any[]> {
 
         return projects
       } else {
-        throw new Error("Workspace GitHub organization ID is undefined")
+        // Advanced mode - create a bare project for the workspace if none exists
+        const existing = await getProjectsByWorkspaceId(workspace.id)
+        if (existing.length > 0) {
+          return existing
+        }
+
+        const project = await createProject({
+          name: workspace.name,
+          workspaceId: workspace.id
+        })
+
+        return [project]
       }
     })
 
