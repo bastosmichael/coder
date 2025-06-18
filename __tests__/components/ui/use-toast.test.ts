@@ -3,7 +3,7 @@ import { act, renderHook } from '@testing-library/react'
 // reload the hook module so memory state resets between tests
 const loadHook = () => {
   jest.resetModules()
-  return require('../../components/ui/use-toast') as typeof import('../../components/ui/use-toast')
+  return require('../../../components/ui/use-toast') as typeof import('../../../components/ui/use-toast')
 }
 
 describe('use-toast hook', () => {
