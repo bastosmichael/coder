@@ -14,7 +14,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 const makeReq = (params: Record<string, string>) =>
-  new Request('http://test?' + new URLSearchParams(params));
+  ({ url: 'http://test?' + new URLSearchParams(params).toString() } as Request);
 
 describe('github callback route', () => {
   beforeEach(() => jest.clearAllMocks());
