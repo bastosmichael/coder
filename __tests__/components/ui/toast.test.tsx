@@ -1,10 +1,14 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import { Toast } from '../../../components/ui/toast'
+import { Toast, ToastProvider } from '../../../components/ui/toast'
 
 describe('Toast component', () => {
   it('renders with destructive variant', () => {
-    const { container } = render(<Toast variant="destructive">hi</Toast>)
+    const { container } = render(
+      <ToastProvider>
+        <Toast variant="destructive">hi</Toast>
+      </ToastProvider>
+    )
     expect(container.firstChild).toHaveTextContent('hi')
     expect(container.firstChild?.className).toMatch(/destructive/)
   })
