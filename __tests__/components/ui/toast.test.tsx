@@ -4,12 +4,14 @@ import { Toast, ToastProvider } from '../../../components/ui/toast'
 
 describe('Toast component', () => {
   it('renders with destructive variant', () => {
-    const { container } = render(
+    const { getByText } = render(
       <ToastProvider>
-        <Toast variant="destructive">hi</Toast>
+        <Toast variant="destructive" defaultOpen>
+          hi
+        </Toast>
       </ToastProvider>
     )
-    expect(container.firstChild).toHaveTextContent('hi')
-    expect(container.firstChild?.className).toMatch(/destructive/)
+    const toast = getByText('hi').parentElement
+    expect(toast).toHaveClass('destructive')
   })
 })
