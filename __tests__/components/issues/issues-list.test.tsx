@@ -20,7 +20,7 @@ describe("IssuesList", () => {
       <IssuesList issues={issues as any} projectId="p" />
     )
     expect(getByText("Issue")).toBeInTheDocument()
-    fireEvent.click(getAllByRole("button")[1])
+    fireEvent.click(getAllByRole("button")[2])
     fireEvent.click(getByText("Delete"))
     expect(deleteIssue).toHaveBeenCalledWith("1")
   })
