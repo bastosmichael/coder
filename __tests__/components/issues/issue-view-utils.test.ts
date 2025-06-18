@@ -8,6 +8,9 @@ jest.mock('../../../actions/ai/generate-anthropic-response', () => ({
 jest.mock('../../../actions/ai/generate-grok-response', () => ({
   generateGrokResponse: jest.fn()
 }))
+jest.mock('../../../actions/ai/generate-ollama-response', () => ({
+  generateOllamaResponse: jest.fn()
+}))
 jest.mock('../../../actions/github/delete-pr', () => ({ deleteGitHubPR: jest.fn() }))
 jest.mock('../../../actions/github/embed-target-branch', () => ({ embedTargetBranch: jest.fn() }))
 jest.mock('../../../actions/github/generate-pr', () => ({ generatePR: jest.fn() }))

@@ -207,12 +207,29 @@ export const GROK_LLMS = [
   }
 ]
 
+export const OLLAMA_LLMS = [
+  {
+    name: "Ollama Local",
+    id: "ollama",
+    inputCost: 0,
+    outputCost: 0,
+    maxContext: 0,
+    tokenLimits: {
+      TPM: 0,
+      RPM: 0,
+      RPD: 0,
+      TPD: 0
+    }
+  }
+]
+
 // Combined LLM List for easy access
 export const LLMS = [
   ...ANTHROPIC_LLMS,
   ...OPENAI_LLMS,
   ...GOOGLE_LLMS,
-  ...GROK_LLMS
+  ...GROK_LLMS,
+  ...OLLAMA_LLMS
 ]
 
 // Utility Functions
