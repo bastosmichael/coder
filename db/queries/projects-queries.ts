@@ -32,7 +32,13 @@ export async function createProjects(workspaces: any[]): Promise<any[]> {
     const projectCreationPromises = workspaces.map(async workspace => {
       if (workspace.githubOrganizationId) {
         const organizationId = workspace.githubOrganizationName
-        const repositories = await listRepos(null, organizationId)
+        let repositories: any[] = []
+
+        // In advanced mode we don't yet have an installation ID to
+        // authenticate the GitHub App, so skip repo fetching.
+        if (process.env.NEXT_PUBLIC_APP_MODE === "simple") {
+          repositories = await listRepos(null, organizationId)
+        }
 
         // Log the repositories
         console.log("Repositories for workspace", workspace.id, repositories)
@@ -429,7 +435,10 @@ Add at least one unit test and setup test coverage tooling.
       content: ghIssue.body || "No content provided."
     }
 
-    const [localIssue] = await db.insert(issuesTable).values(issueData).returning()
+    const [localIssue] = await db
+      .insert(issuesTable)
+      .values(issueData)
+      .returning()
     createdIssues.push(localIssue)
   }
 
