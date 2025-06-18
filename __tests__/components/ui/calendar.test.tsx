@@ -21,6 +21,7 @@ describe('Calendar component', () => {
     )
     const dayPicker = getByTestId('daypicker')
     expect(dayPicker.getAttribute('class')).toContain('custom')
-    expect(dayPicker.getAttribute('showOutsideDays')).toBe('false')
+    // React omits boolean attributes when false
+    expect(dayPicker.getAttribute('showOutsideDays')).toBeNull()
   })
 })

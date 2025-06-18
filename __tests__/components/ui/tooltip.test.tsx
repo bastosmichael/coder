@@ -1,3 +1,4 @@
+import React from 'react'
 import { render } from '@testing-library/react'
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '../../../components/ui/tooltip'
 

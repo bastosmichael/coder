@@ -1,8 +1,13 @@
+import React from 'react'
 import { render } from '@testing-library/react'
 import { MenubarItem } from '../../../components/ui/menubar'
 
 jest.mock('@radix-ui/react-menubar', () => ({
-  Item: (props: any) => <div data-testid="item" {...props} />
+  Root: { displayName: 'Root' },
+  Item: Object.assign(
+    (props: any) => <div data-testid="item" {...props} />,
+    { displayName: 'Item' }
+  )
 }))
 
 jest.mock('../../../lib/utils', () => ({ cn: (...classes: string[]) => classes.filter(Boolean).join(' ') }))
