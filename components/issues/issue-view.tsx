@@ -3,6 +3,7 @@
 import { generateOpenAIResponse } from "@/actions/ai/generate-openai-response"
 import { generateAnthropicResponse } from "@/actions/ai/generate-anthropic-response"
 import { generateGrokResponse } from "@/actions/ai/generate-grok-response"
+import { generateOllamaResponse } from "@/actions/ai/generate-ollama-response"
 
 import { deleteGitHubPR } from "@/actions/github/delete-pr"
 import { embedTargetBranch } from "@/actions/github/embed-target-branch"
@@ -138,6 +139,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
   const [isRunningAI, setIsRunningAI] = React.useState(false)
   const [isRunningAnthropic, setIsRunningAnthropic] = React.useState(false)
   const [isRunningGrok, setIsRunningGrok] = React.useState(false)
+  const [isRunningOllama, setIsRunningOllama] = React.useState(false)
 
   const [isCreatingPR, setIsCreatingPR] = React.useState(false)
   const [messages, setMessages] = useState<SelectIssueMessage[]>([])
@@ -151,7 +153,14 @@ export const IssueView: React.FC<IssueViewProps> = ({
 
   useEffect(() => {
     scrollToBottom()
-  }, [messages, isCreatingPR, isRunningAI, isRunningAnthropic, isRunningGrok])
+  }, [
+    messages,
+    isCreatingPR,
+    isRunningAI,
+    isRunningAnthropic,
+    isRunningGrok,
+    isRunningOllama
+  ])
 
   const addMessage = async (content: string) => {
     const newMessage = await createIssueMessageRecord({
@@ -245,7 +254,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
     }
   }
 
-  // Updated to handle a 'Grok' runner in addition to 'AI' and 'Anthropic'
+  // Updated to handle 'Grok' and 'Ollama' runners in addition to 'AI' and 'Anthropic'
   const handleRun = async (issue: SelectIssue, runner: string) => {
     if (!project.githubRepoFullName || !project.githubTargetBranch) {
       alert("Please connect your project to a GitHub repository first.")
@@ -256,6 +265,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
       if (runner === "AI") setIsRunningAI(state)
       else if (runner === "Anthropic") setIsRunningAnthropic(state)
       else if (runner === "Grok") setIsRunningGrok(state)
+      else if (runner === "Ollama") setIsRunningOllama(state)
     }
 
     setIsRunning(true)
@@ -284,6 +294,8 @@ export const IssueView: React.FC<IssueViewProps> = ({
         planMessageContent = "Generating plan using Anthropic..."
       } else if (runner === "Grok") {
         planMessageContent = "Generating plan using Grok..."
+      } else if (runner === "Ollama") {
+        planMessageContent = "Generating plan using Ollama..."
       }
 
       const planMessage = await addMessage(planMessageContent)
@@ -326,6 +338,10 @@ export const IssueView: React.FC<IssueViewProps> = ({
         ])
       } else if (runner === "Grok") {
         aiCodePlanResponse = await generateGrokResponse([
+          { role: "user", content: codeplanPrompt }
+        ])
+      } else if (runner === "Ollama") {
+        aiCodePlanResponse = await generateOllamaResponse([
           { role: "user", content: codeplanPrompt }
         ])
       }
@@ -374,7 +390,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
     }
   }
 
-  // Slightly updated to handle "Grok" as well
+  // Slightly updated to handle "Grok" and "Ollama" as well
   const handleRerun = async (issue: SelectIssue, runner: string) => {
     if (issue.prLink && issue.prBranch) {
       await deleteGitHubPR(project, issue.prLink, issue.prBranch)
@@ -414,7 +430,11 @@ export const IssueView: React.FC<IssueViewProps> = ({
               : handleRun(item, "AI")
           }
           disabled={
-            isRunningAI || isRunningAnthropic || isRunningGrok || isCreatingPR
+            isRunningAI ||
+            isRunningAnthropic ||
+            isRunningGrok ||
+            isRunningOllama ||
+            isCreatingPR
           }
         >
           {isRunningAI ? (
@@ -435,6 +455,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
           )}
         </Button>
 
+
         {/* Anthropic button */}
         <Button
           variant="create"
@@ -446,7 +467,11 @@ export const IssueView: React.FC<IssueViewProps> = ({
               : handleRun(item, "Anthropic")
           }
           disabled={
-            isRunningAI || isRunningAnthropic || isRunningGrok || isCreatingPR
+            isRunningAI ||
+            isRunningAnthropic ||
+            isRunningGrok ||
+            isRunningOllama ||
+            isCreatingPR
           }
         >
           {isRunningAnthropic ? (
@@ -477,7 +502,11 @@ export const IssueView: React.FC<IssueViewProps> = ({
               : handleRun(item, "Grok")
           }
           disabled={
-            isRunningAI || isRunningAnthropic || isRunningGrok || isCreatingPR
+            isRunningAI ||
+            isRunningAnthropic ||
+            isRunningGrok ||
+            isRunningOllama ||
+            isCreatingPR
           }
         >
           {isRunningGrok ? (
@@ -494,6 +523,41 @@ export const IssueView: React.FC<IssueViewProps> = ({
             <>
               <Play className="mr-2 size-4" />
               Run Grok
+            </>
+          )}
+        </Button>
+
+        <Button
+          variant="create"
+          size="sm"
+          className="bg-purple-600 hover:bg-purple-700"
+          onClick={() =>
+            item.runner === "Ollama" && item.status === "completed"
+              ? handleRerun(item, "Ollama")
+              : handleRun(item, "Ollama")
+          }
+          disabled={
+            isRunningAI ||
+            isRunningAnthropic ||
+            isRunningGrok ||
+            isRunningOllama ||
+            isCreatingPR
+          }
+        >
+          {isRunningOllama ? (
+            <>
+              <Loader2 className="mr-2 size-4 animate-spin" />
+              Running Ollama...
+            </>
+          ) : item.runner === "Ollama" && item.status === "completed" ? (
+            <>
+              <RefreshCw className="mr-2 size-4" />
+              Run Ollama Again
+            </>
+          ) : (
+            <>
+              <Play className="mr-2 size-4" />
+              Run Ollama
             </>
           )}
         </Button>
