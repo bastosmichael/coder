@@ -7,7 +7,7 @@ import { GitHubRepository } from "@/types/github"
 export const revalidate = 0
 
 export default async function SettingsPage({
-  params,
+  params
 }: {
   params: Promise<{
     workspaceId: string
@@ -28,10 +28,15 @@ export default async function SettingsPage({
   }
 
   const organizationId = workspace.githubOrganizationName
-  const repos: GitHubRepository[] = await listRepos(
-    project.githubInstallationId,
-    organizationId
-  )
+
+  let repos: GitHubRepository[] = []
+
+  if (
+    process.env.NEXT_PUBLIC_APP_MODE === "simple" ||
+    project.githubInstallationId
+  ) {
+    repos = await listRepos(project.githubInstallationId, organizationId)
+  }
 
   return (
     <div className="mx-auto flex h-screen flex-col items-center justify-center">
