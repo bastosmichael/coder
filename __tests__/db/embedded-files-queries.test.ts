@@ -22,7 +22,7 @@ describe('embedded files queries', () => {
 
   it('creates embedded files', async () => {
     ;(getUserId as jest.Mock).mockResolvedValue('u')
-    ;(db.insert as jest.Mock).mockResolvedValue(['r'])
+    ;(db.values as jest.Mock).mockResolvedValue(['r'])
     const res = await createEmbeddedFiles([{ embeddedBranchId: 'b', filePath: 'f' }] as any)
     expect(db.insert).toHaveBeenCalled()
     expect(db.values).toHaveBeenCalledWith([{ embeddedBranchId: 'b', filePath: 'f', userId: 'u' }])

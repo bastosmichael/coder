@@ -16,6 +16,7 @@ jest.mock('../../db/db', () => {
     delete: jest.fn(() => dbMock),
     set: jest.fn(() => dbMock),
     where: jest.fn(() => dbMock),
+    values: jest.fn(() => dbMock),
     returning: jest.fn(),
     query: {
       issueMessages: {
