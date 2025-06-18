@@ -39,15 +39,34 @@ jest.mock('@radix-ui/react-dialog', () => {
   }
 })
 
-jest.mock('cmdk', () => ({
-  Command: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="command" {...props} />),
-  Input: React.forwardRef((props: any, ref) => <input ref={ref} data-testid="input" {...props} />),
-  List: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="list" {...props} />),
-  Empty: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="empty" {...props} />),
-  Group: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="group" {...props} />),
-  Separator: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="separator" {...props} />),
-  Item: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="item" {...props} />)
-}))
+jest.mock('cmdk', () => {
+  const Command = React.forwardRef((props: any, ref) => (
+    <div ref={ref} data-testid="command" {...props} />
+  ))
+  const Input = React.forwardRef((props: any, ref) => (
+    <input ref={ref} data-testid="input" {...props} />
+  ))
+  const List = React.forwardRef((props: any, ref) => (
+    <div ref={ref} data-testid="list" {...props} />
+  ))
+  const Empty = React.forwardRef((props: any, ref) => (
+    <div ref={ref} data-testid="empty" {...props} />
+  ))
+  const Group = React.forwardRef((props: any, ref) => (
+    <div ref={ref} data-testid="group" {...props} />
+  ))
+  const Separator = React.forwardRef((props: any, ref) => (
+    <div ref={ref} data-testid="separator" {...props} />
+  ))
+  const Item = React.forwardRef((props: any, ref) => (
+    <div ref={ref} data-testid="item" {...props} />
+  ))
+
+  // mimic cmdk attaching subcomponents to Command
+  Object.assign(Command, { Input, List, Empty, Group, Separator, Item })
+
+  return { Command }
+})
 
 jest.mock('../../../lib/utils', () => ({ cn: (...c: string[]) => c.filter(Boolean).join(' ') }))
 
