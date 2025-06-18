@@ -3,6 +3,26 @@
 import { GitHubRepository } from "@/types/github"
 import { getAuthenticatedOctokit } from "./auth"
 
+const MAX_RETRIES = 5
+
+async function fetchWithBackoff<T>(fn: () => Promise<T>, retries = 0): Promise<T> {
+  try {
+    return await fn()
+  } catch (error: any) {
+    if (
+      error.status === 403 &&
+      error.message?.includes("secondary rate limit") &&
+      retries < MAX_RETRIES
+    ) {
+      const delay = 1000 * Math.pow(2, retries)
+      console.warn(`Hit secondary rate limit. Retrying in ${delay}ms...`)
+      await new Promise(resolve => setTimeout(resolve, delay))
+      return fetchWithBackoff(fn, retries + 1)
+    }
+    throw error
+  }
+}
+
 export const listRepos = async (
   installationId: number | null,
   organizationId: string | null,
@@ -22,16 +42,20 @@ export const listRepos = async (
       let response: any
 
       if (installationId) {
-        response = await octokit.apps.listReposAccessibleToInstallation({
-          per_page,
-          page
-        })
+        response = await fetchWithBackoff(() =>
+          octokit.apps.listReposAccessibleToInstallation({
+            per_page,
+            page
+          })
+        )
         repositories = repositories.concat(response.data.repositories)
       } else {
-        response = await octokit.request("GET /user/repos", {
-          per_page,
-          page
-        })
+        response = await fetchWithBackoff(() =>
+          octokit.request("GET /user/repos", {
+            per_page,
+            page
+          })
+        )
         repositories = repositories.concat(response.data)
       }
 

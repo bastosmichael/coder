@@ -40,9 +40,16 @@ export async function createProjects(workspaces: any[]): Promise<any[]> {
           repositories = await listRepos(null, organizationId)
         }
 
-
         const projects = await Promise.all(
           repositories.map(async (repo: any) => {
+            const existing = await findProjectByRepo(
+              workspace.id,
+              repo.full_name
+            )
+            if (existing) {
+              return existing
+            }
+
             let githubTargetBranch = null
             const branches = await listBranches(null, repo.full_name)
             if (branches.includes("main")) {
@@ -78,7 +85,18 @@ export async function createProjects(workspaces: any[]): Promise<any[]> {
 
         return projects
       } else {
-        throw new Error("Workspace GitHub organization ID is undefined")
+        // Advanced mode - create a bare project for the workspace if none exists
+        const existing = await getProjectsByWorkspaceId(workspace.id)
+        if (existing.length > 0) {
+          return existing
+        }
+
+        const project = await createProject({
+          name: workspace.name,
+          workspaceId: workspace.id
+        })
+
+        return [project]
       }
     })
 
@@ -98,6 +116,15 @@ export async function createProject(
   const userId = await getUserId()
 
   try {
+    if (data.githubRepoFullName) {
+      const existing = await findProjectByRepo(
+        data.workspaceId,
+        data.githubRepoFullName
+      )
+      if (existing) {
+        return existing
+      }
+    }
     const [result] = await db
       .insert(projectsTable)
       .values({ ...data, userId })
@@ -151,6 +178,26 @@ export async function getAllProjects(): Promise<SelectProject[]> {
   return db.query.projects.findMany({
     orderBy: desc(projectsTable.updatedAt)
   })
+}
+
+export async function findProjectByRepo(
+  workspaceId: string,
+  repoFullName: string
+): Promise<SelectProject | undefined> {
+  try {
+    return db.query.projects.findFirst({
+      where: and(
+        eq(projectsTable.workspaceId, workspaceId),
+        eq(projectsTable.githubRepoFullName, repoFullName)
+      )
+    })
+  } catch (error) {
+    console.error(
+      `Error finding project for repo ${repoFullName} in workspace ${workspaceId}:`,
+      error
+    )
+    throw error
+  }
 }
 
 export async function updateProject(
