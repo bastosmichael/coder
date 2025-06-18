@@ -1,11 +1,14 @@
-import { neon } from "@neondatabase/serverless"
+import { neon, neonConfig } from "@neondatabase/serverless"
 import { config } from "dotenv"
 import { drizzle } from "drizzle-orm/neon-http"
 import { drizzle as drizzlePostgres } from "drizzle-orm/postgres-js"
 import postgres from "postgres"
 import * as schema from "./schema"
 
-config({ path: ".env.local" })
+// Cache connections when deployed on Vercel
+neonConfig.fetchConnectionCache = true
+
+config({ path: ".env.development.local" })
 
 const databaseUrl = process.env.DATABASE_URL
 

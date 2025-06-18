@@ -1,7 +1,8 @@
 import { config } from "dotenv"
 import { defineConfig } from "drizzle-kit"
 
-config({ path: ".env.local" })
+// Load development environment variables pulled from Vercel
+config({ path: ".env.development.local" })
 
 export default defineConfig({
   dialect: "postgresql",
