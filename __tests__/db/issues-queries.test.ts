@@ -68,14 +68,14 @@ describe('issues queries', () => {
   })
 
   it('deletes an issue', async () => {
-    jest.spyOn(queries, 'getIssueById').mockResolvedValue({ id: '1', projectId: 'p' } as any)
+    ;(db.query.issues.findFirst as jest.Mock).mockResolvedValue({ id: '1', projectId: 'p' })
     await queries.deleteIssue('1')
     expect(db.delete).toHaveBeenCalled()
     expect(revalidatePath).toHaveBeenCalledWith('/')
   })
 
   it('throws when delete target missing', async () => {
-    jest.spyOn(queries, 'getIssueById').mockResolvedValue(undefined)
+    ;(db.query.issues.findFirst as jest.Mock).mockResolvedValue(undefined)
     await expect(queries.deleteIssue('x')).rejects.toThrow('Issue with id x not found')
   })
 })
