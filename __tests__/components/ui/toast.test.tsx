@@ -13,6 +13,6 @@ describe('Toast component', () => {
       </ToastProvider>
     )
     const toast = await screen.findByText('hi')
-    expect(toast.parentElement).toHaveClass('destructive')
+    expect(toast).toHaveClass('destructive')
   })
 })

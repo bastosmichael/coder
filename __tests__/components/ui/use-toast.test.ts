@@ -1,12 +1,9 @@
 import { act, renderHook } from '@testing-library/react'
 
-// isolate modules so global state is reset between tests
+// reload the hook module between tests so in-memory state is reset
 const loadHook = () => {
-  let mod: any
-  jest.isolateModules(() => {
-    mod = require('@/components/ui/use-toast')
-  })
-  return mod as typeof import('@/components/ui/use-toast')
+  jest.resetModules()
+  return require('@/components/ui/use-toast') as typeof import('@/components/ui/use-toast')
 }
 
 describe('use-toast hook', () => {
