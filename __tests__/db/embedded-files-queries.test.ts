@@ -1,9 +1,9 @@
-import { createEmbeddedFiles, deleteAllEmbeddedFilesByEmbeddedBranchId } from '../db/queries/embedded-files-queries'
-import { db } from '../db/db'
-import { getUserId } from '../actions/auth/auth'
+import { createEmbeddedFiles, deleteAllEmbeddedFilesByEmbeddedBranchId } from '../../db/queries/embedded-files-queries'
+import { db } from '../../db/db'
+import { getUserId } from '../../actions/auth/auth'
 import { revalidatePath } from 'next/cache'
 
-jest.mock('../db/db', () => {
+jest.mock('../../db/db', () => {
   const dbMock: any = {
     insert: jest.fn(() => dbMock),
     delete: jest.fn(() => dbMock),
@@ -14,7 +14,7 @@ jest.mock('../db/db', () => {
   return { db: dbMock }
 })
 
-jest.mock('../actions/auth/auth', () => ({ getUserId: jest.fn() }))
+jest.mock('../../actions/auth/auth', () => ({ getUserId: jest.fn() }))
 jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }))
 
 describe('embedded files queries', () => {

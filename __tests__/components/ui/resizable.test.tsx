@@ -2,6 +2,14 @@ import { render } from '@testing-library/react'
 import React from 'react'
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '../../../components/ui/resizable'
 
+jest.mock('react-resizable-panels', () => ({
+  PanelGroup: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  Panel: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  PanelResizeHandle: ({ children, ...props }: any) => (
+    <div {...props}>{children}</div>
+  ),
+}))
+
 describe('Resizable components', () => {
   it('applies className on ResizablePanelGroup', () => {
     const { container } = render(

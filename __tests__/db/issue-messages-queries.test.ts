@@ -5,11 +5,11 @@ import {
   updateIssueMessage,
   deleteIssueMessage,
   deleteIssueMessagesByIssueId
-} from '../db/queries/issue-messages-queries'
-import { db } from '../db/db'
+} from '../../db/queries/issue-messages-queries'
+import { db } from '../../db/db'
 import { revalidatePath } from 'next/cache'
 
-jest.mock('../db/db', () => {
+jest.mock('../../db/db', () => {
   const dbMock: any = {
     insert: jest.fn(() => dbMock),
     update: jest.fn(() => dbMock),
