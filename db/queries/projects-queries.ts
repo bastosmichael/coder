@@ -34,8 +34,6 @@ export async function createProjects(workspaces: any[]): Promise<any[]> {
         const organizationId = workspace.githubOrganizationName
         const repositories = await listRepos(null, organizationId)
 
-        // Log the repositories
-        console.log("Repositories for workspace", workspace.id, repositories)
 
         const projects = await Promise.all(
           repositories.map(async (repo: any) => {
@@ -70,8 +68,7 @@ export async function createProjects(workspaces: any[]): Promise<any[]> {
           })
         )
 
-        // Log the created projects
-        console.log("Created projects for workspace", workspace.id, projects)
+        // Return the created projects
 
         return projects
       } else {
