@@ -3,11 +3,14 @@ import { render } from '@testing-library/react'
 import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from '../../../components/ui/input-otp'
 
 // mock input-otp library
-const slots = [{ char: 'A', hasFakeCaret: true, isActive: true }]
 jest.mock('input-otp', () => {
   const React = require('react')
+  const slots = [{ char: 'A', hasFakeCaret: true, isActive: true }]
   return {
-    OTPInput: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="otp" {...props} />),
+    __esModule: true,
+    OTPInput: React.forwardRef((props: any, ref) => (
+      <div ref={ref} data-testid="otp" {...props} />
+    )),
     OTPInputContext: React.createContext({ slots })
   }
 })
