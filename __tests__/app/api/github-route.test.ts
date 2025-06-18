@@ -13,6 +13,19 @@ import { getProjectById, updateProject } from '../../../db/queries/projects-quer
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+(global as any).Response =
+  (global as any).Response ||
+  class {
+    status: number;
+    headers: Record<string, string>;
+    body?: any;
+    constructor(body?: any, init?: { status?: number; headers?: Record<string, string> }) {
+      this.body = body;
+      this.status = init?.status ?? 200;
+      this.headers = init?.headers ?? {};
+    }
+  };
+
 const makeReq = (params: Record<string, string>) =>
   ({ url: 'http://test?' + new URLSearchParams(params).toString() } as Request);
 
