@@ -4,7 +4,7 @@ import { deleteIssue, updateIssuesFromGitHub } from "@/db/queries/issues-queries
 import { SelectIssue } from "@/db/schema/issues-schema"
 import { DataItem } from "../dashboard/reusable/data-item"
 import { DataList } from "../dashboard/reusable/data-list"
-import { Loader2 } from "lucide-react"
+import { Loader2, RefreshCw } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
@@ -40,9 +40,17 @@ export function IssuesList({ issues, projectId }: IssuesListProps) {
       createText="Create issue"
       dataListTitle="Issues"
       actionButton={
-        <button className="inline-flex items-center" onClick={handleUpdateIssues} disabled={updating}>
-          {updating ? <Loader2 className="mr-2 size-4 animate-spin" /> : null}
-          Update issues
+        <button
+          aria-label="Refresh issues"
+          className="inline-flex items-center"
+          onClick={handleUpdateIssues}
+          disabled={updating}
+        >
+          {updating ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            <RefreshCw className="size-4" />
+          )}
         </button>
       }
     >

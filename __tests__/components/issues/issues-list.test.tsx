@@ -31,10 +31,10 @@ describe("IssuesList", () => {
   })
 
   it("updates issues", () => {
-    const { getByText } = render(
+    const { getByRole } = render(
       <IssuesList issues={issues as any} projectId="p" />
     )
-    fireEvent.click(getByText("Update issues"))
+    fireEvent.click(getByRole("button", { name: "Refresh issues" }))
     expect(updateIssuesFromGitHub).toHaveBeenCalledWith("p")
   })
 })
