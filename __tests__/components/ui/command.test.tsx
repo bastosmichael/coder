@@ -9,10 +9,35 @@ import {
   CommandShortcut
 } from '../../../components/ui/command'
 
-jest.mock('@radix-ui/react-dialog', () => ({
-  Dialog: ({ children, ...props }: any) => <div data-testid="dialog" {...props}>{children}</div>,
-  DialogContent: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="dialog-content" {...props} />)
-}))
+jest.mock('@radix-ui/react-dialog', () => {
+  const Overlay = React.forwardRef((props: any, ref) => (
+    <div ref={ref} data-testid="overlay" {...props} />
+  ))
+  Overlay.displayName = 'Overlay'
+
+  return {
+    Root: ({ children, ...props }: any) => (
+      <div data-testid="dialog" {...props}>{children}</div>
+    ),
+    Trigger: ({ children, ...props }: any) => (
+      <button data-testid="trigger" {...props}>{children}</button>
+    ),
+    Close: ({ children, ...props }: any) => (
+      <button data-testid="close" {...props}>{children}</button>
+    ),
+    Portal: ({ children }: any) => <div data-testid="portal">{children}</div>,
+    Overlay,
+    Content: React.forwardRef((props: any, ref) => (
+      <div ref={ref} data-testid="dialog-content" {...props} />
+    )),
+    Title: React.forwardRef((props: any, ref) => (
+      <h2 ref={ref} data-testid="title" {...props} />
+    )),
+    Description: React.forwardRef((props: any, ref) => (
+      <p ref={ref} data-testid="description" {...props} />
+    ))
+  }
+})
 
 jest.mock('cmdk', () => ({
   Command: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="command" {...props} />),

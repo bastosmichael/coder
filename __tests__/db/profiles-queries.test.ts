@@ -1,6 +1,6 @@
-import { createProfile, getProfileByUserId, updateProfile } from '../db/queries/profiles-queries'
+import { createProfile, getProfileByUserId, updateProfile } from '../../db/queries/profiles-queries'
 
-jest.mock('../db/db', () => ({
+jest.mock('../../db/db', () => ({
   db: {
     insert: jest.fn(() => ({ values: jest.fn(() => ({ returning: jest.fn(async () => [{ id: 'p' }]) })) })),
     update: jest.fn(() => ({ set: jest.fn(() => ({ where: jest.fn(() => ({ returning: jest.fn(async () => [{ id: 'u' }]) })) })) })),
@@ -8,10 +8,10 @@ jest.mock('../db/db', () => ({
   }
 }))
 
-jest.mock('../actions/auth/auth', () => ({ getUserId: () => Promise.resolve('u') }))
+jest.mock('../../actions/auth/auth', () => ({ getUserId: () => Promise.resolve('u') }))
 jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }))
 
-import { db } from '../db/db'
+import { db } from '../../db/db'
 import { revalidatePath } from 'next/cache'
 
 const insertMock = (db.insert as jest.Mock)
