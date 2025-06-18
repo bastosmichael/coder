@@ -1,17 +1,18 @@
 import React from 'react'
-import { render } from '@testing-library/react'
-import { Toast, ToastProvider } from '../../../components/ui/toast'
+import { render, screen } from '@testing-library/react'
+import { Toast, ToastProvider, ToastViewport } from '../../../components/ui/toast'
 
 describe('Toast component', () => {
   it('renders with destructive variant', () => {
-    const { getByText } = render(
+    render(
       <ToastProvider>
         <Toast variant="destructive" defaultOpen>
           hi
         </Toast>
+        <ToastViewport />
       </ToastProvider>
     )
-    const toast = getByText('hi').parentElement
-    expect(toast).toHaveClass('destructive')
+    const toast = await screen.findByText('hi')
+    expect(toast.parentElement).toHaveClass('destructive')
   })
 })
