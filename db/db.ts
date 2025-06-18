@@ -5,9 +5,6 @@ import { drizzle as drizzlePostgres } from "drizzle-orm/postgres-js"
 import postgres from "postgres"
 import * as schema from "./schema"
 
-// Cache connections when deployed on Vercel
-neonConfig.fetchConnectionCache = true
-
 config({ path: ".env.development.local" })
 
 const databaseUrl = process.env.DATABASE_URL
