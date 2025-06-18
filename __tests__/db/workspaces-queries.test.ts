@@ -64,7 +64,7 @@ describe('workspaces queries', () => {
     ;(fetchGitHubOrganizations as jest.Mock).mockResolvedValue([{ id: '1', login: 'org' }])
     ;(fetchUserGitHubAccount as jest.Mock).mockResolvedValue({ id: '2', login: 'me' })
     returningMock.mockResolvedValue([{ id: 'w' }])
-    const res = await createWorkspaces([{ name: 'n' } as any])
+    const res = await createWorkspaces({ name: 'n' } as any)
     expect(insertMock).toHaveBeenCalledTimes(2)
     expect(valuesMock).toHaveBeenCalledWith({ name: 'org', userId: 'u', githubOrganizationId: '1', githubOrganizationName: 'org' })
     expect(revalidatePath).toHaveBeenCalledWith('/')
@@ -75,7 +75,7 @@ describe('workspaces queries', () => {
     process.env.NEXT_PUBLIC_APP_MODE = 'advanced'
     ;(getUserId as jest.Mock).mockResolvedValue('u')
     returningMock.mockResolvedValue([{ id: 'w' }])
-    const res = await createWorkspaces([{ name: 'A' } as any])
+    const res = await createWorkspaces({ name: 'A' } as any)
     expect(insertMock).toHaveBeenCalled()
     expect(valuesMock).toHaveBeenCalledWith({ name: 'A', userId: 'u' })
     expect(res).toEqual([{ id: 'w' }])

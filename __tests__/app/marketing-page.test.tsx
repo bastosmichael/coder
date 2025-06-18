@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react'
-import MarketingPage from '../app/(marketing)/page'
+import MarketingPage from '../../app/(marketing)/page'
 
-jest.mock('../components/magicui/animated-grid-pattern', () => ({
+jest.mock('../../components/magicui/animated-grid-pattern', () => ({
   AnimatedGridPattern: () => <div data-testid="grid" />
 }))
 
-jest.mock('../components/marketing/main-section', () => ({
+jest.mock('../../components/marketing/main-section', () => ({
   __esModule: true,
   default: () => <div>main section</div>
 }))

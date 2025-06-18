@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react'
-import RootLayout, { metadata } from '../app/layout'
+import RootLayout, { metadata } from '../../app/layout'
 
 jest.mock('@clerk/nextjs', () => ({
   ClerkProvider: ({ children }: any) => <div data-testid="clerk">{children}</div>
