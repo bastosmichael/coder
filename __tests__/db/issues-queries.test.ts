@@ -2,6 +2,8 @@ import * as queries from '../../db/queries/issues-queries'
 import { db } from '../../db/db'
 import { getUserId } from '../../actions/auth/auth'
 import { revalidatePath } from 'next/cache'
+import { fetchGitHubRepoIssues } from '../../app/api/auth/callback/github/api'
+import { getProjectById } from '../../db/queries/projects-queries'
 
 jest.mock('../../db/db', () => {
   const dbMock: any = {
@@ -24,6 +26,12 @@ jest.mock('../../db/db', () => {
 
 jest.mock('../../actions/auth/auth', () => ({ getUserId: jest.fn() }))
 jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }))
+jest.mock('../../app/api/auth/callback/github/api', () => ({
+  fetchGitHubRepoIssues: jest.fn()
+}))
+jest.mock('../../db/queries/projects-queries', () => ({
+  getProjectById: jest.fn()
+}))
 
 describe('issues queries', () => {
   beforeEach(() => {
@@ -77,5 +85,18 @@ describe('issues queries', () => {
   it('throws when delete target missing', async () => {
     ;(db.query.issues.findFirst as jest.Mock).mockResolvedValue(undefined)
     await expect(queries.deleteIssue('x')).rejects.toThrow('Issue with id x not found')
+  })
+
+  it('updates issues from github', async () => {
+    ;(getProjectById as jest.Mock).mockResolvedValue({ githubRepoFullName: 'o/r' })
+    ;(fetchGitHubRepoIssues as jest.Mock).mockResolvedValue([{ title: 'A', body: 'b' }])
+    ;(db.query.issues.findMany as jest.Mock).mockResolvedValue([])
+    ;(getUserId as jest.Mock).mockResolvedValue('u')
+    ;(db.returning as jest.Mock).mockResolvedValue([{ id: '1' }])
+
+    const res = await queries.updateIssuesFromGitHub('p')
+    expect(fetchGitHubRepoIssues).toHaveBeenCalledWith('o/r')
+    expect(db.insert).toHaveBeenCalled()
+    expect(res).toEqual([{ id: '1' }])
   })
 })

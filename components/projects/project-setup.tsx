@@ -46,7 +46,11 @@ export const ProjectSetup: FC<ProjectSetupProps> = ({
   }
 
   useEffect(() => {
-    if (selectedRepo) {
+    if (
+      selectedRepo &&
+      (process.env.NEXT_PUBLIC_APP_MODE === "simple" ||
+        project.githubInstallationId)
+    ) {
       setIsBranchesLoading(true)
       listBranches(project.githubInstallationId, selectedRepo)
         .then(setBranches)
@@ -107,7 +111,7 @@ export const ProjectSetup: FC<ProjectSetupProps> = ({
               </div>
             ))}
 
-          {project.githubInstallationId !== 0 && (
+          {project.githubInstallationId != null && (
             <>
               <div>
                 <div className="mb-1 font-semibold">

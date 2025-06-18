@@ -13,6 +13,7 @@ interface DataListProps {
   createText: string
   dataListTitle: string
   children: ReactNode
+  actionButton?: ReactNode
 }
 
 export const DataList: FC<DataListProps> = ({
@@ -23,7 +24,8 @@ export const DataList: FC<DataListProps> = ({
   createLink,
   createText,
   dataListTitle,
-  children
+  children,
+  actionButton
 }) => {
   return (
     <div className="text-primary mx-auto w-full max-w-[800px] p-6">
@@ -46,9 +48,12 @@ export const DataList: FC<DataListProps> = ({
       <div className="my-6 flex items-center justify-between">
         <div className="text-lg font-semibold">{dataListTitle}</div>
 
-        <Link href={createLink}>
-          <Button variant="create">{createText}</Button>
-        </Link>
+        <div className="flex gap-2">
+          {actionButton}
+          <Link href={createLink}>
+            <Button variant="create">{createText}</Button>
+          </Link>
+        </div>
       </div>
 
       <div className="space-y-2">{children}</div>
