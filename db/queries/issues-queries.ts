@@ -6,6 +6,8 @@ import { revalidatePath } from "next/cache"
 import { db } from "../db"
 import { InsertIssue, SelectIssue, issuesTable } from "../schema/issues-schema"
 import { projectsTable } from "../schema/projects-schema"
+import { fetchGitHubRepoIssues } from "@/app/api/auth/callback/github/api"
+import { getProjectById } from "./projects-queries"
 
 export async function createIssue(
   data: Omit<InsertIssue, "userId">
@@ -67,6 +69,42 @@ export async function deleteIssue(id: string): Promise<void> {
   await db.delete(issuesTable).where(eq(issuesTable.id, id))
   revalidatePath("/")
   await updateProjectUpdatedAt(issue.projectId)
+}
+
+export async function updateIssuesFromGitHub(
+  projectId: string
+): Promise<SelectIssue[]> {
+  const project = await getProjectById(projectId)
+  if (!project || !project.githubRepoFullName) {
+    return []
+  }
+
+  const ghIssues = await fetchGitHubRepoIssues(project.githubRepoFullName)
+  const existing = await getIssuesByProjectId(projectId)
+  const existingTitles = new Set(existing.map(i => i.name))
+  const userId = await getUserId()
+
+  const created: SelectIssue[] = []
+  for (const ghIssue of ghIssues) {
+    if (existingTitles.has(ghIssue.title)) continue
+    const [issue] = await db
+      .insert(issuesTable)
+      .values({
+        projectId,
+        userId,
+        name: ghIssue.title,
+        content: ghIssue.body || "No content provided."
+      })
+      .returning()
+    created.push(issue)
+  }
+
+  if (created.length > 0) {
+    revalidatePath("/")
+    await updateProjectUpdatedAt(projectId)
+  }
+
+  return created
 }
 
 async function updateProjectUpdatedAt(projectId: string): Promise<void> {
