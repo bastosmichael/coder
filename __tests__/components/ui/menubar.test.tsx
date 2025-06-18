@@ -7,7 +7,20 @@ jest.mock('@radix-ui/react-menubar', () => ({
   Item: Object.assign(
     (props: any) => <div data-testid="item" {...props} />,
     { displayName: 'Item' }
-  )
+  ),
+  Trigger: { displayName: 'Trigger' },
+  SubTrigger: { displayName: 'SubTrigger' },
+  SubContent: { displayName: 'SubContent' },
+  Content: { displayName: 'Content' },
+  CheckboxItem: { displayName: 'CheckboxItem' },
+  RadioItem: { displayName: 'RadioItem' },
+  Label: { displayName: 'Label' },
+  Separator: { displayName: 'Separator' },
+  Portal: ({ children }: any) => <div>{children}</div>,
+  Menu: { displayName: 'Menu' },
+  Group: { displayName: 'Group' },
+  Sub: { displayName: 'Sub' },
+  RadioGroup: { displayName: 'RadioGroup' }
 }))
 
 jest.mock('../../../lib/utils', () => ({ cn: (...classes: string[]) => classes.filter(Boolean).join(' ') }))
