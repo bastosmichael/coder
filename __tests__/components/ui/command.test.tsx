@@ -1,0 +1,57 @@
+import React from 'react'
+import { render } from '@testing-library/react'
+import {
+  Command,
+  CommandDialog,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandShortcut
+} from '../../../components/ui/command'
+
+jest.mock('@radix-ui/react-dialog', () => ({
+  Dialog: ({ children, ...props }: any) => <div data-testid="dialog" {...props}>{children}</div>,
+  DialogContent: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="dialog-content" {...props} />)
+}))
+
+jest.mock('cmdk', () => ({
+  Command: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="command" {...props} />),
+  Input: React.forwardRef((props: any, ref) => <input ref={ref} data-testid="input" {...props} />),
+  List: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="list" {...props} />),
+  Empty: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="empty" {...props} />),
+  Group: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="group" {...props} />),
+  Separator: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="separator" {...props} />),
+  Item: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="item" {...props} />)
+}))
+
+jest.mock('../../../lib/utils', () => ({ cn: (...c: string[]) => c.filter(Boolean).join(' ') }))
+
+describe('Command components', () => {
+  it('renders dialog with children', () => {
+    const { getByTestId } = render(
+      <CommandDialog open>
+        <span>Content</span>
+      </CommandDialog>
+    )
+    expect(getByTestId('dialog')).toBeInTheDocument()
+    expect(getByTestId('dialog-content')).toBeInTheDocument()
+  })
+
+  it('renders input and list items', () => {
+    const { getByTestId, getByText } = render(
+      <Command>
+        <CommandInput placeholder="search" />
+        <CommandList>
+          <CommandItem>One</CommandItem>
+        </CommandList>
+      </Command>
+    )
+    expect(getByTestId('input')).toHaveAttribute('placeholder', 'search')
+    expect(getByText('One')).toBeInTheDocument()
+  })
+
+  it('applies class to shortcut', () => {
+    const { getByText } = render(<CommandShortcut className="extra">A</CommandShortcut>)
+    expect(getByText('A').className).toContain('extra')
+  })
+})

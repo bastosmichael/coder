@@ -33,3 +33,16 @@ describe('MenubarItem', () => {
     expect(item.className).toContain('extra')
   })
 })
+import { MenubarContent, MenubarShortcut } from '../../../components/ui/menubar'
+
+describe('Menubar additional components', () => {
+  it('passes class names to content', () => {
+    const { container } = render(<MenubarContent className="extra" />)
+    expect(container.firstChild).toHaveClass('extra')
+  })
+
+  it('renders shortcut with custom class', () => {
+    const { getByText } = render(<MenubarShortcut className="x">S</MenubarShortcut>)
+    expect(getByText('S').className).toContain('x')
+  })
+})
