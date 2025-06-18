@@ -36,3 +36,20 @@ if (!HTMLElement.prototype.scrollIntoView) {
   // @ts-ignore
   HTMLElement.prototype.scrollIntoView = jest.fn()
 }
+
+// next-themes uses matchMedia which isn't defined in jsdom
+if (!window.matchMedia) {
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: jest.fn().mockImplementation(query => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
+  })
+}

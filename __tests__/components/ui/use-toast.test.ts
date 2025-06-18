@@ -25,4 +25,16 @@ describe('use-toast reducer', () => {
     const next = reducer(state, { type: 'REMOVE_TOAST', toastId: '1' } as any)
     expect(next.toasts).toEqual([{ id: '2' }])
   })
+
+  it('dismisses all toasts when id undefined', () => {
+    const state = { toasts: [{ id: '1', open: true }, { id: '2', open: true }] as any[] }
+    const next = reducer(state, { type: 'DISMISS_TOAST' } as any)
+    expect(next.toasts.every(t => !t.open)).toBe(true)
+  })
+
+  it('removes all toasts when id undefined', () => {
+    const state = { toasts: [{ id: '1' }, { id: '2' }] as any[] }
+    const next = reducer(state, { type: 'REMOVE_TOAST' } as any)
+    expect(next.toasts.length).toBe(0)
+  })
 })
