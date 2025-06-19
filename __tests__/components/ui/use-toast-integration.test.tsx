@@ -2,13 +2,13 @@ import * as React from 'react'
 import { act, renderHook } from '@testing-library/react'
 
 describe('useToast hook', () => {
-  const loadHook = () => {
+  let useToast: () => any
+  beforeEach(() => {
     jest.resetModules()
-    return require('../../../components/ui/use-toast').useToast as () => any
-  }
+    useToast = require('../../../components/ui/use-toast').useToast
+  })
 
   it('adds and dismisses a toast', () => {
-    const useToast = loadHook()
     const { result } = renderHook(() => useToast())
 
     act(() => {
@@ -26,7 +26,6 @@ describe('useToast hook', () => {
   })
 
   it('updates a toast via returned helper', () => {
-    const useToast = loadHook()
     const { result } = renderHook(() => useToast())
 
     act(() => {
