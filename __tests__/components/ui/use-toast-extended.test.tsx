@@ -2,10 +2,6 @@ import React from 'react'
 import { render, act } from '@testing-library/react'
 
 describe('toast and useToast integration', () => {
-  beforeEach(() => {
-    jest.resetModules()
-  })
-
   it('adds, replaces and dismisses toasts', () => {
     const mod = require('../../../components/ui/use-toast')
     const { toast, useToast } = mod
