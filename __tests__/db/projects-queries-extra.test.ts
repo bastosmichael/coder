@@ -1,5 +1,12 @@
 import { db } from '../../db/db'
 import { getUserId } from '../../actions/auth/auth'
+import { TextEncoder, TextDecoder } from 'util'
+
+// Polyfill encoders required by Next.js helpers
+// @ts-ignore
+global.TextEncoder = TextEncoder
+// @ts-ignore
+global.TextDecoder = TextDecoder
 
 jest.mock('../../actions/github/list-repos', () => ({ listRepos: jest.fn() }))
 jest.mock('../../actions/github/list-branches', () => ({ listBranches: jest.fn() }))

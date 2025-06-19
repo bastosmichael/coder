@@ -6,8 +6,8 @@ global.TextEncoder = TextEncoder
 // @ts-ignore
 global.TextDecoder = TextDecoder
 
-import * as index from '../db/queries'
-import { createProject } from '../db/queries/projects-queries'
+import * as index from '../../db/queries'
+import { createProject } from '../../db/queries/projects-queries'
 
 test('re-exports project queries', () => {
   expect(index.createProject).toBe(createProject)
