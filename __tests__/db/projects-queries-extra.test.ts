@@ -17,6 +17,7 @@ global.Headers = global.Headers || class {}
 jest.mock('../../actions/github/list-repos', () => ({ listRepos: jest.fn() }))
 jest.mock('../../actions/github/list-branches', () => ({ listBranches: jest.fn() }))
 jest.mock('../../app/api/auth/callback/github/api', () => ({ fetchGitHubRepoIssues: jest.fn(() => []) }))
+jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }))
 
 jest.mock('../../db/db', () => {
   const dbMock: any = {
