@@ -29,12 +29,12 @@ export default function MainSection() {
             and create ML-driven PRs effortlessly!
           </p>
 
-          <Link href="/onboarding">
-            <Button>
+          <Button asChild>
+            <Link href="/onboarding">
               <span>Connect GitHub </span>
               <ArrowRightIcon className="ml-1 size-4" />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
         <div className="flex-1">
           <Image
