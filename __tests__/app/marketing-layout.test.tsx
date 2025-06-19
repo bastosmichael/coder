@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react'
-import MarketingLayout from '../app/(marketing)/layout'
+import MarketingLayout from '../../app/(marketing)/layout'
 
-jest.mock('../components/marketing/site-header', () => ({ SiteHeader: () => <header>header</header> }))
-jest.mock('../components/marketing/site-footer', () => ({ SiteFooter: () => <footer>footer</footer> }))
+jest.mock('../../components/marketing/site-header', () => ({ SiteHeader: () => <header>header</header> }))
+jest.mock('../../components/marketing/site-footer', () => ({ SiteFooter: () => <footer>footer</footer> }))
 
 describe('MarketingLayout', () => {
   it('renders header, footer and children', async () => {

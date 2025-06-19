@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react'
-import WorkspacePage from '../app/[workspaceId]/page'
-import ProjectPage from '../app/[workspaceId]/[projectId]/page'
+import WorkspacePage from '../../app/[workspaceId]/page'
+import ProjectPage from '../../app/[workspaceId]/[projectId]/page'
 
-jest.mock('../db/queries/workspaces-queries', () => ({ getWorkspaceById: jest.fn() }))
-jest.mock('../db/queries/projects-queries', () => ({ getProjectById: jest.fn() }))
+jest.mock('../../db/queries/workspaces-queries', () => ({ getWorkspaceById: jest.fn() }))
+jest.mock('../../db/queries/projects-queries', () => ({ getProjectById: jest.fn() }))
 
-const { getWorkspaceById } = require('../db/queries/workspaces-queries') as { getWorkspaceById: jest.Mock }
-const { getProjectById } = require('../db/queries/projects-queries') as { getProjectById: jest.Mock }
+const { getWorkspaceById } = require('../../db/queries/workspaces-queries') as { getWorkspaceById: jest.Mock }
+const { getProjectById } = require('../../db/queries/projects-queries') as { getProjectById: jest.Mock }
 
 describe('Workspace and Project pages', () => {
   it('shows workspace name', async () => {
