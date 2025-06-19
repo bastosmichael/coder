@@ -5,9 +5,11 @@ describe('db initialization', () => {
   beforeEach(() => {
     jest.resetModules()
     process.env = { ...originalEnv }
-    // polyfill for driver
+    // polyfills for neon client
     // @ts-ignore
     global.TextDecoder = require('util').TextDecoder
+    // @ts-ignore
+    global.TextEncoder = require('util').TextEncoder
   })
   afterEach(() => {
     process.env = originalEnv
