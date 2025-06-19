@@ -5,10 +5,10 @@ const mockDrizzleNeon = jest.fn()
 const mockPg = jest.fn()
 const mockDrizzlePg = jest.fn()
 
-jest.mock('@neondatabase/serverless', () => ({ neon: mockNeon, neonConfig: {} }), { virtual: true })
-jest.mock('drizzle-orm/neon-http', () => ({ drizzle: mockDrizzleNeon }), { virtual: true })
-jest.mock('postgres', () => mockPg, { virtual: true })
-jest.mock('drizzle-orm/postgres-js', () => ({ drizzle: mockDrizzlePg }), { virtual: true })
+jest.mock('@neondatabase/serverless', () => ({ neon: mockNeon, neonConfig: {} }))
+jest.mock('drizzle-orm/neon-http', () => ({ drizzle: mockDrizzleNeon }))
+jest.mock('postgres', () => mockPg)
+jest.mock('drizzle-orm/postgres-js', () => ({ drizzle: mockDrizzlePg }))
 
 describe('db initialization', () => {
   const originalEnv = process.env
