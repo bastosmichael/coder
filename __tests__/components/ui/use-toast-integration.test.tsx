@@ -1,9 +1,13 @@
+import * as React from 'react'
 import { act, renderHook } from '@testing-library/react'
 
 describe('useToast hook', () => {
   const loadHook = () => {
-    jest.resetModules()
-    return require('../../../components/ui/use-toast').useToast
+    let hook: any
+    jest.isolateModules(() => {
+      hook = require('../../../components/ui/use-toast').useToast
+    })
+    return hook
   }
 
   it('adds and dismisses a toast', () => {
