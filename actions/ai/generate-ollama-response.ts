@@ -3,7 +3,7 @@
 import { calculateLLMCost } from "@/lib/ai/calculate-llm-cost"
 
 const OLLAMA_API_URL = process.env.OLLAMA_API_URL || "http://localhost:11434"
-const OLLAMA_MODEL = process.env.OLLAMA_MODEL || "codellama:instruct"
+const OLLAMA_MODEL = process.env.OLLAMA_MODEL || "codellama"
 
 type ChatCompletionMessage = {
   role: "system" | "user" | "assistant"
