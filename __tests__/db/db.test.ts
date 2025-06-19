@@ -20,8 +20,8 @@ describe('db initialization', () => {
 
     const neon = jest.fn(() => 'client')
     const drizzle = jest.fn(() => 'db')
-    jest.mock('@neondatabase/serverless', () => ({ neon, neonConfig: {} }), { virtual: true })
-    jest.mock('drizzle-orm/neon-http', () => ({ drizzle }), { virtual: true })
+    jest.doMock('@neondatabase/serverless', () => ({ neon, neonConfig: {} }), { virtual: true })
+    jest.doMock('drizzle-orm/neon-http', () => ({ drizzle }), { virtual: true })
 
     const mod = require('../../db/db')
     expect(neon).toHaveBeenCalledWith('https://neon.example')
@@ -34,9 +34,9 @@ describe('db initialization', () => {
 
     const pg = jest.fn(() => 'pgClient')
     const drizzlePg = jest.fn(() => 'dbPg')
-    jest.mock('@neondatabase/serverless', () => ({ neon: jest.fn(), neonConfig: {} }), { virtual: true })
-    jest.mock('postgres', () => pg, { virtual: true })
-    jest.mock('drizzle-orm/postgres-js', () => ({ drizzle: drizzlePg }), { virtual: true })
+    jest.doMock('@neondatabase/serverless', () => ({ neon: jest.fn(), neonConfig: {} }), { virtual: true })
+    jest.doMock('postgres', () => pg, { virtual: true })
+    jest.doMock('drizzle-orm/postgres-js', () => ({ drizzle: drizzlePg }), { virtual: true })
 
     const mod = require('../../db/db')
     expect(pg).toHaveBeenCalledWith('postgres://localhost/db', { prepare: false })
