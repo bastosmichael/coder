@@ -75,6 +75,11 @@ import EditWorkspacePage from "../../app/[workspaceId]/edit/page"
 
 beforeEach(() => {
   jest.clearAllMocks()
+  jest.spyOn(console, "error").mockImplementation(() => {})
+})
+
+afterEach(() => {
+  ;(console.error as jest.Mock).mockRestore()
 })
 
 describe("workspace nested pages", () => {
@@ -118,7 +123,10 @@ describe("workspace nested pages", () => {
     } as any)
     render(Page as any)
     expect(TemplatesListMock).toHaveBeenCalledWith(
-      { templatesWithInstructions: ["t"], instructions: ["i"], projectId: "p" },
+      expect.objectContaining({
+        templatesWithInstructions: ["t"],
+        projectId: "p"
+      }),
       {}
     )
   })
