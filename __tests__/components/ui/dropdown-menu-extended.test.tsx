@@ -14,11 +14,14 @@ jest.mock('../../../lib/utils', () => ({ cn: (...c: string[]) => c.filter(Boolea
 describe('DropdownMenu extended', () => {
   it('renders items and applies props', () => {
     const { getByText } = render(
-      <DropdownMenu defaultOpen>
+      <DropdownMenu open>
         <DropdownMenuTrigger>Menu</DropdownMenuTrigger>
         <DropdownMenuContent sideOffset={8}>
           <DropdownMenuCheckboxItem checked>Check</DropdownMenuCheckboxItem>
-          <DropdownMenuSubTrigger inset>Sub</DropdownMenuSubTrigger>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger inset>Sub</DropdownMenuSubTrigger>
+            <DropdownMenuSubContent>SubContent</DropdownMenuSubContent>
+          </DropdownMenuSub>
           <DropdownMenuShortcut className="short">X</DropdownMenuShortcut>
         </DropdownMenuContent>
       </DropdownMenu>

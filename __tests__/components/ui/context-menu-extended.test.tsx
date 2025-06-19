@@ -15,12 +15,15 @@ jest.mock('../../../lib/utils', () => ({ cn: (...c: string[]) => c.filter(Boolea
 describe('ContextMenu components', () => {
   it('applies inset class and renders children', () => {
     const { getByText } = render(
-      <ContextMenu defaultOpen>
+      <ContextMenu open>
         <ContextMenuTrigger>Open</ContextMenuTrigger>
         <ContextMenuContent>
           <ContextMenuItem inset>Item</ContextMenuItem>
           <ContextMenuCheckboxItem checked>Check</ContextMenuCheckboxItem>
-          <ContextMenuSubTrigger inset>Sub</ContextMenuSubTrigger>
+          <ContextMenuSub>
+            <ContextMenuSubTrigger inset>Sub</ContextMenuSubTrigger>
+            <ContextMenuSubContent>SubContent</ContextMenuSubContent>
+          </ContextMenuSub>
           <ContextMenuShortcut className="shortcut">S</ContextMenuShortcut>
         </ContextMenuContent>
       </ContextMenu>

@@ -10,9 +10,11 @@ describe('toast and useToast integration', () => {
       const { toasts } = useToast()
       return (
         <div>
-          {toasts.map(t => (
-            <div key={t.id}>{t.title}</div>
-          ))}
+          {toasts
+            .filter(t => t.open)
+            .map(t => (
+              <div key={t.id}>{t.title}</div>
+            ))}
         </div>
       )
     }
