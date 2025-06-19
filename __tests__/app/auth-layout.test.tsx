@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react'
-import AuthLayout from '../app/(auth)/layout'
+import AuthLayout from '../../app/(auth)/layout'
 
 describe('AuthLayout', () => {
   it('wraps children in centered container', async () => {
