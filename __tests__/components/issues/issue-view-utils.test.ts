@@ -82,4 +82,19 @@ describe('issue-view utilities', () => {
     expect(mockedUpdate).toHaveBeenCalledWith('1', { content: '# root\n\n## content\n\nHi\n\n' })
     expect(messages[0].content.trim()).toBe('# root\n\n## content\n\nHi')
   })
+
+  it('returns input when not xml', async () => {
+    const text = 'plain text'
+    const result = await sanitizeAndConvertXMLToMarkdown(text)
+    expect(result).toBe(text)
+  })
+
+  it('updates message with original content on sanitize failure', async () => {
+    mockedParse.mockRejectedValue(new Error('bad'))
+    let msgs: Message[] = [{ id: '1', content: 'x' }]
+    const setter = (cb: (p: Message[]) => Message[]) => { msgs = cb(msgs) }
+    await updateMessageWithSanitization('1', '<broken>', setter)
+    expect(mockedUpdate).toHaveBeenCalledWith('1', { content: '<broken>' })
+    expect(msgs[0].content).toBe('<broken>')
+  })
 })
