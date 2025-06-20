@@ -64,7 +64,7 @@ describe('github api helpers', () => {
   })
 
   it('fetches repo issues', async () => {
-    listIssues.mockResolvedValue({ data: [{ id: 3 }] })
+    listIssues.mockResolvedValue({ data: [{ id: 3 }, { id: 4, pull_request: {} }] })
     const issues = await fetchGitHubRepoIssues('o/r')
     expect(listIssues).toHaveBeenCalledWith({ owner: 'o', repo: 'r' })
     expect(issues).toEqual([{ id: 3 }])
