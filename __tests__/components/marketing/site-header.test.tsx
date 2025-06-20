@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent, render, act } from '@testing-library/react'
 import { SiteHeader } from '../../../components/marketing/site-header'
 
 jest.mock('@clerk/nextjs', () => ({
@@ -50,7 +50,9 @@ describe('SiteHeader', () => {
     const nav = container.querySelectorAll('nav')[1] as HTMLElement
     fireEvent.click(button)
     expect(nav.className).not.toContain('pointer-events-none')
-    window.dispatchEvent(new Event('orientationchange'))
+    act(() => {
+      window.dispatchEvent(new Event('orientationchange'))
+    })
     expect(nav.className).toContain('pointer-events-none')
   })
 
@@ -61,7 +63,9 @@ describe('SiteHeader', () => {
     const nav = container.querySelectorAll('nav')[1] as HTMLElement
     fireEvent.click(button)
     expect(nav.className).not.toContain('pointer-events-none')
-    window.dispatchEvent(new Event('resize'))
+    act(() => {
+      window.dispatchEvent(new Event('resize'))
+    })
     expect(nav.className).toContain('pointer-events-none')
     unmount()
   })

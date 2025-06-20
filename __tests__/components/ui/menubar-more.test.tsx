@@ -62,7 +62,7 @@ describe('Menubar extra components', () => {
     )
     expect(getByTestId('checkbox')).toBeInTheDocument()
     expect(getByTestId('radio')).toBeInTheDocument()
-    // should render indicator icon once for checkbox
-    expect(getAllByTestId('indicator').length).toBe(1)
+    // checkbox and radio each render an indicator icon
+    expect(getAllByTestId('indicator').length).toBe(2)
   })
 })

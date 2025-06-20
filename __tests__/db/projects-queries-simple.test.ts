@@ -1,4 +1,8 @@
 import { db } from '../../db/db'
+import { TextEncoder, TextDecoder } from 'util'
+
+global.TextEncoder = TextEncoder as any
+global.TextDecoder = TextDecoder as any
 import { getUserId } from '../../actions/auth/auth'
 import { listRepos } from '../../actions/github/list-repos'
 import { listBranches } from '../../actions/github/list-branches'
