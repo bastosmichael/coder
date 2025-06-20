@@ -17,6 +17,8 @@ import { fetchGitHubRepoIssues } from '../../app/api/auth/callback/github/api'
 import { addInstructionToTemplate } from '../../db/queries/templates-to-instructions-queries'
 import { addInstructionToIssue } from '../../db/queries/issues-to-instructions-queries'
 
+jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }))
+
 jest.mock('../../actions/github/list-repos', () => ({ listRepos: jest.fn() }))
 jest.mock('../../actions/github/list-branches', () => ({ listBranches: jest.fn() }))
 jest.mock('../../app/api/auth/callback/github/api', () => ({ fetchGitHubRepoIssues: jest.fn() }))
