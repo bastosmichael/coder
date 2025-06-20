@@ -3,6 +3,13 @@ import { TextEncoder, TextDecoder } from 'util'
 
 global.TextEncoder = TextEncoder as any
 global.TextDecoder = TextDecoder as any
+// Polyfill web classes expected by Next.js utilities
+// @ts-ignore
+global.Request = global.Request || class {}
+// @ts-ignore
+global.Response = global.Response || class {}
+// @ts-ignore
+global.Headers = global.Headers || class {}
 import { getUserId } from '../../actions/auth/auth'
 import { listRepos } from '../../actions/github/list-repos'
 import { listBranches } from '../../actions/github/list-branches'
