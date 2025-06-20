@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent, render, act } from '@testing-library/react'
 import { SiteHeader } from '../../../components/marketing/site-header'
 
 jest.mock('@clerk/nextjs', () => ({
@@ -12,9 +12,11 @@ describe('SiteHeader', () => {
   const originalEnv = process.env
   beforeEach(() => {
     process.env = { ...originalEnv }
+    jest.spyOn(console, 'error').mockImplementation(() => {})
   })
   afterEach(() => {
     process.env = originalEnv
+    ;(console.error as jest.Mock).mockRestore()
   })
 
   it('shows workspace link in simple mode', () => {
@@ -39,5 +41,32 @@ describe('SiteHeader', () => {
     expect(nav.className).toContain('pointer-events-none')
     fireEvent.click(button)
     expect(nav.className).not.toContain('pointer-events-none')
+  })
+
+  it('closes menu on orientation change', () => {
+    process.env.NEXT_PUBLIC_APP_MODE = 'simple'
+    const { getAllByRole, container } = render(<SiteHeader />)
+    const button = getAllByRole('button', { name: 'Toggle menu' })[0]
+    const nav = container.querySelectorAll('nav')[1] as HTMLElement
+    fireEvent.click(button)
+    expect(nav.className).not.toContain('pointer-events-none')
+    act(() => {
+      window.dispatchEvent(new Event('orientationchange'))
+    })
+    expect(nav.className).toContain('pointer-events-none')
+  })
+
+  it('closes menu on resize', () => {
+    process.env.NEXT_PUBLIC_APP_MODE = 'simple'
+    const { getAllByRole, container, unmount } = render(<SiteHeader />)
+    const button = getAllByRole('button', { name: 'Toggle menu' })[0]
+    const nav = container.querySelectorAll('nav')[1] as HTMLElement
+    fireEvent.click(button)
+    expect(nav.className).not.toContain('pointer-events-none')
+    act(() => {
+      window.dispatchEvent(new Event('resize'))
+    })
+    expect(nav.className).toContain('pointer-events-none')
+    unmount()
   })
 })
