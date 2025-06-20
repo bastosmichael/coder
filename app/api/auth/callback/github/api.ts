@@ -137,12 +137,12 @@ export async function fetchGitHubRepoIssues(
   try {
     const [owner, repo] = repoFullName.split("/")
 
-    const issues = await fetchWithRetry(async () => {
-      const { data } = await octokit.issues.listForRepo({ owner, repo })
-      return data
-    })
+  const issues = await fetchWithRetry(async () => {
+    const { data } = await octokit.issues.listForRepo({ owner, repo })
+    return data.filter(issue => !issue.pull_request)
+  })
 
-    return issues
+  return issues
   } catch (error) {
     console.error("Error fetching GitHub repo issues:", error)
     throw new Error("Failed to fetch GitHub repo issues")
