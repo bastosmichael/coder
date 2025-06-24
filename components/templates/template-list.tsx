@@ -28,7 +28,7 @@ export const TemplatesList: FC<TemplatesListProps> = ({
     <DataList
       title="Templates"
       subtitle="Manage templates"
-      readMoreLink="https://docs.ephemyral-coder.ai/core-components/templates"
+      readMoreLink="https://docs.coder.ai/core-components/templates"
       readMoreText="Read more"
       createLink={`./templates/create`}
       createText="Create template"

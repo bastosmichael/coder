@@ -18,7 +18,7 @@ export default function MainSection() {
         <div className="flex-1 text-center md:text-left">
           <h1 className="bg-gradient-to-br from-primary to-primary/70 bg-clip-text text-4xl font-bold leading-tight tracking-tight text-transparent sm:text-5xl md:text-6xl">
             Accelerate Your Development
-            <br className="hidden md:block" /> with Ephemyral Coder
+            <br className="hidden md:block" /> with Coder
           </h1>
 
           <p className="text-muted-foreground mb-8 text-lg md:text-xl">
@@ -39,14 +39,14 @@ export default function MainSection() {
         <div className="flex-1">
           <Image
             src="/dashboard-light.png"
-            alt="Ephemyral dashboard screenshot"
+            alt="Coder dashboard screenshot"
             width={800}
             height={600}
             className="rounded shadow-lg dark:hidden"
           />
           <Image
             src="/dashboard-dark.png"
-            alt="Ephemyral dashboard screenshot"
+            alt="Coder dashboard screenshot"
             width={800}
             height={600}
             className="hidden rounded shadow-lg dark:block"

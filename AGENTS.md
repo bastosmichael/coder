@@ -1,8 +1,8 @@
-# AGENTS.md for Ephemyral Coder
+# AGENTS.md for Coder
 
 ## Overview of Agents in this Repository
 
-This document outlines the roles, triggers, behaviors, and outputs of all LLM-based or autonomous agents used in the Ephemyral Coder project. It serves as a reference for contributors and AI tooling to understand and utilize these agents effectively.
+This document outlines the roles, triggers, behaviors, and outputs of all LLM-based or autonomous agents used in the Coder project. It serves as a reference for contributors and AI tooling to understand and utilize these agents effectively.
 
 ## Table of Agents
 
@@ -103,7 +103,7 @@ This document outlines the roles, triggers, behaviors, and outputs of all LLM-ba
 
 ## Contribution Instructions for New Agents
 
-To contribute a new agent to the Ephemyral Coder project, follow these steps:
+To contribute a new agent to the Coder project, follow these steps:
 
 1. **Identify the Need:** Determine what functionality the new agent should provide.
 2. **Develop the Agent:** Write the code for the agent, ensuring it follows the project's coding standards.

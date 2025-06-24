@@ -11,7 +11,7 @@ jest.mock('openai', () => {
 }, { virtual: true })
 
 import { generateEmbedding } from '../../../actions/ai/generate-openai-embedding'
-import { EPHEMYRAL_EMBEDDING_MODEL, EPHEMYRAL_EMBEDDING_DIMENSIONS } from '../../../lib/constants/ephemyral-coder-config'
+import { CODER_EMBEDDING_MODEL, CODER_EMBEDDING_DIMENSIONS } from '../../../lib/constants/coder-config'
 
 describe('generateEmbedding', () => {
   it('returns embedding when request succeeds', async () => {
@@ -19,8 +19,8 @@ describe('generateEmbedding', () => {
     mockCreate.mockResolvedValue({ data: [{ embedding }] })
     const result = await generateEmbedding('text')
     expect(mockCreate).toHaveBeenCalledWith({
-      model: EPHEMYRAL_EMBEDDING_MODEL,
-      dimensions: EPHEMYRAL_EMBEDDING_DIMENSIONS,
+      model: CODER_EMBEDDING_MODEL,
+      dimensions: CODER_EMBEDDING_DIMENSIONS,
       input: 'text'
     })
     expect(result).toBe(embedding)

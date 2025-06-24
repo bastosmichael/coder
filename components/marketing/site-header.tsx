@@ -85,7 +85,7 @@ export function SiteHeader() {
 
   // useEffect(() => {
   //   const getGitHubRepoStars = async () => {
-  //     const url = `https://api.github.com/repos/bastosmichael/ephemyral-coder`
+  //     const url = `https://api.github.com/repos/bastosmichael/coder`
   //     try {
   //       const response = await fetch(url, {
   //         headers: {
@@ -109,7 +109,7 @@ export function SiteHeader() {
       <header className="fixed left-0 top-0 z-50 w-full border-b backdrop-blur">
         <div className="container flex h-14 items-center justify-between">
           <Link className="text-md flex items-center" href="/">
-            Ephemyral Coder
+            Coder
           </Link>
 
           <nav className="absolute right-1/2 hidden translate-x-1/2 justify-center space-x-8 md:flex">
@@ -182,7 +182,7 @@ export function SiteHeader() {
         >
           <div className="container flex h-14 items-center justify-between">
             <Link className="text-md flex items-center" href="/">
-              Ephemyral Coder
+              Coder
             </Link>
 
             <button

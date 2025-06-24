@@ -16,7 +16,7 @@ jest.mock('../../../db/queries/embedded-files-queries', () => ({
 jest.mock('../../../actions/github/embed-files', () => ({ embedFiles: jest.fn() }))
 jest.mock('../../../actions/github/fetch-codebase', () => ({ fetchCodebaseForBranch: jest.fn() }))
 jest.mock('../../../actions/github/tokenize-files', () => ({ tokenizeFiles: jest.fn() }))
-jest.mock('../../../lib/constants/ephemyral-coder-config', () => ({ MAX_RETRY_ATTEMPTS: 2, RETRY_DELAY: 1 }))
+jest.mock('../../../lib/constants/coder-config', () => ({ MAX_RETRY_ATTEMPTS: 2, RETRY_DELAY: 1 }))
 
 describe('embedBranch', () => {
   let consoleErrorSpy: jest.SpyInstance

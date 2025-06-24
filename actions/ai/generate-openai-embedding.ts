@@ -1,9 +1,9 @@
 "use server"
 
 import {
-  EPHEMYRAL_EMBEDDING_DIMENSIONS,
-  EPHEMYRAL_EMBEDDING_MODEL
-} from "@/lib/constants/ephemyral-coder-config"
+  CODER_EMBEDDING_DIMENSIONS,
+  CODER_EMBEDDING_MODEL
+} from "@/lib/constants/coder-config"
 import OpenAI from "openai"
 
 const openai = new OpenAI()
@@ -11,8 +11,8 @@ const openai = new OpenAI()
 export async function generateEmbedding(text: string) {
   try {
     const response = await openai.embeddings.create({
-      model: EPHEMYRAL_EMBEDDING_MODEL,
-      dimensions: EPHEMYRAL_EMBEDDING_DIMENSIONS,
+      model: CODER_EMBEDDING_MODEL,
+      dimensions: CODER_EMBEDDING_DIMENSIONS,
       input: text
     })
 

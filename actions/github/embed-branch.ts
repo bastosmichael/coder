@@ -12,7 +12,7 @@ import { sanitizeFileContent } from "@/lib/utils"
 import {
   MAX_RETRY_ATTEMPTS,
   RETRY_DELAY
-} from "@/lib/constants/ephemyral-coder-config"
+} from "@/lib/constants/coder-config"
 
 export async function embedBranch(data: {
   projectId: string

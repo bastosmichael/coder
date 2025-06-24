@@ -34,7 +34,7 @@ export function IssuesList({ issues, projectId }: IssuesListProps) {
     <DataList
       title="Issues"
       subtitle="Manage issues"
-      readMoreLink="https://docs.ephemyral-coder.ai/core-components/issues"
+      readMoreLink="https://docs.coder.ai/core-components/issues"
       readMoreText="Read more"
       createLink={`./issues/create`}
       createText="Create issue"
