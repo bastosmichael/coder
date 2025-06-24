@@ -22,7 +22,7 @@ export default function MainSection() {
           </h1>
 
           <p className="text-muted-foreground mb-8 text-lg md:text-xl">
-            Integrate with GitHub or Gitlab,
+            Integrate with GitHub,
             <br className="hidden md:block" />
             access your repositories with issues,
             <br className="hidden md:block" />
