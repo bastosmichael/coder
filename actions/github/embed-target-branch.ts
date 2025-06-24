@@ -10,7 +10,7 @@ import { getAuthenticatedOctokit } from "./auth"
 import {
   MAX_RETRY_ATTEMPTS,
   RETRY_DELAY
-} from "@/lib/constants/ephemyral-coder-config"
+} from "@/lib/constants/coder-config"
 
 interface EmbedTargetBranchParams {
   projectId: string

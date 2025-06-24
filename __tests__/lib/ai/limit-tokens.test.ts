@@ -1,5 +1,5 @@
-jest.mock('../../../lib/constants/ephemyral-coder-config', () => ({
-  EPHEMYRAL_MAX_INPUT_TOKENS: 30
+jest.mock('../../../lib/constants/coder-config', () => ({
+  CODER_MAX_INPUT_TOKENS: 30
 }));
 
 jest.mock('../../../lib/ai/estimate-claude-tokens', () => ({
@@ -26,8 +26,8 @@ describe('limitTokens', () => {
 
   it('returns no files when base prompt exceeds limit', async () => {
     jest.resetModules();
-    jest.doMock('../../../lib/constants/ephemyral-coder-config', () => ({
-      EPHEMYRAL_MAX_INPUT_TOKENS: 10
+    jest.doMock('../../../lib/constants/coder-config', () => ({
+      CODER_MAX_INPUT_TOKENS: 10
     }));
     jest.doMock('../../../lib/ai/estimate-claude-tokens', () => ({
       estimateClaudeSonnet3_5TokenCount: (text: string) => text.length

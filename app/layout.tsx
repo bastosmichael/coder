@@ -13,7 +13,7 @@ const fontSans = FontSans({
 })
 
 export const metadata: Metadata = {
-  title: "Ephemyral Coder",
+  title: "Coder",
   description: "Build software with AI."
 }
 

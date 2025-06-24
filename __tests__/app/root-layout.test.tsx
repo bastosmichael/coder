@@ -19,7 +19,7 @@ describe('RootLayout', () => {
   })
 
   it('exports metadata', () => {
-    expect(metadata.title).toBe('Ephemyral Coder')
+    expect(metadata.title).toBe('Coder')
   })
 
   it('wraps children with ClerkProvider in advanced mode', () => {

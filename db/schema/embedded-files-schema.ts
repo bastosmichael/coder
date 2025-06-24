@@ -1,4 +1,4 @@
-import { EPHEMYRAL_EMBEDDING_DIMENSIONS } from "@/lib/constants/ephemyral-coder-config"
+import { CODER_EMBEDDING_DIMENSIONS } from "@/lib/constants/coder-config"
 import { relations } from "drizzle-orm"
 import {
   index,
@@ -28,7 +28,7 @@ export const embeddedFilesTable = pgTable(
     content: text("content"),
     tokenCount: integer("token_count").notNull(),
     embedding: vector("embedding", {
-      dimensions: EPHEMYRAL_EMBEDDING_DIMENSIONS
+      dimensions: CODER_EMBEDDING_DIMENSIONS
     }),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at")
