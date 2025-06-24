@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils"
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, motion, easeOut } from "framer-motion"
 import { AlignJustify, XIcon } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
@@ -28,7 +28,7 @@ export function SiteHeader() {
       opacity: 1,
       transition: {
         duration: 0.2,
-        ease: "easeOut"
+        ease: easeOut
       }
     },
     exit: {
@@ -36,7 +36,7 @@ export function SiteHeader() {
       transition: {
         duration: 0.2,
         delay: 0.2,
-        ease: "easeOut"
+        ease: easeOut
       }
     }
   }
@@ -51,7 +51,7 @@ export function SiteHeader() {
       opacity: 1,
       transition: {
         duration: 0.3,
-        ease: "easeOut"
+        ease: easeOut
       }
     }
   }
