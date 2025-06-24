@@ -48,12 +48,12 @@ jobs:
               return;
             }
 
-            const tag = `weekly-${new Date().toISOString().slice(0, 10)}`;
+            const tag = `${new Date().toISOString().slice(0, 10)}`;
             await github.rest.repos.createRelease({
               owner,
               repo,
               tag_name: tag,
-              name: `Weekly Release ${tag}`,
+              name: `Release ${tag}`,
               target_commitish: 'main',
               generate_release_notes: true
             });
