@@ -33,6 +33,9 @@ Coder is an AI-powered code generation tool designed to help developers ship cod
 
 ## Demo
 
+<img width="1615" height="1236" alt="image" src="https://github.com/user-attachments/assets/235b8d90-144e-4759-a397-48d0c068881e" />
+<img width="1615" height="1236" alt="image" src="https://github.com/user-attachments/assets/46271473-4040-40eb-b8be-49a69f26aa59" />
+
 Check out the latest demo of Coder in action:
 [Coder Demo](https://youtu.be/buJ6BlQXtko)
 
