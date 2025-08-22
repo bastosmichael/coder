@@ -1,5 +1,8 @@
 import '@testing-library/jest-dom'
 
+// Ensure a default database URL so modules depending on it can load in tests
+process.env.DATABASE_URL = process.env.DATABASE_URL || 'postgres://localhost/test-db'
+
 // Suppress console.error and console.warn during tests to keep output clean
 const originalError = console.error
 const originalWarn = console.warn
