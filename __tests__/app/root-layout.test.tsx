@@ -1,13 +1,17 @@
 import { render } from '@testing-library/react'
-import RootLayout, { metadata } from '../../app/layout'
 
 jest.mock('@clerk/nextjs', () => ({
   ClerkProvider: ({ children }: any) => <div data-testid="clerk">{children}</div>
 }))
 
+// Mock Clerk themes to avoid missing module errors during tests
+jest.mock('@clerk/themes', () => ({ dark: {} }), { virtual: true })
+
 jest.mock('next/font/google', () => ({
   Inter: () => ({ className: 'font', variable: '--font' })
 }))
+
+import RootLayout, { metadata } from '../../app/layout'
 
 describe('RootLayout', () => {
   const originalEnv = process.env
