@@ -17,10 +17,10 @@ jest.mock("../../../components/ui/multi-select", () => ({
     <button onClick={() => onToggleSelect(["i2"]) }>{label}</button>
   )
 }))
-const router = { push: jest.fn(), refresh: jest.fn() }
+const mockRouter = { push: jest.fn(), refresh: jest.fn() }
 jest.mock("next/navigation", () => ({
   useParams: () => ({ workspaceId: "w", projectId: "p" }),
-  useRouter: () => router
+  useRouter: () => mockRouter
 }))
 import { useRouter } from "next/navigation"
 import { getInstructionsByProjectId } from "../../../db/queries/instructions-queries"

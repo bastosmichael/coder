@@ -1,32 +1,32 @@
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { ConnectGitHub } from '../../../components/integrations/connect-github'
 
-const push = jest.fn()
-const useParams = jest.fn()
+const mockPush = jest.fn()
+const mockUseParams = jest.fn()
 jest.mock('next/navigation', () => ({
-  useRouter: () => ({ push }),
-  useParams: () => useParams()
+  useRouter: () => ({ push: mockPush }),
+  useParams: () => mockUseParams()
 }))
 
 describe('ConnectGitHub', () => {
   beforeEach(() => {
-    push.mockClear()
-    useParams.mockClear()
+    mockPush.mockClear()
+    mockUseParams.mockClear()
     process.env.NEXT_PUBLIC_GITHUB_APP_NAME = 'app'
   })
 
   it('navigates to github oauth url', async () => {
-    useParams.mockReturnValue({ projectId: 'p1' })
+    mockUseParams.mockReturnValue({ projectId: 'p1' })
     const { getByText } = render(<ConnectGitHub isGitHubConnected={false} />)
     fireEvent.click(getByText('Connect'))
-    await waitFor(() => expect(push).toHaveBeenCalled())
-    expect(push.mock.calls[0][0]).toContain('installations/select_target')
+    await waitFor(() => expect(mockPush).toHaveBeenCalled())
+    expect(mockPush.mock.calls[0][0]).toContain('installations/select_target')
   })
 
   it('handles missing project id', async () => {
-    useParams.mockReturnValue({})
+    mockUseParams.mockReturnValue({})
     const { getByText } = render(<ConnectGitHub isGitHubConnected={false} />)
     fireEvent.click(getByText('Connect'))
-    await waitFor(() => expect(push).toHaveBeenCalledWith('/projects'))
+    await waitFor(() => expect(mockPush).toHaveBeenCalledWith('/projects'))
   })
 })

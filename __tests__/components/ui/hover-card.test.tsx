@@ -2,11 +2,14 @@ import React from 'react'
 import { render } from '@testing-library/react'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '../../../components/ui/hover-card'
 
-jest.mock('@radix-ui/react-hover-card', () => ({
-  Root: ({ children }: any) => <div data-testid="root">{children}</div>,
-  Trigger: ({ children }: any) => <button data-testid="trigger">{children}</button>,
-  Content: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="content" {...props} />)
-}))
+jest.mock('@radix-ui/react-hover-card', () => {
+  const React = require('react')
+  return {
+    Root: ({ children }: any) => <div data-testid="root">{children}</div>,
+    Trigger: ({ children }: any) => <button data-testid="trigger">{children}</button>,
+    Content: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="content" {...props} />)
+  }
+})
 
 jest.mock('../../../lib/utils', () => ({ cn: (...classes: string[]) => classes.filter(Boolean).join(' ') }))
 

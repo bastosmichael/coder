@@ -1,11 +1,8 @@
-const nextJest = require('next/jest');
-
-const createJestConfig = nextJest({
-  dir: './',
-});
-
-const customJestConfig = {
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'], // or '<rootDir>/jest.setup.ts' if using TypeScript
+/**
+ * Plain Jest config using babel-jest (avoid Next SWC native bindings).
+ */
+module.exports = {
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testEnvironment: 'jest-environment-jsdom',
   collectCoverage: true,
   coverageDirectory: 'coverage',
@@ -23,17 +20,19 @@ const customJestConfig = {
     '!**/*.test.{js,jsx,ts,tsx}',
     '!**/*.spec.{js,jsx,ts,tsx}',
   ],
-  coveragePathIgnorePatterns: [
-    '/node_modules/',
-    '/public/',
-  ],
-  moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'], // Ensure TS files are recognized
+  coveragePathIgnorePatterns: ['/node_modules/', '/public/'],
+  moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
   transform: {
-    '^.+\\.(ts|tsx)$': 'babel-jest', // Use babel-jest for TS files
+    '^.+\\.(t|j)sx?$': 'babel-jest',
   },
+  transformIgnorePatterns: [
+    '/node_modules/(?!.*)',
+  ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
+    // CSS and style imports
+    '^.+\\.(css|scss|sass|less)$': '<rootDir>/__mocks__/styleMock.js',
+    // Static asset imports
+    '^.+\\.(png|jpg|jpeg|gif|webp|svg|ico|bmp)$': '<rootDir>/__mocks__/fileMock.js',
   },
-};
-
-module.exports = createJestConfig(customJestConfig);
+}

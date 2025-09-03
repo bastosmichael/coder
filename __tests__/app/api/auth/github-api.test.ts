@@ -1,11 +1,11 @@
-var listForAuthUser: jest.Mock
+var mockListForAuthUser: jest.Mock
 
 jest.mock('@octokit/rest', () => {
-  listForAuthUser = jest.fn()
+  mockListForAuthUser = jest.fn()
   return {
     __esModule: true,
     Octokit: jest.fn().mockImplementation(() => ({
-      orgs: { listForAuthenticatedUser: listForAuthUser }
+      orgs: { listForAuthenticatedUser: mockListForAuthUser }
     }))
   }
 })
@@ -14,19 +14,19 @@ import { fetchGitHubOrganizations } from '../../../../app/api/auth/callback/gith
 
 describe('fetchGitHubOrganizations', () => {
   beforeEach(() => {
-    listForAuthUser.mockReset()
+    mockListForAuthUser.mockReset()
   })
 
   it('returns organization list', async () => {
-    listForAuthUser.mockResolvedValue({ data: [{ id: 1 }] })
+    mockListForAuthUser.mockResolvedValue({ data: [{ id: 1 }] })
     const data = await fetchGitHubOrganizations()
-    expect(listForAuthUser).toHaveBeenCalled()
+    expect(mockListForAuthUser).toHaveBeenCalled()
     expect(data).toEqual([{ id: 1 }])
   })
 
   it('throws after retries', async () => {
-    listForAuthUser.mockRejectedValue(new Error('fail'))
+    mockListForAuthUser.mockRejectedValue(new Error('fail'))
     await expect(fetchGitHubOrganizations()).rejects.toThrow('Failed to fetch GitHub organizations')
-    expect(listForAuthUser).toHaveBeenCalledTimes(3)
+    expect(mockListForAuthUser).toHaveBeenCalledTimes(3)
   })
 })

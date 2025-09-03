@@ -9,8 +9,8 @@ jest.mock('../../../db/queries/profiles-queries', () => ({
   createProfile: jest.fn()
 }))
 
-const push = jest.fn()
-jest.mock('next/navigation', () => ({ useRouter: () => ({ push }) }))
+const mockPush = jest.fn()
+jest.mock('next/navigation', () => ({ useRouter: () => ({ push: mockPush }) }))
 
 import { createWorkspaces, createProjects } from '../../../db/queries'
 import { createProfile } from '../../../db/queries/profiles-queries'
@@ -28,7 +28,7 @@ describe('ProfileCreator', () => {
     await waitFor(() => expect(createProfile).toHaveBeenCalled())
     expect(createWorkspaces).toHaveBeenCalledWith({ name: 'Workspace' })
     expect(createProjects).toHaveBeenCalled()
-    expect(push).toHaveBeenCalledWith('/workspaces')
+    expect(mockPush).toHaveBeenCalledWith('/workspaces')
   })
 
   it('logs error when creation fails', async () => {
@@ -36,7 +36,7 @@ describe('ProfileCreator', () => {
     ;(createProfile as jest.Mock).mockRejectedValue(error)
     render(<ProfileCreator />)
     await waitFor(() => expect(createProfile).toHaveBeenCalled())
-    expect(push).not.toHaveBeenCalled()
+    expect(mockPush).not.toHaveBeenCalled()
     expect(console.error).toHaveBeenCalledWith(error)
   })
 })

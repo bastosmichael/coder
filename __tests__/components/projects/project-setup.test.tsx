@@ -4,9 +4,9 @@ import { ProjectSetup } from '../../../components/projects/project-setup'
 jest.mock('../../../actions/github/list-branches', () => ({ listBranches: jest.fn() }))
 jest.mock('../../../db/queries/projects-queries', () => ({ updateProject: jest.fn() }))
 
-const push = jest.fn()
+const mockPush = jest.fn()
 jest.mock('next/navigation', () => ({
-  useRouter: () => ({ push }),
+  useRouter: () => ({ push: mockPush }),
   useParams: () => ({ projectId: 'p', workspaceId: 'w' })
 }))
 
@@ -58,7 +58,7 @@ describe('ProjectSetup', () => {
         githubTargetBranch: 'main'
       })
     )
-    expect(push).toHaveBeenCalledWith('/w/p/issues')
+    expect(mockPush).toHaveBeenCalledWith('/w/p/issues')
   })
 
   it('handles submit errors gracefully', async () => {
@@ -75,6 +75,6 @@ describe('ProjectSetup', () => {
 
     fireEvent.click(getByText('Continue'))
     await waitFor(() => expect(updateProject).toHaveBeenCalled())
-    expect(push).not.toHaveBeenCalled()
+    expect(mockPush).not.toHaveBeenCalled()
   })
 })

@@ -101,7 +101,7 @@ export const Dashboard: FC<DashboardProps> = ({
             <WorkspaceSelect workspaces={workspaces} />
           </div>
 
-          <div className="px-4 flex h-full flex-col">
+          <div className="flex h-full flex-col px-4">
             <div className="flex items-center justify-between py-2">
               <div className="text-muted-foreground text-xs font-semibold">
                 Your Projects

@@ -1,9 +1,9 @@
 import { fireEvent, render } from "@testing-library/react"
 import { EditWorkspaceButton } from "../../../components/workspaces/edit-workspace-button"
 
-const push = jest.fn()
+const mockPush = jest.fn()
 
-jest.mock("next/navigation", () => ({ useRouter: () => ({ push }) }))
+jest.mock("next/navigation", () => ({ useRouter: () => ({ push: mockPush }) }))
 import { useRouter } from "next/navigation"
 
 describe("EditWorkspaceButton", () => {

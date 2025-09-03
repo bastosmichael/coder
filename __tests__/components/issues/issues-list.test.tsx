@@ -7,8 +7,8 @@ jest.mock("../../../db/queries/issues-queries", () => ({
 }))
 import { deleteIssue, updateIssuesFromGitHub } from "../../../db/queries/issues-queries"
 
-const router = { refresh: jest.fn() }
-jest.mock("next/navigation", () => ({ useRouter: () => router }))
+const mockRouter = { refresh: jest.fn() }
+jest.mock("next/navigation", () => ({ useRouter: () => mockRouter }))
 
 describe("IssuesList", () => {
   beforeEach(() => jest.clearAllMocks())

@@ -10,6 +10,7 @@ import {
 } from '../../../components/ui/command'
 
 jest.mock('@radix-ui/react-dialog', () => {
+  const React = require('react')
   const Overlay = React.forwardRef((props: any, ref) => (
     <div ref={ref} data-testid="overlay" {...props} />
   ))
@@ -40,6 +41,7 @@ jest.mock('@radix-ui/react-dialog', () => {
 })
 
 jest.mock('cmdk', () => {
+  const React = require('react')
   const Command = React.forwardRef((props: any, ref) => (
     <div ref={ref} data-testid="command" {...props} />
   ))

@@ -1,25 +1,25 @@
-var getAuthUser: jest.Mock
-var getRepos: jest.Mock
-var createRepo: jest.Mock
-var listIssues: jest.Mock
-var listPulls: jest.Mock
-var auth: jest.Mock
+var mockGetAuthUser: jest.Mock
+var mockGetRepos: jest.Mock
+var mockCreateRepo: jest.Mock
+var mockListIssues: jest.Mock
+var mockListPulls: jest.Mock
+var mockAuth: jest.Mock
 
 jest.mock('@octokit/rest', () => {
-  getAuthUser = jest.fn()
-  getRepos = jest.fn()
-  createRepo = jest.fn()
-  listIssues = jest.fn()
-  listPulls = jest.fn()
-  auth = jest.fn()
+  mockGetAuthUser = jest.fn()
+  mockGetRepos = jest.fn()
+  mockCreateRepo = jest.fn()
+  mockListIssues = jest.fn()
+  mockListPulls = jest.fn()
+  mockAuth = jest.fn()
   return {
     __esModule: true,
     Octokit: jest.fn().mockImplementation(() => ({
-      users: { getAuthenticated: getAuthUser },
-      repos: { listForOrg: getRepos, createInOrg: createRepo },
-      issues: { listForRepo: listIssues },
-      pulls: { list: listPulls },
-      auth
+      users: { getAuthenticated: mockGetAuthUser },
+      repos: { listForOrg: mockGetRepos, createInOrg: mockCreateRepo },
+      issues: { listForRepo: mockListIssues },
+      pulls: { list: mockListPulls },
+      auth: mockAuth
     }))
   }
 })
@@ -42,44 +42,44 @@ describe('github api helpers', () => {
   })
 
   it('fetches user account and retries', async () => {
-    getAuthUser.mockRejectedValueOnce(new Error('fail'))
-    getAuthUser.mockResolvedValue({ data: { id: 1, login: 'u' } })
+    mockGetAuthUser.mockRejectedValueOnce(new Error('fail'))
+    mockGetAuthUser.mockResolvedValue({ data: { id: 1, login: 'u' } })
     const data = await fetchUserGitHubAccount()
-    expect(getAuthUser).toHaveBeenCalledTimes(2)
+    expect(mockGetAuthUser).toHaveBeenCalledTimes(2)
     expect(data).toEqual({ id: 1, login: 'u' })
   })
 
   it('fetches repositories', async () => {
-    getRepos.mockResolvedValue({ data: [{ id: 1 }] })
+    mockGetRepos.mockResolvedValue({ data: [{ id: 1 }] })
     const repos = await fetchGitHubRepositories('org')
-    expect(getRepos).toHaveBeenCalledWith({ org: 'org' })
+    expect(mockGetRepos).toHaveBeenCalledWith({ org: 'org' })
     expect(repos).toEqual([{ id: 1 }])
   })
 
   it('creates repository and returns data', async () => {
-    createRepo.mockResolvedValue({ data: { id: 2 } })
+    mockCreateRepo.mockResolvedValue({ data: { id: 2 } })
     const repo = await createGitHubRepository('org', 'name', 't')
-    expect(createRepo).toHaveBeenCalledWith({ org: 'org', name: 'name', private: true })
+    expect(mockCreateRepo).toHaveBeenCalledWith({ org: 'org', name: 'name', private: true })
     expect(repo).toEqual({ id: 2 })
   })
 
   it('fetches repo issues', async () => {
-    listIssues.mockResolvedValue({ data: [{ id: 3 }, { id: 4, pull_request: {} }] })
+    mockListIssues.mockResolvedValue({ data: [{ id: 3 }, { id: 4, pull_request: {} }] })
     const issues = await fetchGitHubRepoIssues('o/r')
-    expect(listIssues).toHaveBeenCalledWith({ owner: 'o', repo: 'r' })
+    expect(mockListIssues).toHaveBeenCalledWith({ owner: 'o', repo: 'r' })
     expect(issues).toEqual([{ id: 3 }])
   })
 
   it('filters open issues only', async () => {
-    listIssues.mockResolvedValue({ data: [{ id: 1 }, { id: 2, pull_request: {} }] })
+    mockListIssues.mockResolvedValue({ data: [{ id: 1 }, { id: 2, pull_request: {} }] })
     const data = await fetchOpenGitHubRepoIssues('o/r')
     expect(data).toEqual([{ id: 1 }])
   })
 
   it('fetches open pull requests', async () => {
-    listPulls.mockResolvedValue({ data: [{ id: 5 }] })
+    mockListPulls.mockResolvedValue({ data: [{ id: 5 }] })
     const prs = await fetchOpenGitHubRepoPullRequests('o/r')
-    expect(listPulls).toHaveBeenCalledWith({ owner: 'o', repo: 'r', state: 'open' })
+    expect(mockListPulls).toHaveBeenCalledWith({ owner: 'o', repo: 'r', state: 'open' })
     expect(prs).toEqual([{ id: 5 }])
   })
 
