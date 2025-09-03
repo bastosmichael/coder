@@ -9,19 +9,16 @@ import {
   SheetTrigger
 } from '../../../components/ui/sheet'
 
-jest.mock('@radix-ui/react-dialog', () => {
-  const React = require('react')
-  return {
-    Root: ({ children, ...props }: any) => <div data-testid="root" {...props}>{children}</div>,
-    Trigger: ({ children, ...props }: any) => <button data-testid="trigger" {...props}>{children}</button>,
-    Close: ({ children, ...props }: any) => <button data-testid="close" {...props}>{children}</button>,
-    Portal: ({ children }: any) => <div data-testid="portal">{children}</div>,
-    Overlay: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="overlay" {...props} />),
-    Content: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="content" {...props} />),
-    Title: React.forwardRef((props: any, ref) => <h2 ref={ref} data-testid="title" {...props} />),
-    Description: React.forwardRef((props: any, ref) => <p ref={ref} data-testid="description" {...props} />)
-  }
-})
+jest.mock('@radix-ui/react-dialog', () => ({
+  Root: ({ children, ...props }: any) => <div data-testid="root" {...props}>{children}</div>,
+  Trigger: ({ children, ...props }: any) => <button data-testid="trigger" {...props}>{children}</button>,
+  Close: ({ children, ...props }: any) => <button data-testid="close" {...props}>{children}</button>,
+  Portal: ({ children }: any) => <div data-testid="portal">{children}</div>,
+  Overlay: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="overlay" {...props} />),
+  Content: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="content" {...props} />),
+  Title: React.forwardRef((props: any, ref) => <h2 ref={ref} data-testid="title" {...props} />),
+  Description: React.forwardRef((props: any, ref) => <p ref={ref} data-testid="description" {...props} />)
+}))
 
 jest.mock('class-variance-authority', () => ({
   cva: () => () => 'variant'

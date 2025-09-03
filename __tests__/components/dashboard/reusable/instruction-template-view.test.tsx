@@ -1,9 +1,9 @@
 import { fireEvent, render } from "@testing-library/react"
 import { InstructionTemplateView } from "../../../../components/dashboard/reusable/instruction-template-view"
 
-const mockPush = jest.fn()
+const push = jest.fn()
 
-jest.mock("next/navigation", () => ({ useRouter: () => ({ push: mockPush }) }))
+jest.mock("next/navigation", () => ({ useRouter: () => ({ push }) }))
 
 jest.mock("../../../../components/instructions/message-markdown", () => ({
   MessageMarkdown: ({ content }: any) => <div>{content}</div>

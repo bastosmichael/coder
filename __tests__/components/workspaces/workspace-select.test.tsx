@@ -6,10 +6,10 @@ jest.mock("../../../db/queries/projects-queries", () => ({
 }))
 import { getMostRecentIssueWithinProjects } from "../../../db/queries/projects-queries"
 
-const mockPush = jest.fn()
+const push = jest.fn()
 
 jest.mock("next/navigation", () => ({
-  useRouter: () => ({ push: mockPush }),
+  useRouter: () => ({ push }),
   useParams: () => ({ workspaceId: "w1" })
 }))
 import { useRouter } from "next/navigation"

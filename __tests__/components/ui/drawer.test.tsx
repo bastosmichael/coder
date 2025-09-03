@@ -8,21 +8,18 @@ import {
   DrawerOverlay
 } from '../../../components/ui/drawer'
 
-jest.mock('vaul', () => {
-  const React = require('react')
-  return {
-    Drawer: {
-      Root: (props: any) => <div data-testid="root" {...props} />,
-      Trigger: (props: any) => <button data-testid="trigger" {...props} />,
-      Portal: ({ children }: any) => <div data-testid="portal">{children}</div>,
-      Close: (props: any) => <button data-testid="close" {...props} />,
-      Overlay: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="overlay" {...props} />),
-      Content: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="content" {...props} />),
-      Title: React.forwardRef((props: any, ref) => <h1 ref={ref} {...props} />),
-      Description: React.forwardRef((props: any, ref) => <p ref={ref} {...props} />)
-    }
+jest.mock('vaul', () => ({
+  Drawer: {
+    Root: (props: any) => <div data-testid="root" {...props} />,
+    Trigger: (props: any) => <button data-testid="trigger" {...props} />,
+    Portal: ({ children }: any) => <div data-testid="portal">{children}</div>,
+    Close: (props: any) => <button data-testid="close" {...props} />,
+    Overlay: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="overlay" {...props} />),
+    Content: React.forwardRef((props: any, ref) => <div ref={ref} data-testid="content" {...props} />),
+    Title: React.forwardRef((props: any, ref) => <h1 ref={ref} {...props} />),
+    Description: React.forwardRef((props: any, ref) => <p ref={ref} {...props} />)
   }
-})
+}))
 
 describe('Drawer component', () => {
   it('renders root with props', () => {

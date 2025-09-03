@@ -7,8 +7,8 @@ jest.mock('../../../db/queries/workspaces-queries', () => ({
   deleteWorkspace: jest.fn()
 }))
 
-const mockRouter = { push: jest.fn(), refresh: jest.fn() }
-jest.mock('next/navigation', () => ({ useRouter: () => mockRouter }))
+const router = { push: jest.fn(), refresh: jest.fn() }
+jest.mock('next/navigation', () => ({ useRouter: () => router }))
 
 describe('EditWorkspaceClient', () => {
   beforeEach(() => {
@@ -23,8 +23,8 @@ describe('EditWorkspaceClient', () => {
     fireEvent.change(getByPlaceholderText('Enter workspace name'), { target: { value: 'New' } })
     fireEvent.click(getByText('Save Changes'))
     await waitFor(() => expect(updateWorkspace).toHaveBeenCalledWith('w1', { name: 'New' }))
-    expect(mockRouter.refresh).toHaveBeenCalled()
-    expect(mockRouter.push).toHaveBeenCalledWith('/w1')
+    expect(router.refresh).toHaveBeenCalled()
+    expect(router.push).toHaveBeenCalledWith('/w1')
   })
 
   it('deletes workspace', async () => {
@@ -35,7 +35,7 @@ describe('EditWorkspaceClient', () => {
     fireEvent.click(getByText('Delete Workspace'))
     fireEvent.click(getByText('Delete'))
     await waitFor(() => expect(deleteWorkspace).toHaveBeenCalledWith('w1'))
-    expect(mockRouter.refresh).toHaveBeenCalled()
-    expect(mockRouter.push).toHaveBeenCalledWith('/workspaces')
+    expect(router.refresh).toHaveBeenCalled()
+    expect(router.push).toHaveBeenCalledWith('/workspaces')
   })
 })

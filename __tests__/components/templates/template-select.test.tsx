@@ -1,14 +1,14 @@
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { TemplateSelect } from '../../../components/templates/template-select'
 
-const mockUpdateTemplateInstructions = jest.fn()
+const updateTemplateInstructions = jest.fn()
 jest.mock('../../../components/templates/handle-save', () => ({
-  updateTemplateInstructions: (...args: any[]) => mockUpdateTemplateInstructions(...args)
+  updateTemplateInstructions: (...args: any[]) => updateTemplateInstructions(...args)
 }))
 
 describe('TemplateSelect', () => {
   beforeEach(() => {
-    mockUpdateTemplateInstructions.mockReset()
+    updateTemplateInstructions.mockReset()
   })
 
   const instructions = [
@@ -35,7 +35,7 @@ describe('TemplateSelect', () => {
     fireEvent.click(getByRole('combobox'))
     fireEvent.click(getByText('Two'))
     await waitFor(() =>
-      expect(mockUpdateTemplateInstructions).toHaveBeenCalledWith('t1', ['i1', 'i2'])
+      expect(updateTemplateInstructions).toHaveBeenCalledWith('t1', ['i1', 'i2'])
     )
   })
 })

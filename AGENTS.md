@@ -1,50 +1,112 @@
-# Repository Guidelines
+# AGENTS.md for Coder
 
-## Project Structure & Module Organization
+## Overview of Agents in this Repository
 
-- `app/`: Next.js routes, layouts, and pages.
-- `components/`: Reusable UI and feature components (TypeScript, mostly PascalCase files).
-- `lib/`: Utilities, helpers, and shared logic.
-- `db/`: Drizzle ORM schema/migrations and DB utilities.
-- `actions/`: Server actions and API-adjacent logic.
-- `types/`: Shared TypeScript types.
-- `public/`: Static assets.
-- `__tests__/`: Unit and component tests.
+This document outlines the roles, triggers, behaviors, and outputs of all LLM-based or autonomous agents used in the Coder project. It serves as a reference for contributors and AI tooling to understand and utilize these agents effectively.
 
-## Build, Test, and Development Commands
+## Table of Agents
 
-- `npm run dev`: Start local dev server with type-checking.
-- `npm run build`: Type-check and build the Next.js app.
-- `npm start`: Run the production build locally.
-- `npm test` | `npm run test:watch` | `npm run test:coverage`: Run Jest tests, watch mode, or coverage.
-- `npm run lint` | `npm run lint:fix`: Lint code (Next + ESLint) and auto-fix.
-- `npm run format:write`: Format with Prettier.
-- `npm run db:migrate` | `npm run db:generate`: Drizzle migrations and SQL generation.
+| Name                | Description                                    | Trigger           |
+|---------------------|------------------------------------------------|-------------------|
+| Doc Writer          | Generates README files and documentation.      | CI event          |
+| Test Case Generator | Creates test cases based on code changes.      | Pull request      |
+| CI Workflow Agent   | Sets up CI workflows for new projects.         | New project setup |
+| Template Generator  | Creates templates for issues and pull requests.| Command           |
 
-## Coding Style & Naming Conventions
+## Detailed Breakdown of Each Agent
 
-- Language: TypeScript. Indent 2 spaces; no semicolons (`semi: false`).
-- Prettier enforced (see `prettier.config.cjs`); import order configured.
-- ESLint: `next/core-web-vitals`, `@typescript-eslint`, `eslint-plugin-tailwindcss`.
-- Components/files: Prefer PascalCase for React components, kebab- or lowercase for folders.
-- Unused vars prefixed with `_` allowed per lint rules.
+### Doc Writer
 
-## Testing Guidelines
+**Name:** Doc Writer
 
-- Framework: Jest + jsdom with React Testing Library.
-- Location: `__tests__/` mirroring source; name files `*.test.ts`/`*.test.tsx`.
-- Coverage: Enabled by default; output in `coverage/` with text summary.
-- Run locally: `npm test` (CI expects tests and types to pass).
+**Description:** The Doc Writer agent is responsible for generating README files and other documentation based on the project's structure and content.
 
-## Commit & Pull Request Guidelines
+**Trigger:** This agent is triggered by a CI event, specifically when a new branch is pushed or a pull request is opened.
 
-- Use Conventional Commits where possible: `feat:`, `fix:`, `chore:`, `docs:`, etc. (repo history includes `chore(deps): bump ...`).
-- Branches: short, descriptive names (e.g., `feat/runtime-metrics`, `fix/card-a11y`).
-- PRs: clear description, linked issues (e.g., `Closes #123`), screenshots for UI, and notes on tests/migrations.
-- Quality gate: run `npm run lint:fix`, `npm run format:write`, and `npm test` before opening a PR. A Husky pre-commit hook runs lint+format.
+**Inputs and Outputs:**
+- **Inputs:** Project structure, existing documentation, and code files.
+- **Outputs:** A generated README.md file and other documentation files.
 
-## Security & Configuration Tips
+**Logic Location:** `/agents/doc-writer.ts`
 
-- Copy `.env.example` to `.env.development.local`; never commit secrets.
-- Sync env from Vercel when applicable: `vercel env pull .env.development.local`.
-- Required engines: Node `22.11.0`, npm `10.9.0` (see `package.json`).
+**Review or Audit Process:** The generated documentation is reviewed by the project team before merging into the main branch.
+
+### Test Case Generator
+
+**Name:** Test Case Generator
+
+**Description:** This agent automatically generates test cases based on code changes detected in pull requests.
+
+**Trigger:** Triggered by the opening of a pull request.
+
+**Inputs and Outputs:**
+- **Inputs:** Code changes from the pull request.
+- **Outputs:** Generated test case files.
+
+**Logic Location:** `/agents/test-case-generator.ts`
+
+**Review or Audit Process:** The generated test cases are reviewed by the QA team before merging.
+
+### CI Workflow Agent
+
+**Name:** CI Workflow Agent
+
+**Description:** Sets up CI workflows for new projects, ensuring they are properly configured for continuous integration.
+
+**Trigger:** Triggered when a new project is set up in the system.
+
+**Inputs and Outputs:**
+- **Inputs:** Project configuration and requirements.
+- **Outputs:** A `.github/workflows` directory with CI workflow files.
+
+**Logic Location:** `/agents/ci-workflow-agent.ts`
+
+**Review or Audit Process:** The CI workflows are reviewed by the DevOps team before activation.
+
+### Template Generator
+
+**Name:** Template Generator
+
+**Description:** Generates templates for issues and pull requests to standardize project contributions.
+
+**Trigger:** Triggered by a command from the project manager or contributor.
+
+**Inputs and Outputs:**
+- **Inputs:** Template requirements and project specifics.
+- **Outputs:** Template files for issues and pull requests.
+
+**Logic Location:** `/agents/template-generator.ts`
+
+**Review or Audit Process:** Templates are reviewed by the project manager before being used.
+
+## How to Invoke Each Agent
+
+### Doc Writer
+- **CLI:** `npm run doc-writer`
+- **CI:** Automatically triggered on push to main branch.
+
+### Test Case Generator
+- **CLI:** `npm run test-case-generator`
+- **CI:** Automatically triggered on pull request.
+
+### CI Workflow Agent
+- **CLI:** `npm run ci-workflow-setup`
+- **CI:** Automatically triggered on new project setup.
+
+### Template Generator
+- **CLI:** `npm run template-generator`
+- **Prompt:** Use the command `/generate-template` in the project management tool.
+
+## Future Agent Proposals
+
+- **Code Review Agent:** An agent that automatically reviews code for best practices and potential issues.
+
+## Contribution Instructions for New Agents
+
+To contribute a new agent to the Coder project, follow these steps:
+
+1. **Identify the Need:** Determine what functionality the new agent should provide.
+2. **Develop the Agent:** Write the code for the agent, ensuring it follows the project's coding standards.
+3. **Document the Agent:** Add a section to this `AGENTS.md` file with all the required details.
+4. **Submit a Pull Request:** Open a pull request with the new agent code and updated documentation.
+5. **Review and Merge:** The agent will be reviewed by the team, and upon approval, merged into the main branch.

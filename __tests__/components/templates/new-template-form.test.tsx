@@ -1,12 +1,12 @@
 import { fireEvent, render, waitFor } from "@testing-library/react"
 import NewTemplateForm from "../../../components/templates/new-template-form"
 
-const mockPush = jest.fn()
-const mockRefresh = jest.fn()
+const push = jest.fn()
+const refresh = jest.fn()
 
 jest.mock("next/navigation", () => ({
   useParams: () => ({ projectId: "p" }),
-  useRouter: () => ({ push: mockPush, refresh: mockRefresh })
+  useRouter: () => ({ push, refresh })
 }))
 import { useRouter } from "next/navigation"
 

@@ -4,7 +4,7 @@ import { Carousel, CarouselContent, CarouselItem } from '../../../components/ui/
 const scrollPrev = jest.fn()
 const scrollNext = jest.fn()
 
-const mockApi = {
+const api = {
   canScrollPrev: () => true,
   canScrollNext: () => true,
   on: jest.fn(),
@@ -13,7 +13,7 @@ const mockApi = {
   scrollNext
 }
 
-jest.mock('embla-carousel-react', () => () => [jest.fn(), mockApi])
+jest.mock('embla-carousel-react', () => () => [jest.fn(), api])
 
 jest.mock('../../../components/ui/button', () => ({ Button: (props: any) => <button {...props} /> }))
 

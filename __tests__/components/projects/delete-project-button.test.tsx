@@ -9,45 +9,45 @@ jest.mock('sonner', () => ({
 }))
 import { toast } from 'sonner'
 
-const mockDeleteProject = jest.fn()
+const deleteProject = jest.fn()
 jest.mock('../../../db/queries/projects-queries', () => ({
   __esModule: true,
-  deleteProject: (...args: any[]) => mockDeleteProject(...args)
+  deleteProject: (...args: any[]) => deleteProject(...args)
 }))
 
-const mockPush = jest.fn()
+const push = jest.fn()
 jest.mock('next/navigation', () => ({
-  useRouter: () => ({ push: mockPush })
+  useRouter: () => ({ push })
 }))
 
 describe('DeleteProjectButton', () => {
   beforeEach(() => {
-    mockDeleteProject.mockReset()
-    mockPush.mockReset()
+    deleteProject.mockReset()
+    push.mockReset()
     toast.success.mockReset()
     toast.error.mockReset()
   })
 
   it('deletes project and navigates', async () => {
-    mockDeleteProject.mockResolvedValue(undefined)
+    deleteProject.mockResolvedValue(undefined)
     const { getByText } = render(
       <DeleteProjectButton projectId="p1" workspaceId="w1" />
     )
     fireEvent.click(getByText('Delete Project'))
     fireEvent.click(getByText('Delete'))
-    await waitFor(() => expect(mockDeleteProject).toHaveBeenCalledWith('p1'))
-    expect(mockPush).toHaveBeenCalledWith('/w1')
+    await waitFor(() => expect(deleteProject).toHaveBeenCalledWith('p1'))
+    expect(push).toHaveBeenCalledWith('/w1')
     expect(toast.success).toHaveBeenCalled()
   })
 
   it('shows error toast on failure', async () => {
-    mockDeleteProject.mockRejectedValue(new Error('fail'))
+    deleteProject.mockRejectedValue(new Error('fail'))
     const { getByText } = render(
       <DeleteProjectButton projectId="p1" workspaceId="w1" />
     )
     fireEvent.click(getByText('Delete Project'))
     fireEvent.click(getByText('Delete'))
-    await waitFor(() => expect(mockDeleteProject).toHaveBeenCalled())
+    await waitFor(() => expect(deleteProject).toHaveBeenCalled())
     expect(toast.error).toHaveBeenCalled()
   })
 })

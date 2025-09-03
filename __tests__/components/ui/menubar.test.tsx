@@ -3,7 +3,6 @@ import { render } from '@testing-library/react'
 import { MenubarItem } from '../../../components/ui/menubar'
 
 jest.mock('@radix-ui/react-menubar', () => {
-  const React = require('react')
   const Item = Object.assign(
     React.forwardRef((props: any, ref) => <div ref={ref} data-testid="item" {...props} />),
     { displayName: 'Item' }
