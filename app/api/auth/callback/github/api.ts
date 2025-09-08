@@ -26,6 +26,10 @@ function setCachedResult<T>(cacheKey: string, data: T): void {
   apiCache.set(cacheKey, { data, timestamp: Date.now() })
 }
 
+export function clearGitHubApiCache() {
+  apiCache.clear()
+}
+
 async function fetchWithRetry<T>(
   fn: () => Promise<T>,
   maxRetries = 3

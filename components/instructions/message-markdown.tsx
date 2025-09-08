@@ -1,5 +1,10 @@
 import { cn } from "@/lib/utils"
-import React, { FC, HTMLAttributes, useMemo } from "react"
+import React, {
+  FC,
+  HTMLAttributes,
+  ReactNode,
+  useMemo
+} from "react"
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
 import { MessageCodeBlock } from "./message-codeblock"
@@ -15,20 +20,20 @@ export const MessageMarkdown: FC<MessageMarkdownProps> = ({
   const remarkPlugins = useMemo(() => [remarkGfm, remarkMath], [])
   
   const components = useMemo(() => ({
-    p({ children }) {
+    p({ children }: { children?: ReactNode }) {
       return <p className="mb-2 last:mb-0">{children}</p>
     },
-    img({ ...props }) {
+    img(props: React.ImgHTMLAttributes<HTMLImageElement>) {
       return <img className="max-w-[67%]" {...props} />
     },
-    a({ href, children, ...props }) {
+    a({ href, children, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
       return (
         <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
           {children}
         </a>
       )
     },
-    code({ className, children, ...props }) {
+    code({ className, children, ...props }: { className?: string; children?: ReactNode }) {
       const childArray = React.Children.toArray(children)
       const firstChild = childArray[0] as React.ReactElement
       const firstChildAsString = React.isValidElement(firstChild)
