@@ -2,7 +2,7 @@
 
 import { GitHubFile } from "@/types/github"
 import { Octokit } from "@octokit/rest"
-import { getAuthenticatedOctokit } from "./auth"
+import { getAuthenticatedOctokit, getUserAuthenticatedOctokit } from "./auth"
 
 const MAX_RETRIES = 5
 const INITIAL_DELAY = 1000 // 1 second
@@ -80,7 +80,20 @@ async function fetchDirectoryContent(data: {
   const [organization, repo] = data.githubRepoFullName.split("/")
 
   try {
-    const octokit = await getAuthenticatedOctokit(data.installationId)
+    let octokit
+    
+    // In advanced mode, prefer user authentication when available
+    if (process.env.NEXT_PUBLIC_APP_MODE === "advanced") {
+      try {
+        octokit = await getUserAuthenticatedOctokit()
+      } catch (error) {
+        // Fall back to installation auth if user token is not available
+        octokit = await getAuthenticatedOctokit(data.installationId)
+      }
+    } else {
+      octokit = await getAuthenticatedOctokit(data.installationId)
+    }
+
     const { data: content } = await fetchWithRetry(octokit, {
       owner: organization,
       repo,

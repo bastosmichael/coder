@@ -1,6 +1,7 @@
 import { Octokit } from "@octokit/rest"
+import { getUserAuthenticatedOctokit } from "@/actions/github/auth"
 
-// Initialize Octokit with environment variable
+// Initialize Octokit with environment variable for simple mode
 const octokit = new Octokit({
   auth: process.env.GITHUB_PAT
 })
@@ -35,8 +36,20 @@ async function fetchWithRetry<T>(
 
 export async function fetchGitHubOrganizations(): Promise<any[]> {
   try {
+    let clientOctokit = octokit
+    
+    // Use user authentication in advanced mode
+    if (process.env.NEXT_PUBLIC_APP_MODE === "advanced") {
+      try {
+        clientOctokit = await getUserAuthenticatedOctokit()
+      } catch (_error) {
+        // Fall back to PAT if user token is not available
+        console.warn("User token not available, falling back to PAT")
+      }
+    }
+
     const organizations = await fetchWithRetry(async () => {
-      const { data } = await octokit.orgs.listForAuthenticatedUser()
+      const { data } = await clientOctokit.orgs.listForAuthenticatedUser()
       return data
     })
     return organizations
@@ -48,8 +61,20 @@ export async function fetchGitHubOrganizations(): Promise<any[]> {
 
 export async function fetchUserGitHubAccount(): Promise<any> {
   try {
+    let clientOctokit = octokit
+    
+    // Use user authentication in advanced mode
+    if (process.env.NEXT_PUBLIC_APP_MODE === "advanced") {
+      try {
+        clientOctokit = await getUserAuthenticatedOctokit()
+      } catch (_error) {
+        // Fall back to PAT if user token is not available
+        console.warn("User token not available, falling back to PAT")
+      }
+    }
+
     const user = await fetchWithRetry(async () => {
-      const { data } = await octokit.users.getAuthenticated()
+      const { data } = await clientOctokit.users.getAuthenticated()
       return data
     })
     return {
@@ -64,8 +89,20 @@ export async function fetchUserGitHubAccount(): Promise<any> {
 
 export async function fetchGitHubRepositories(orgId: string): Promise<any[]> {
   try {
+    let clientOctokit = octokit
+    
+    // Use user authentication in advanced mode
+    if (process.env.NEXT_PUBLIC_APP_MODE === "advanced") {
+      try {
+        clientOctokit = await getUserAuthenticatedOctokit()
+      } catch (_error) {
+        // Fall back to PAT if user token is not available
+        console.warn("User token not available, falling back to PAT")
+      }
+    }
+
     const repositories = await fetchWithRetry(async () => {
-      const { data } = await octokit.repos.listForOrg({ org: orgId })
+      const { data } = await clientOctokit.repos.listForOrg({ org: orgId })
       return data
     })
     return repositories
