@@ -5,6 +5,27 @@ const octokit = new Octokit({
   auth: process.env.GITHUB_PAT
 })
 
+// Simple in-memory cache for GitHub API responses
+const apiCache = new Map<string, { data: any; timestamp: number }>()
+const CACHE_TTL = 5 * 60 * 1000 // 5 minutes
+
+function getCacheKey(endpoint: string, params: Record<string, any>): string {
+  return `${endpoint}:${JSON.stringify(params)}`
+}
+
+function getCachedResult<T>(cacheKey: string): T | null {
+  const cached = apiCache.get(cacheKey)
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+    return cached.data
+  }
+  apiCache.delete(cacheKey)
+  return null
+}
+
+function setCachedResult<T>(cacheKey: string, data: T): void {
+  apiCache.set(cacheKey, { data, timestamp: Date.now() })
+}
+
 async function fetchWithRetry<T>(
   fn: () => Promise<T>,
   maxRetries = 3
@@ -35,10 +56,16 @@ async function fetchWithRetry<T>(
 
 export async function fetchGitHubOrganizations(): Promise<any[]> {
   try {
+    const cacheKey = getCacheKey('orgs', {})
+    const cached = getCachedResult<any[]>(cacheKey)
+    if (cached) return cached
+
     const organizations = await fetchWithRetry(async () => {
       const { data } = await octokit.orgs.listForAuthenticatedUser()
       return data
     })
+    
+    setCachedResult(cacheKey, organizations)
     return organizations
   } catch (error) {
     console.error("Error fetching GitHub organizations:", error)
@@ -64,10 +91,16 @@ export async function fetchUserGitHubAccount(): Promise<any> {
 
 export async function fetchGitHubRepositories(orgId: string): Promise<any[]> {
   try {
+    const cacheKey = getCacheKey('repos', { orgId })
+    const cached = getCachedResult<any[]>(cacheKey)
+    if (cached) return cached
+
     const repositories = await fetchWithRetry(async () => {
       const { data } = await octokit.repos.listForOrg({ org: orgId })
       return data
     })
+    
+    setCachedResult(cacheKey, repositories)
     return repositories
   } catch (error) {
     console.error("Error fetching GitHub repositories:", error)
