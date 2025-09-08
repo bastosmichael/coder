@@ -28,7 +28,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { FC, useState } from "react"
+import { FC, useState, useMemo, useCallback } from "react"
 import { CreateProjectButton } from "../projects/create-project-button"
 import { ThemeSwitcher } from "../utility/theme-switcher"
 import { WorkspaceSelect } from "../workspaces/workspace-select"
@@ -82,15 +82,15 @@ export const Dashboard: FC<DashboardProps> = ({
   const pathname = usePathname()
   const [openProject, setOpenProject] = useState<string | null>(null)
 
-  const toggleProject = (projectId: string) => {
+  const toggleProject = useCallback((projectId: string) => {
     setOpenProject(prev => (prev === projectId ? null : projectId))
-  }
+  }, [])
 
-  const filteredProjectLinks = PROJECT_LINKS.map(link => ({
+  const filteredProjectLinks = useMemo(() => PROJECT_LINKS.map(link => ({
     ...link,
     href: (workspaceId: string, projectId: string) =>
       `/${workspaceId}/${projectId}${link.href("", "")}`
-  }))
+  })), [])
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">

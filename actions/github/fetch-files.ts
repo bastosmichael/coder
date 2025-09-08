@@ -30,37 +30,52 @@ export async function fetchFiles(
 
   const octokit = await getAuthenticatedOctokit(installationId)
 
-  // Fetch the content of each file using Octokit with retry logic
-  const fetchPromises = filteredFiles.map(async (file: GitHubFile) => {
-    try {
-      const { data } = await fetchWithRetry(octokit, {
-        owner: file.owner,
-        repo: file.repo,
-        path: file.path,
-        ref: file.ref
-      })
+  // Process files in batches to avoid overwhelming the API
+  const BATCH_SIZE = 10
+  const results: (GitHubFileContent | null)[] = []
 
-      if (Array.isArray(data) || !("content" in data)) {
-        throw new Error(`Unexpected response for ${file.path}`)
+  for (let i = 0; i < filteredFiles.length; i += BATCH_SIZE) {
+    const batch = filteredFiles.slice(i, i + BATCH_SIZE)
+    
+    const batchPromises = batch.map(async (file: GitHubFile) => {
+      try {
+        const { data } = await fetchWithRetry(octokit, {
+          owner: file.owner,
+          repo: file.repo,
+          path: file.path,
+          ref: file.ref
+        })
+
+        if (Array.isArray(data) || !("content" in data)) {
+          throw new Error(`Unexpected response for ${file.path}`)
+        }
+
+        const content = Buffer.from(data.content, "base64").toString("utf-8")
+        const sanitizedContent = sanitizeFileContent(content)
+
+        return {
+          name: file.name,
+          path: file.path,
+          content: sanitizedContent
+        }
+      } catch (error) {
+        console.error("Error fetching file:", file, error)
+        // Return null for failed files instead of throwing
+        return null
       }
+    })
 
-      const content = Buffer.from(data.content, "base64").toString("utf-8")
-      const sanitizedContent = sanitizeFileContent(content)
-
-      return {
-        name: file.name,
-        path: file.path,
-        content: sanitizedContent
-      }
-    } catch (error) {
-      console.error("Error fetching file:", file, error)
-      // Return null for failed files instead of throwing
-      return null
+    // Wait for current batch to complete before starting next batch
+    const batchResults = await Promise.all(batchPromises)
+    results.push(...batchResults)
+    
+    // Small delay between batches to be respectful to GitHub API
+    if (i + BATCH_SIZE < filteredFiles.length) {
+      await new Promise(resolve => setTimeout(resolve, 100))
     }
-  })
+  }
 
-  // Wait for all fetch promises to resolve
-  const filesContent = await Promise.all(fetchPromises)
+  const filesContent = results
 
   // Filter out null results (failed fetches)
   return filesContent.filter((file): file is GitHubFileContent => file !== null)
