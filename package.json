@@ -108,7 +108,7 @@
     "dotenv": "^17.2.2",
     "drizzle-kit": "^0.31.4",
     "eslint": "^9.35.0",
-    "eslint-config-next": "^15.5.2",
+    "eslint-config-next": "^15.5.3",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-tailwindcss": "^3.18.2",
     "gpt-tokenizer": "^3.0.1",
