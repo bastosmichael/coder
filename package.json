@@ -105,7 +105,7 @@
     "@types/xml2js": "^0.4.14",
     "@typescript-eslint/eslint-plugin": "^8.44.1",
     "babel-jest": "^30.2.0",
-    "dotenv": "^17.2.2",
+    "dotenv": "^17.2.3",
     "drizzle-kit": "^0.31.5",
     "eslint": "^9.36.0",
     "eslint-config-next": "^15.5.4",
