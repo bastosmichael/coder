@@ -6,21 +6,22 @@ import { DataItem } from "../dashboard/reusable/data-item"
 import { DataList } from "../dashboard/reusable/data-list"
 import { Loader2, RefreshCw } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, useCallback, memo } from "react"
 
 interface IssuesListProps {
   issues: SelectIssue[]
   projectId: string
 }
 
-export function IssuesList({ issues, projectId }: IssuesListProps) {
+export const IssuesList = memo(function IssuesList({ issues, projectId }: IssuesListProps) {
   const router = useRouter()
   const [updating, setUpdating] = useState(false)
-  const handleIssueDelete = async (id: string) => {
+  
+  const handleIssueDelete = useCallback(async (id: string) => {
     await deleteIssue(id)
-  }
+  }, [])
 
-  const handleUpdateIssues = async () => {
+  const handleUpdateIssues = useCallback(async () => {
     setUpdating(true)
     try {
       await updateIssuesFromGitHub(projectId)
@@ -28,7 +29,7 @@ export function IssuesList({ issues, projectId }: IssuesListProps) {
     } finally {
       setUpdating(false)
     }
-  }
+  }, [projectId, router])
 
   return (
     <DataList
@@ -68,4 +69,4 @@ export function IssuesList({ issues, projectId }: IssuesListProps) {
       )}
     </DataList>
   )
-}
+})

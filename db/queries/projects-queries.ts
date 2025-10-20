@@ -168,10 +168,15 @@ export async function getProjectsByUserId(): Promise<SelectProject[]> {
 export async function getProjectsByWorkspaceId(
   workspaceId: string
 ): Promise<SelectProject[]> {
-  return db.query.projects.findMany({
-    where: eq(projectsTable.workspaceId, workspaceId),
-    orderBy: desc(projectsTable.updatedAt)
-  })
+  try {
+    return await db.query.projects.findMany({
+      where: eq(projectsTable.workspaceId, workspaceId),
+      orderBy: desc(projectsTable.updatedAt)
+    })
+  } catch (error) {
+    console.error(`Error getting projects for workspace ${workspaceId}:`, error)
+    throw error
+  }
 }
 
 export async function getAllProjects(): Promise<SelectProject[]> {
