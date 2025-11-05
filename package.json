@@ -26,7 +26,7 @@
     "@ai-sdk/google": "^2.0.28",
     "@ai-sdk/openai": "^2.0.62",
     "@anthropic-ai/sdk": "^0.68.0",
-    "@clerk/nextjs": "^6.34.1",
+    "@clerk/nextjs": "^6.34.3",
     "@clerk/themes": "^2.4.32",
     "@hookform/resolvers": "^5.2.2",
     "@neondatabase/serverless": "^1.0.2",
