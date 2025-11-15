@@ -10,11 +10,15 @@ jest.mock('@octokit/rest', () => {
   }
 })
 
-import { fetchGitHubOrganizations } from '../../../../app/api/auth/callback/github/api'
+import {
+  fetchGitHubOrganizations,
+  clearGitHubApiCache
+} from '../../../../app/api/auth/callback/github/api'
 
 describe('fetchGitHubOrganizations', () => {
   beforeEach(() => {
     listForAuthUser.mockReset()
+    clearGitHubApiCache()
   })
 
   it('returns organization list', async () => {
