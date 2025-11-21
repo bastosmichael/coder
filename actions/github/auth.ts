@@ -2,6 +2,8 @@
 
 import { createAppAuth } from "@octokit/auth-app"
 import { Octokit } from "@octokit/rest"
+import { getUserId } from "@/actions/auth/auth"
+import { getUserGithubToken } from "@/db/queries/user-github-tokens-queries"
 
 export async function getAuthenticatedOctokit(installationId: number | null) {
   let auth = ""
@@ -25,4 +27,19 @@ export async function getAuthenticatedOctokit(installationId: number | null) {
   }
 
   return new Octokit({ auth })
+}
+
+export async function getUserAuthenticatedOctokit() {
+  if (process.env.NEXT_PUBLIC_APP_MODE === "simple") {
+    return new Octokit({ auth: process.env.GITHUB_PAT! })
+  }
+
+  const userId = await getUserId()
+  const userToken = await getUserGithubToken(userId)
+  
+  if (!userToken) {
+    throw new Error("User GitHub token not found. Please reconnect your GitHub account.")
+  }
+
+  return new Octokit({ auth: userToken.accessToken })
 }
