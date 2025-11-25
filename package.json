@@ -22,7 +22,7 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^2.0.45",
+    "@ai-sdk/anthropic": "^2.0.47",
     "@ai-sdk/google": "^2.0.42",
     "@ai-sdk/openai": "^2.0.71",
     "@anthropic-ai/sdk": "^0.71.0",
