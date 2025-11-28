@@ -1,7 +1,7 @@
 "use server"
 
 import { GitHubRepository } from "@/types/github"
-import { getAuthenticatedOctokit } from "./auth"
+import { getAuthenticatedOctokit, getUserAuthenticatedOctokit } from "./auth"
 
 const MAX_RETRIES = 5
 
@@ -33,15 +33,28 @@ export const listRepos = async (
   fetchCount?: number
 ): Promise<GitHubRepository[]> => {
   try {
-    const octokit = await getAuthenticatedOctokit(installationId)
+    let octokit
     let repositories: any[] = []
     let page = 1
     const per_page = 100 // Max allowed by GitHub API
 
+    // In advanced mode, prefer user authentication when available
+    if (process.env.NEXT_PUBLIC_APP_MODE === "advanced") {
+      try {
+        octokit = await getUserAuthenticatedOctokit()
+      } catch (error) {
+        // Fall back to installation auth if user token is not available
+        octokit = await getAuthenticatedOctokit(installationId)
+      }
+    } else {
+      octokit = await getAuthenticatedOctokit(installationId)
+    }
+
     while (true) {
       let response: any
 
-      if (installationId) {
+      if (installationId && process.env.NEXT_PUBLIC_APP_MODE !== "advanced") {
+        // Use installation endpoints for simple mode
         response = await fetchWithBackoff(() =>
           octokit.apps.listReposAccessibleToInstallation({
             per_page,
@@ -50,10 +63,13 @@ export const listRepos = async (
         )
         repositories = repositories.concat(response.data.repositories)
       } else {
+        // Use user endpoints for advanced mode or when no installation ID
         response = await fetchWithBackoff(() =>
           octokit.request("GET /user/repos", {
             per_page,
-            page
+            page,
+            sort: "updated",
+            direction: "desc"
           })
         )
         repositories = repositories.concat(response.data)
