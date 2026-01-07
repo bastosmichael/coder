@@ -1,3 +1,4 @@
+export * from "./app-config-schema"
 export * from "./embedded-branches-schema"
 export * from "./embedded-files-schema"
 export * from "./instructions-schema"
