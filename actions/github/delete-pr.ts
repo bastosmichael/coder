@@ -8,7 +8,7 @@ export async function deleteGitHubPR(
   prLink: string,
   branchName: string
 ) {
-  const octokit = await getAuthenticatedOctokit(project.githubInstallationId!)
+  const octokit = await getAuthenticatedOctokit()
   const [owner, repo] = project.githubRepoFullName!.split("/")
 
   // Extract PR number from the link

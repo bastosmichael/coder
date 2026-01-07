@@ -16,14 +16,12 @@ import { updateProject } from '../../../db/queries/projects-queries'
 describe('ProjectSetup', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    process.env.NEXT_PUBLIC_APP_MODE = 'simple'
   })
 
   const project = {
     id: 'p',
     workspaceId: 'w',
     name: 'proj',
-    githubInstallationId: 1,
     githubRepoFullName: null,
     githubTargetBranch: null
   } as any
@@ -40,7 +38,7 @@ describe('ProjectSetup', () => {
 
     fireEvent.click(getByText('Select a repository'))
     fireEvent.click(getByText('R1'))
-    await waitFor(() => expect(listBranches).toHaveBeenCalledWith(1, 'org/R1'))
+    await waitFor(() => expect(listBranches).toHaveBeenCalledWith('org/R1'))
 
     fireEvent.click(getByText('Select target branch'))
     fireEvent.click(getByText('main'))

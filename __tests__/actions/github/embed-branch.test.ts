@@ -46,8 +46,7 @@ describe('embedBranch', () => {
       projectId: 'p',
       githubRepoFullName: 'r',
       branchName: 'b',
-      embeddedBranchId: 'e',
-      installationId: 1
+      embeddedBranchId: 'e'
     })
     await promise
     expect(deleteAllEmbeddedFilesByEmbeddedBranchId).toHaveBeenCalledWith('e')

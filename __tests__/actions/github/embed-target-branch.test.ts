@@ -25,8 +25,7 @@ describe('embedTargetBranch', () => {
   const baseParams = {
     projectId: 'p',
     githubRepoFullName: 'o/r',
-    branchName: 'main',
-    installationId: 1
+    branchName: 'main'
   }
 
   beforeEach(() => {

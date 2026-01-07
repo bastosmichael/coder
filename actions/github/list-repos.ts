@@ -24,7 +24,6 @@ async function fetchWithBackoff<T>(fn: () => Promise<T>, retries = 0): Promise<T
 }
 
 export const listRepos = async (
-  installationId: number | null,
   organizationId: string | null,
   /**
    * Optionally limit the number of repositories returned. If omitted, all
@@ -33,31 +32,19 @@ export const listRepos = async (
   fetchCount?: number
 ): Promise<GitHubRepository[]> => {
   try {
-    const octokit = await getAuthenticatedOctokit(installationId)
+    const octokit = await getAuthenticatedOctokit()
     let repositories: any[] = []
     let page = 1
     const per_page = 100 // Max allowed by GitHub API
 
     while (true) {
-      let response: any
-
-      if (installationId) {
-        response = await fetchWithBackoff(() =>
-          octokit.apps.listReposAccessibleToInstallation({
-            per_page,
-            page
-          })
-        )
-        repositories = repositories.concat(response.data.repositories)
-      } else {
-        response = await fetchWithBackoff(() =>
-          octokit.request("GET /user/repos", {
-            per_page,
-            page
-          })
-        )
-        repositories = repositories.concat(response.data)
-      }
+      const response = await fetchWithBackoff(() =>
+        octokit.request("GET /user/repos", {
+          per_page,
+          page
+        })
+      )
+      repositories = repositories.concat(response.data)
 
       if (response.data.length < per_page) break
       page++

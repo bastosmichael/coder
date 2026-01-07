@@ -16,18 +16,16 @@ interface EmbedTargetBranchParams {
   projectId: string
   githubRepoFullName: string
   branchName: string
-  installationId: number | null
 }
 
 export async function embedTargetBranch({
   projectId,
   githubRepoFullName,
-  branchName,
-  installationId
+  branchName
 }: EmbedTargetBranchParams) {
   try {
     const [owner, repo] = githubRepoFullName.split("/")
-    const octokit = await getAuthenticatedOctokit(installationId)
+    const octokit = await getAuthenticatedOctokit()
 
     // Fetch the latest commit hash
     const { data: branchData } = await octokit.repos.getBranch({
@@ -59,13 +57,12 @@ export async function embedTargetBranch({
       let retryCount = 0
       while (retryCount < MAX_RETRY_ATTEMPTS) {
         try {
-          await embedBranch({
-            projectId,
-            githubRepoFullName,
-            branchName,
-            embeddedBranchId: embeddedBranch.id,
-            installationId
-          })
+      await embedBranch({
+        projectId,
+        githubRepoFullName,
+        branchName,
+        embeddedBranchId: embeddedBranch.id
+      })
           break
         } catch (error) {
           console.error(

@@ -2,9 +2,7 @@ import React from "react"
 import { render, screen } from "@testing-library/react"
 
 jest.mock("../../components/integrations/integrations", () => ({
-  Integrations: jest.fn(({ isGitHubConnected }) => (
-    <div>integrations {String(isGitHubConnected)}</div>
-  ))
+  Integrations: jest.fn(() => <div>integrations</div>)
 }))
 
 jest.mock("../../components/utility/not-found", () => ({
@@ -51,16 +49,13 @@ describe("IntegrationsPage", () => {
     expect(screen.getByText("Project not found")).toBeInTheDocument()
   })
 
-  it("renders integrations with connection state", async () => {
+  it("renders integrations", async () => {
     getWorkspaceById.mockResolvedValue({ id: "w" })
-    getProjectById.mockResolvedValue({ githubInstallationId: 1 })
+    getProjectById.mockResolvedValue({ id: "p" })
     const Page = await IntegrationsPage({
       params: Promise.resolve({ workspaceId: "w", projectId: "p" })
     } as any)
     render(Page as any)
-    expect(IntegrationsMock).toHaveBeenCalledWith(
-      { isGitHubConnected: true },
-      {}
-    )
+    expect(IntegrationsMock).toHaveBeenCalledWith({}, {})
   })
 })

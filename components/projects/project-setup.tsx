@@ -16,7 +16,6 @@ import { cn } from "@/lib/utils"
 import { GitHubRepository } from "@/types/github"
 import { useParams, useRouter } from "next/navigation"
 import { FC, HTMLAttributes, useEffect, useState } from "react"
-import { ConnectGitHub } from "../integrations/connect-github"
 import { DeleteProjectButton } from "./delete-project-button"
 
 interface ProjectSetupProps extends HTMLAttributes<HTMLDivElement> {
@@ -46,25 +45,17 @@ export const ProjectSetup: FC<ProjectSetupProps> = ({
   }
 
   useEffect(() => {
-    if (
-      selectedRepo &&
-      (process.env.NEXT_PUBLIC_APP_MODE === "simple" ||
-        project.githubInstallationId)
-    ) {
+    if (selectedRepo) {
       setIsBranchesLoading(true)
-      listBranches(project.githubInstallationId, selectedRepo)
+      listBranches(selectedRepo)
         .then(setBranches)
         .catch(console.error)
         .finally(() => setIsBranchesLoading(false))
     }
-  }, [selectedRepo, project.githubInstallationId])
+  }, [selectedRepo])
 
   const isSetupComplete =
-    (process.env.NEXT_PUBLIC_APP_MODE === "simple" ||
-      project.githubInstallationId) &&
-    projectName &&
-    selectedRepo &&
-    targetBranch
+    projectName && selectedRepo && targetBranch
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -94,87 +85,64 @@ export const ProjectSetup: FC<ProjectSetupProps> = ({
     <div className={cn("bg-secondary/50 rounded border", props.className)}>
       <div className="flex h-full max-h-screen flex-col gap-2">
         <div className="w-full min-w-[400px] gap-6 space-y-6 p-12">
-          {process.env.NEXT_PUBLIC_APP_MODE !== "simple" &&
-            [
-              {
-                title: "Connect to GitHub",
-                component: (
-                  <ConnectGitHub
-                    isGitHubConnected={!!project.githubInstallationId}
-                  />
-                )
-              }
-            ].map(({ title, component }) => (
-              <div key={title} className="space-y-1">
-                <div className="font-semibold">{title}</div>
-                {component}
-              </div>
-            ))}
+          <div>
+            <div className="mb-1 font-semibold">Select GitHub Repository</div>
 
-          {project.githubInstallationId != null && (
-            <>
-              <div>
-                <div className="mb-1 font-semibold">
-                  Select GitHub Repository
-                </div>
+            <Select
+              onValueChange={value => handleRepoSelect(value)}
+              value={selectedRepo || ""}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select a repository" />
+              </SelectTrigger>
 
-                <Select
-                  onValueChange={value => handleRepoSelect(value)}
-                  value={selectedRepo || ""}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a repository" />
-                  </SelectTrigger>
+              <SelectContent>
+                {repos.map(repo => (
+                  <SelectItem key={repo.id} value={repo.full_name}>
+                    {repo.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-                  <SelectContent>
-                    {repos.map(repo => (
-                      <SelectItem key={repo.id} value={repo.full_name}>
-                        {repo.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+          <div>
+            <div className="mb-1 font-semibold">Project Name</div>
 
-              <div>
-                <div className="mb-1 font-semibold">Project Name</div>
+            <Input
+              type="text"
+              value={projectName}
+              onChange={e => setProjectName(e.target.value)}
+              placeholder="Enter project name"
+              required
+            />
+          </div>
 
-                <Input
-                  type="text"
-                  value={projectName}
-                  onChange={e => setProjectName(e.target.value)}
-                  placeholder="Enter project name"
-                  required
+          <div>
+            <div className="mb-1 font-semibold">Target Branch</div>
+            <Select
+              value={targetBranch || ""}
+              onValueChange={setTargetBranch}
+              disabled={!selectedRepo || isBranchesLoading}
+            >
+              <SelectTrigger>
+                <SelectValue
+                  placeholder={
+                    isBranchesLoading
+                      ? "Loading branches..."
+                      : "Select target branch"
+                  }
                 />
-              </div>
-
-              <div>
-                <div className="mb-1 font-semibold">Target Branch</div>
-                <Select
-                  value={targetBranch || ""}
-                  onValueChange={setTargetBranch}
-                  disabled={!selectedRepo || isBranchesLoading}
-                >
-                  <SelectTrigger>
-                    <SelectValue
-                      placeholder={
-                        isBranchesLoading
-                          ? "Loading branches..."
-                          : "Select target branch"
-                      }
-                    />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {branches.map(branch => (
-                      <SelectItem key={branch} value={branch}>
-                        {branch}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </>
-          )}
+              </SelectTrigger>
+              <SelectContent>
+                {branches.map(branch => (
+                  <SelectItem key={branch} value={branch}>
+                    {branch}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
           <Button
             className="w-full"

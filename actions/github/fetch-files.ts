@@ -6,7 +6,6 @@ import { fetchWithRetry } from "./fetch-codebase"
 import { sanitizeFileContent } from "@/lib/utils"
 
 export async function fetchFiles(
-  installationId: number | null,
   files: GitHubFile[]
 ) {
   // List of file extensions to exclude
@@ -28,7 +27,7 @@ export async function fetchFiles(
       !excludedExtensions.some(extension => file.name.endsWith(extension))
   )
 
-  const octokit = await getAuthenticatedOctokit(installationId)
+  const octokit = await getAuthenticatedOctokit()
 
   // Fetch the content of each file using Octokit with retry logic
   const fetchPromises = filteredFiles.map(async (file: GitHubFile) => {

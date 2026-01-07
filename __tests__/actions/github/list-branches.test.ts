@@ -17,14 +17,14 @@ describe('listBranches', () => {
       .mockResolvedValueOnce({ data: [{ name: 'dev' }] })
       .mockResolvedValueOnce({ data: [] })
 
-    const result = await listBranches(null, 'owner/repo')
+    const result = await listBranches('owner/repo')
     expect(result).toEqual(['main', 'dev'])
     expect(mockOctokit.repos.listBranches).toHaveBeenCalledTimes(3)
   })
 
   it('returns empty array on error', async () => {
     mockOctokit.repos.listBranches.mockRejectedValue(new Error('fail'))
-    const branches = await listBranches(null, 'owner/repo')
+    const branches = await listBranches('owner/repo')
     expect(branches).toEqual([])
   })
 })

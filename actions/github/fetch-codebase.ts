@@ -33,7 +33,6 @@ export async function fetchCodebaseForBranch(data: {
   githubRepoFullName: string
   path: string
   branch: string
-  installationId: number | null
 }) {
   try {
     const contents = await fetchDirectoryContent(data)
@@ -75,12 +74,11 @@ async function fetchDirectoryContent(data: {
   githubRepoFullName: string
   path: string
   branch: string
-  installationId: number | null
 }) {
   const [organization, repo] = data.githubRepoFullName.split("/")
 
   try {
-    const octokit = await getAuthenticatedOctokit(data.installationId)
+    const octokit = await getAuthenticatedOctokit()
     const { data: content } = await fetchWithRetry(octokit, {
       owner: organization,
       repo,
