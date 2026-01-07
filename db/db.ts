@@ -15,6 +15,7 @@ if (!databaseUrl) {
 
 const dbSchema = {
   // Tables
+  appConfig: schema.appConfigTable,
   profiles: schema.profilesTable,
   projects: schema.projectsTable,
   issues: schema.issuesTable,

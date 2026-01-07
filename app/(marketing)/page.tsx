@@ -1,10 +1,25 @@
-import MainSection from "@/components/marketing/main-section"
+import { AppConfigForm } from "@/components/marketing/app-config-form"
+import { getAppConfigByUserId } from "@/db/queries/app-config-queries"
 
 export default async function MarketingPage() {
+  const appConfig = await getAppConfigByUserId()
+
   return (
-    <div className="relative mx-auto mt-24 max-w-7xl px-6 md:px-8">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,theme(colors.primary/20),transparent)]" />
-      <MainSection />
+    <div className="mx-auto flex min-h-screen max-w-3xl items-center px-6 py-16 md:px-8">
+      <div className="w-full">
+        <AppConfigForm
+          defaultValues={
+            appConfig
+              ? {
+                  anthropicApiKey: appConfig.anthropicApiKey,
+                  openaiApiKey: appConfig.openaiApiKey,
+                  grokApiKey: appConfig.grokApiKey,
+                  githubPat: appConfig.githubPat
+                }
+              : undefined
+          }
+        />
+      </div>
     </div>
   )
 }
