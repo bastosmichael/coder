@@ -50,7 +50,7 @@ Follow these instructions to set up a simple environment that supports AI featur
 2. **Install Dependencies**
 
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. **Set Up Environment Variables**
@@ -70,7 +70,7 @@ Follow these instructions to set up a simple environment that supports AI featur
 
 4. **Run the Application**
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
 ### Database Setup with Neon & Drizzle
@@ -81,7 +81,7 @@ Follow these instructions to set up a simple environment that supports AI featur
 
    ```bash
    vercel env pull .env.development.local
-   npm run db:migrate
+   pnpm run db:migrate
    ```
 
 This ensures your local database schema matches the one deployed on Vercel.
@@ -111,7 +111,7 @@ To deploy Coder to Vercel and utilize its AI capabilities:
 
    ```bash
    npx vercel env pull .env.development.local
-   npm run db:migrate
+   pnpm run db:migrate
    ```
 
 For more detailed deployment instructions, please refer to our [deployment guide](https://docs.coder.ai/deployment).
