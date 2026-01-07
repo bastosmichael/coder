@@ -144,10 +144,8 @@ describe("workspace nested pages", () => {
   })
 
   it("renders settings page", async () => {
-    process.env.NEXT_PUBLIC_APP_MODE = "simple"
     getProjectById.mockResolvedValue({
       id: "p",
-      githubInstallationId: "i",
       githubRepoFullName: "r"
     })
     getWorkspaceById.mockResolvedValue({ githubOrganizationName: "org" })
@@ -161,7 +159,6 @@ describe("workspace nested pages", () => {
         className: "mt-6",
         project: {
           id: "p",
-          githubInstallationId: "i",
           githubRepoFullName: "r"
         },
         repos: ["repo"]

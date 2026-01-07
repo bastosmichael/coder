@@ -1,12 +1,11 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 import { AnimatePresence, motion, easeOut } from "framer-motion"
 import { AlignJustify, XIcon } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { Button, buttonVariants } from "../ui/button"
+import { Button } from "../ui/button"
 
 const menuItem: any = []
 
@@ -132,30 +131,9 @@ export function SiteHeader() {
 
           <div className="ml-auto flex h-full items-center md:ml-0">
             <div className="ml-auto flex h-full items-center md:ml-0">
-              {process.env.NEXT_PUBLIC_APP_MODE === "simple" ? (
-                <>
-                  <Link href="/onboarding">
-                    <Button>Workspace &rarr;</Button>
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <SignedOut>
-                    <div
-                      className={cn(
-                        buttonVariants({ variant: "secondary" }),
-                        "mr-6 text-sm"
-                      )}
-                    >
-                      <SignInButton>Login</SignInButton>
-                    </div>
-                  </SignedOut>
-
-                  <SignedIn>
-                    <UserButton />
-                  </SignedIn>
-                </>
-              )}
+              <Link href="/onboarding">
+                <Button>Workspace &rarr;</Button>
+              </Link>
             </div>
           </div>
           <button

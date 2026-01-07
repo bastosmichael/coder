@@ -9,7 +9,7 @@ export async function generatePR(
   project: SelectProject,
   parsedResponse: AIParsedResponse
 ): Promise<{ prLink: string | null; branchName: string }> {
-  const octokit = await getAuthenticatedOctokit(project.githubInstallationId!)
+  const octokit = await getAuthenticatedOctokit()
   const [owner, repo] = project.githubRepoFullName!.split("/")
 
   // Create a new branch

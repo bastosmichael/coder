@@ -4,7 +4,7 @@ import { getAuthenticatedOctokit } from '../../../actions/github/auth'
 jest.mock('../../../actions/github/auth', () => ({ getAuthenticatedOctokit: jest.fn() }))
 
 describe('deleteGitHubPR', () => {
-  const project = { githubInstallationId: 1, githubRepoFullName: 'owner/repo' } as any
+  const project = { githubRepoFullName: 'owner/repo' } as any
   const mockOctokit = {
     pulls: { update: jest.fn() },
     git: { deleteRef: jest.fn() }

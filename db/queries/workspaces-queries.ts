@@ -23,42 +23,31 @@ export async function createWorkspaces(
   const userId = await getUserId()
 
   try {
-    if (process.env.NEXT_PUBLIC_APP_MODE === "simple") {
-      // Fetch organizations and user account using the PAT
-      const [organizations, userAccount] = await Promise.all([
-        fetchGitHubOrganizations(),
-        fetchUserGitHubAccount()
-      ])
+    // Fetch organizations and user account using the PAT
+    const [organizations, userAccount] = await Promise.all([
+      fetchGitHubOrganizations(),
+      fetchUserGitHubAccount()
+    ])
 
-      const allEntities = [...organizations, userAccount]
+    const allEntities = [...organizations, userAccount]
 
-      const workspaceInsertions = allEntities.map(async entity => {
-        return db
-          .insert(workspacesTable)
-          .values({
-            name: `${entity.login}`,
-            userId,
-            githubOrganizationId: entity.id,
-            githubOrganizationName: entity.login
-          })
-          .returning()
-      })
+    const workspaceInsertions = allEntities.map(async entity => {
+      return db
+        .insert(workspacesTable)
+        .values({
+          name: `${entity.login}`,
+          userId,
+          githubOrganizationId: entity.id,
+          githubOrganizationName: entity.login
+        })
+        .returning()
+    })
 
-      const results = await Promise.all(workspaceInsertions)
-
-      revalidatePath("/")
-
-      return results.flat()
-    }
-
-    const [result] = await db
-      .insert(workspacesTable)
-      .values({ name: _data.name, userId })
-      .returning()
+    const results = await Promise.all(workspaceInsertions)
 
     revalidatePath("/")
 
-    return [result]
+    return results.flat()
   } catch (error) {
     console.error("Error creating workspace records:", error)
     throw error

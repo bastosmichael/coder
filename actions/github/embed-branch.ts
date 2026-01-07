@@ -19,15 +19,8 @@ export async function embedBranch(data: {
   githubRepoFullName: string
   branchName: string
   embeddedBranchId: string
-  installationId: number | null
 }) {
-  const {
-    projectId,
-    githubRepoFullName,
-    branchName,
-    embeddedBranchId,
-    installationId
-  } = data
+  const { projectId, githubRepoFullName, branchName, embeddedBranchId } = data
 
   try {
     // clear branch embeddings
@@ -37,12 +30,11 @@ export async function embedBranch(data: {
     const codebase = await fetchCodebaseForBranch({
       githubRepoFullName,
       path: "",
-      branch: branchName,
-      installationId
+      branch: branchName
     })
 
     // fetch file content
-    const files = await fetchFiles(installationId, codebase)
+    const files = await fetchFiles(codebase)
 
     // tokenize files
     const tokenizedFiles = await tokenizeFiles(files)

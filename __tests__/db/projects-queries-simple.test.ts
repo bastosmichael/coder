@@ -41,12 +41,11 @@ jest.mock('../../db/db', () => {
 
 jest.mock('../../actions/auth/auth', () => ({ getUserId: jest.fn() }))
 
-describe('createProjects simple mode', () => {
+describe('createProjects', () => {
   const queries = require('../../db/queries/projects-queries')
   const returning = db.returning as jest.Mock
   beforeEach(() => {
     jest.clearAllMocks()
-    process.env.NEXT_PUBLIC_APP_MODE = 'simple'
     jest.spyOn(console, 'error').mockImplementation(() => {})
   })
   afterEach(() => {
@@ -71,8 +70,8 @@ describe('createProjects simple mode', () => {
       { id: 'w', githubOrganizationId: '1', githubOrganizationName: 'org' }
     ])
 
-    expect(listRepos).toHaveBeenCalledWith(null, 'org')
-    expect(listBranches).toHaveBeenCalledWith(null, 'org/repo')
+    expect(listRepos).toHaveBeenCalledWith('org')
+    expect(listBranches).toHaveBeenCalledWith('org/repo')
     expect(addInstructionToTemplate).toHaveBeenCalledWith('t', 'i')
     expect(addInstructionToIssue).toHaveBeenCalledTimes(5)
     expect(res).toEqual([{ id: 'p', workspaceId: 'w' }])

@@ -1,5 +1,3 @@
-jest.mock('@octokit/auth-app', () => ({ createAppAuth: jest.fn() }))
-jest.mock('@octokit/rest', () => ({ Octokit: jest.fn() }))
 jest.mock('../../../actions/github/auth', () => ({ getAuthenticatedOctokit: jest.fn() }))
 
 import { fetchCodebaseForBranch, fetchWithRetry } from '../../../actions/github/fetch-codebase'
@@ -32,7 +30,7 @@ import { getAuthenticatedOctokit } from '../../../actions/github/auth'
 
 describe('fetchCodebaseForBranch', () => {
   const mockOctokit = { repos: { getContent: jest.fn() } }
-  const baseParams = { githubRepoFullName: 'o/r', path: '', branch: 'main', installationId: 1 }
+  const baseParams = { githubRepoFullName: 'o/r', path: '', branch: 'main' }
 
   beforeEach(() => {
     jest.resetAllMocks()
