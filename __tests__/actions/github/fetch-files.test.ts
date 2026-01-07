@@ -26,7 +26,7 @@ describe('fetchFiles', () => {
       { name: 'package-lock.json', path: 'package-lock.json', owner: 'o', repo: 'r', ref: 'main' }
     ] as any;
 
-    const result = await fetchFiles(1, files);
+    const result = await fetchFiles(files);
     expect(result).toEqual([{ name: 'keep.ts', path: 'src/keep.ts', content: 'hello' }]);
     expect(sanitizeFileContent).toHaveBeenCalledWith('hello');
     expect(fetchWithRetry).toHaveBeenCalledTimes(1);
@@ -35,7 +35,7 @@ describe('fetchFiles', () => {
   it('returns empty result when fetch fails', async () => {
     (fetchWithRetry as jest.Mock).mockRejectedValue(new Error('fail'));
     const files = [{ name: 'keep.ts', path: 'src/keep.ts', owner: 'o', repo: 'r', ref: 'main' }] as any;
-    const result = await fetchFiles(1, files);
+    const result = await fetchFiles(files);
     expect(result).toEqual([]);
   });
 });

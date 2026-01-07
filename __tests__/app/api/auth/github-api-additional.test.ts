@@ -1,25 +1,20 @@
 var getAuthUser: jest.Mock
 var getRepos: jest.Mock
-var createRepo: jest.Mock
 var listIssues: jest.Mock
 var listPulls: jest.Mock
-var auth: jest.Mock
 
 jest.mock('@octokit/rest', () => {
   getAuthUser = jest.fn()
   getRepos = jest.fn()
-  createRepo = jest.fn()
   listIssues = jest.fn()
   listPulls = jest.fn()
-  auth = jest.fn()
   return {
     __esModule: true,
     Octokit: jest.fn().mockImplementation(() => ({
       users: { getAuthenticated: getAuthUser },
-      repos: { listForOrg: getRepos, createInOrg: createRepo },
+      repos: { listForOrg: getRepos },
       issues: { listForRepo: listIssues },
-      pulls: { list: listPulls },
-      auth
+      pulls: { list: listPulls }
     }))
   }
 })
@@ -29,11 +24,9 @@ global.fetch = jest.fn()
 import {
   fetchUserGitHubAccount,
   fetchGitHubRepositories,
-  createGitHubRepository,
   fetchGitHubRepoIssues,
   fetchOpenGitHubRepoIssues,
-  fetchOpenGitHubRepoPullRequests,
-  getGitHubAccessToken
+  fetchOpenGitHubRepoPullRequests
 } from '../../../../app/api/auth/callback/github/api'
 
 describe('github api helpers', () => {
@@ -56,13 +49,6 @@ describe('github api helpers', () => {
     expect(repos).toEqual([{ id: 1 }])
   })
 
-  it('creates repository and returns data', async () => {
-    createRepo.mockResolvedValue({ data: { id: 2 } })
-    const repo = await createGitHubRepository('org', 'name', 't')
-    expect(createRepo).toHaveBeenCalledWith({ org: 'org', name: 'name', private: true })
-    expect(repo).toEqual({ id: 2 })
-  })
-
   it('fetches repo issues', async () => {
     listIssues.mockResolvedValue({ data: [{ id: 3 }, { id: 4, pull_request: {} }] })
     const issues = await fetchGitHubRepoIssues('o/r')
@@ -81,15 +67,5 @@ describe('github api helpers', () => {
     const prs = await fetchOpenGitHubRepoPullRequests('o/r')
     expect(listPulls).toHaveBeenCalledWith({ owner: 'o', repo: 'r', state: 'open' })
     expect(prs).toEqual([{ id: 5 }])
-  })
-
-  it('obtains access token via fetch', async () => {
-    ;(fetch as jest.Mock).mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({ access_token: 'z' })
-    })
-    const token = await getGitHubAccessToken('c')
-    expect(fetch).toHaveBeenCalled()
-    expect(token).toBe('z')
   })
 })

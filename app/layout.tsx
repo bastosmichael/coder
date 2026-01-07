@@ -1,8 +1,6 @@
 import { Toaster } from "@/components/ui/sonner"
 import { ThemeProvider } from "@/components/utility/theme-provider"
 import { cn } from "@/lib/utils"
-import { ClerkProvider } from "@clerk/nextjs"
-import { dark } from "@clerk/themes"
 import type { Metadata } from "next"
 import { Inter as FontSans } from "next/font/google"
 import "./globals.css"
@@ -22,9 +20,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const appMode = process.env.NEXT_PUBLIC_APP_MODE
-
-  const content = (
+  return (
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
@@ -42,19 +38,5 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
-  )
-
-  if (appMode === "simple") {
-    return content
-  }
-
-  return (
-    <ClerkProvider
-      appearance={{
-        baseTheme: dark
-      }}
-    >
-      {content}
-    </ClerkProvider>
   )
 }

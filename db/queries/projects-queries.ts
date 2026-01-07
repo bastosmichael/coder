@@ -34,11 +34,7 @@ export async function createProjects(workspaces: any[]): Promise<any[]> {
         const organizationId = workspace.githubOrganizationName
         let repositories: any[] = []
 
-        // In advanced mode we don't yet have an installation ID to
-        // authenticate the GitHub App, so skip repo fetching.
-        if (process.env.NEXT_PUBLIC_APP_MODE === "simple") {
-          repositories = await listRepos(null, organizationId)
-        }
+        repositories = await listRepos(organizationId)
 
         const projects = await Promise.all(
           repositories.map(async (repo: any) => {
@@ -51,7 +47,7 @@ export async function createProjects(workspaces: any[]): Promise<any[]> {
             }
 
             let githubTargetBranch = null
-            const branches = await listBranches(null, repo.full_name)
+            const branches = await listBranches(repo.full_name)
             if (branches.includes("main")) {
               githubTargetBranch = "main"
             } else if (branches.includes("master")) {
@@ -85,7 +81,7 @@ export async function createProjects(workspaces: any[]): Promise<any[]> {
 
         return projects
       } else {
-        // Advanced mode - create a bare project for the workspace if none exists
+        // Create a bare project for the workspace if none exists
         const existing = await getProjectsByWorkspaceId(workspace.id)
         if (existing.length > 0) {
           return existing
