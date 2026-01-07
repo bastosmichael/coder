@@ -50,13 +50,15 @@ beforeAll(() => {
 })
 
 describe('issue-view utilities', () => {
+  let consoleErrorSpy: jest.SpyInstance
+
   beforeEach(() => {
     jest.clearAllMocks()
-    jest.spyOn(console, 'error').mockImplementation(() => {})
+    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
   })
 
   afterEach(() => {
-    ;(console.error as jest.Mock).mockRestore()
+    consoleErrorSpy.mockRestore()
   })
 
   it('converts xml to markdown', async () => {
