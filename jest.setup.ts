@@ -24,6 +24,14 @@ afterAll(() => {
   logSpy.mockRestore()
 })
 
+jest.mock('react-syntax-highlighter', () => ({
+  Prism: ({ children }: { children?: unknown }) => children ?? null,
+}))
+
+jest.mock('react-syntax-highlighter/dist/cjs/styles/prism', () => ({
+  oneDark: {},
+}))
+
 // Basic ResizeObserver mock for components relying on it
 class ResizeObserver {
   observe() {}
