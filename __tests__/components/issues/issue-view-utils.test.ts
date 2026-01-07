@@ -58,7 +58,7 @@ describe('issue-view utilities', () => {
   })
 
   afterEach(() => {
-    consoleErrorSpy.mockRestore()
+    consoleErrorSpy?.mockRestore()
   })
 
   it('converts xml to markdown', async () => {
