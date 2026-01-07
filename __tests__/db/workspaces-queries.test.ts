@@ -50,16 +50,7 @@ beforeEach(() => {
 })
 
 describe('workspaces queries', () => {
-  const originalEnv = process.env
-  beforeEach(() => {
-    process.env = { ...originalEnv }
-  })
-  afterEach(() => {
-    process.env = originalEnv
-  })
-
-  it('creates workspaces in simple mode', async () => {
-    process.env.NEXT_PUBLIC_APP_MODE = 'simple'
+  it('creates workspaces from GitHub organizations and user', async () => {
     ;(getUserId as jest.Mock).mockResolvedValue('u')
     ;(fetchGitHubOrganizations as jest.Mock).mockResolvedValue([{ id: '1', login: 'org' }])
     ;(fetchUserGitHubAccount as jest.Mock).mockResolvedValue({ id: '2', login: 'me' })
@@ -69,16 +60,6 @@ describe('workspaces queries', () => {
     expect(valuesMock).toHaveBeenCalledWith({ name: 'org', userId: 'u', githubOrganizationId: '1', githubOrganizationName: 'org' })
     expect(revalidatePath).toHaveBeenCalledWith('/')
     expect(res).toEqual([{ id: 'w' }, { id: 'w' }])
-  })
-
-  it('creates workspaces in advanced mode', async () => {
-    process.env.NEXT_PUBLIC_APP_MODE = 'advanced'
-    ;(getUserId as jest.Mock).mockResolvedValue('u')
-    returningMock.mockResolvedValue([{ id: 'w' }])
-    const res = await createWorkspaces({ name: 'A' } as any)
-    expect(insertMock).toHaveBeenCalled()
-    expect(valuesMock).toHaveBeenCalledWith({ name: 'A', userId: 'u' })
-    expect(res).toEqual([{ id: 'w' }])
   })
 
   it('creates single workspace', async () => {

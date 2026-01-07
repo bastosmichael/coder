@@ -4,7 +4,7 @@ import { getAuthenticatedOctokit } from '../../../actions/github/auth'
 jest.mock('../../../actions/github/auth', () => ({ getAuthenticatedOctokit: jest.fn() }))
 
 describe('generatePR', () => {
-  const project = { githubInstallationId: 1, githubRepoFullName: 'o/r', githubTargetBranch: 'main' } as any
+  const project = { githubRepoFullName: 'o/r', githubTargetBranch: 'main' } as any
   const mockOctokit = {
     git: {
       getRef: jest.fn(),

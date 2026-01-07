@@ -26,6 +26,5 @@ export default async function IntegrationsPage({
     return <NotFound message="Project not found" />
   }
 
-  const isGitHubConnected = !!project.githubInstallationId
-  return <Integrations isGitHubConnected={isGitHubConnected} />
+  return <Integrations />
 }

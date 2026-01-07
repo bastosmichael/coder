@@ -15,7 +15,6 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { SelectProject, SelectWorkspace } from "@/db/schema"
 import { cn } from "@/lib/utils"
-import { UserButton } from "@clerk/nextjs"
 import {
   ChevronDown,
   ChevronRight,
@@ -167,14 +166,7 @@ export const Dashboard: FC<DashboardProps> = ({
           <div className="mt-auto border-t p-4">
             <div className="flex items-center justify-between truncate">
               <div className="flex items-center gap-2">
-                {process.env.NEXT_PUBLIC_APP_MODE === "simple" ? (
-                  <div className="truncate font-light">Coder</div>
-                ) : (
-                  <>
-                    <UserButton />
-                    <div className="truncate font-light">Coder Pro</div>
-                  </>
-                )}
+                <div className="truncate font-light">Coder</div>
               </div>
               <ThemeSwitcher />
             </div>

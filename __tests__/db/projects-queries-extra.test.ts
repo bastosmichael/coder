@@ -69,7 +69,7 @@ describe('projects queries additional', () => {
     expect(res).toEqual(['a', 'b'])
   })
 
-  it('creates projects in advanced mode', async () => {
+  it('creates projects for workspace without a repository', async () => {
     const workspace = { id: 'w', name: 'W' }
     findManyMock.mockResolvedValueOnce([])
     ;(getUserId as jest.Mock).mockResolvedValue('u')

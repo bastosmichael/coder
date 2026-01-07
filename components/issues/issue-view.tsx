@@ -281,8 +281,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
       await embedTargetBranch({
         projectId: project.id,
         githubRepoFullName: project.githubRepoFullName,
-        branchName: project.githubTargetBranch,
-        installationId: project.githubInstallationId
+        branchName: project.githubTargetBranch
       })
 
       await updateIssue(issue.id, { status: "in_progress", runner })

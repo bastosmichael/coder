@@ -75,74 +75,18 @@ export async function fetchGitHubRepositories(orgId: string): Promise<any[]> {
   }
 }
 
-export async function getGitHubAccessToken(code: string) {
-  try {
-    // Use fetchWithRetry to handle transient network errors
-    const data = await fetchWithRetry(async () => {
-      const response = await fetch(
-        "https://github.com/login/oauth/access_token",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json"
-          },
-          body: JSON.stringify({
-            client_id: process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID,
-            client_secret: process.env.GITHUB_CLIENT_SECRET,
-            code
-          })
-        }
-      )
-
-      if (!response.ok) {
-        throw new Error(`Failed to obtain access token: ${response.statusText}`)
-      }
-      return response.json()
-    })
-    return data.access_token
-  } catch (error) {
-    console.error("Error fetching GitHub access token:", error)
-    throw new Error("Failed to fetch GitHub access token")
-  }
-}
-
-export async function createGitHubRepository(
-  orgId: string,
-  name: string,
-  accessToken: string
-) {
-  try {
-    // (Re)authenticate to ensure we use the provided token
-    octokit.auth({ type: "oauth", token: accessToken })
-
-    const repo = await fetchWithRetry(async () => {
-      const { data } = await octokit.repos.createInOrg({
-        org: orgId,
-        name,
-        private: true
-      })
-      return data
-    })
-    return repo
-  } catch (error) {
-    console.error("Error creating GitHub repository:", error)
-    throw new Error("Failed to create GitHub repository")
-  }
-}
-
 export async function fetchGitHubRepoIssues(
   repoFullName: string
 ): Promise<any[]> {
   try {
     const [owner, repo] = repoFullName.split("/")
 
-  const issues = await fetchWithRetry(async () => {
-    const { data } = await octokit.issues.listForRepo({ owner, repo })
-    return data.filter(issue => !issue.pull_request)
-  })
+    const issues = await fetchWithRetry(async () => {
+      const { data } = await octokit.issues.listForRepo({ owner, repo })
+      return data.filter(issue => !issue.pull_request)
+    })
 
-  return issues
+    return issues
   } catch (error) {
     console.error("Error fetching GitHub repo issues:", error)
     throw new Error("Failed to fetch GitHub repo issues")

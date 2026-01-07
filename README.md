@@ -9,8 +9,6 @@ Coder is an AI-powered code generation tool designed to help developers ship cod
 - [Features](#features)
 - [Demo](#demo)
 - [Setup](#setup)
-  - [Simple Mode Setup](#simple-mode-setup)
-  - [Advanced Mode Setup](#advanced-mode-setup)
   - [Database Setup with Neon & Drizzle](#database-setup-with-neon--drizzle)
 - [Usage](#usage)
 - [Deployment](#deployment)
@@ -27,8 +25,7 @@ Coder is an AI-powered code generation tool designed to help developers ship cod
 - **Template Management**: Create and utilize templates for consistent code generation and task automation.
 - **Instruction System**: Define custom instructions to guide AI-generated code outputs tailored to specific needs.
 - **Machine Learning Model Adaptation**: Utilize machine learning models to modify existing code to improve performance and readability.
-- **Multi-Project Support**: Manage multiple projects within a singular advanced workspace.
-- **Simple and Advanced Modes**: Choose between straightforward setups or a feature-rich development environment, enabling customization according to user skill levels.
+- **Multi-Project Support**: Manage multiple projects within a singular workspace.
 - **Real-time Code Improvement**: Use AI to analyze and suggest optimizations for existing code directly from repositories.
 
 ## Demo
@@ -40,10 +37,6 @@ Check out the latest demo of Coder in action:
 [Coder Demo](https://youtu.be/buJ6BlQXtko)
 
 ## Setup
-
-Coder offers two setup modes: Simple and Advanced. Choose the one that best fits your needs.
-
-### Simple Mode Setup
 
 Follow these instructions to set up a simple environment that supports AI features.
 
@@ -70,7 +63,6 @@ Follow these instructions to set up a simple environment that supports AI featur
 
    Required variables:
    
-   - `NEXT_PUBLIC_APP_MODE=simple`
    - `ANTHROPIC_API_KEY=`
    - `OPENAI_API_KEY=`
    - `DATABASE_URL=`
@@ -80,12 +72,6 @@ Follow these instructions to set up a simple environment that supports AI featur
    ```bash
    npm run dev
    ```
-
-### Advanced Mode Setup
-
-For a full-fledged development environment, follow the setup instructions for Advanced Mode.
-
-- Additional setup steps specific to enabling more complex AI features will be provided in future updates.
 
 ### Database Setup with Neon & Drizzle
 
@@ -118,7 +104,7 @@ To deploy Coder to Vercel and utilize its AI capabilities:
 2. Sign up for a [Vercel account](https://vercel.com/signup) if you haven't already.
 3. Click the button below to start the deployment process:
 
-   [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fbastosmichael%2Fcoder&env=NEXT_PUBLIC_APP_MODE,ANTHROPIC_API_KEY,OPENAI_API_KEY,DATABASE_URL,GITHUB_PAT)
+   [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fbastosmichael%2Fcoder&env=ANTHROPIC_API_KEY,OPENAI_API_KEY,DATABASE_URL,GITHUB_PAT)
 
 4. Follow the prompts to configure your deployment, ensuring all required environment variables are set. 
 5. After deployment, set up your database and run migrations:
@@ -128,7 +114,7 @@ To deploy Coder to Vercel and utilize its AI capabilities:
    npm run db:migrate
    ```
 
-For more detailed deployment instructions, including advanced configurations, please refer to our [deployment guide](https://docs.coder.ai/deployment).
+For more detailed deployment instructions, please refer to our [deployment guide](https://docs.coder.ai/deployment).
 
 ## Contributing
 
@@ -145,7 +131,7 @@ Please read our [Contribution Guidelines](CONTRIBUTING.md) for more details on o
 ## FAQ
 
 **Q: How does Coder generate code?**
-A: Coder uses advanced AI models to analyze your project structure, issue descriptions, and custom instructions to generate contextually appropriate code.
+A: Coder uses AI models to analyze your project structure, issue descriptions, and custom instructions to generate contextually appropriate code.
 
 **Q: Is my code safe and private?**
 A: Yes, Coder takes security seriously. We do not store your code, and all processing is done securely. However, please review our privacy policy for more details.

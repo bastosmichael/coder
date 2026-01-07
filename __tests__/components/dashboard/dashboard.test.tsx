@@ -1,7 +1,4 @@
 import { fireEvent, render } from '@testing-library/react'
-
-jest.mock('@clerk/nextjs', () => ({ UserButton: () => <div>User</div> }))
-jest.mock('@clerk/nextjs/server', () => ({ auth: jest.fn(() => ({ userId: 'u1' })) }))
 jest.mock('next/navigation', () => ({
   usePathname: () => '/',
   useRouter: () => ({ push: jest.fn() }),
@@ -9,8 +6,7 @@ jest.mock('next/navigation', () => ({
 }))
 jest.mock('../../../actions/github/auth', () => ({
   getAuthenticatedOctokit: jest.fn(() => ({
-    request: jest.fn(),
-    apps: { listReposAccessibleToInstallation: jest.fn(() => ({ data: { repositories: [] } })) }
+    request: jest.fn()
   }))
 }))
 jest.mock('../../../actions/github/list-repos', () => ({ listRepos: jest.fn(() => Promise.resolve([])) }))

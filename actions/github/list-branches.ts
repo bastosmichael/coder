@@ -23,11 +23,10 @@ async function fetchWithBackoff<T>(fn: () => Promise<T>, retries = 0): Promise<T
 }
 
 export const listBranches = async (
-  installationId: number | null,
   repoFullName: string
 ): Promise<string[]> => {
   try {
-    const octokit = await getAuthenticatedOctokit(installationId)
+    const octokit = await getAuthenticatedOctokit()
     const [owner, repo] = repoFullName.split("/")
     let page = 1
     const allBranches: string[] = []
