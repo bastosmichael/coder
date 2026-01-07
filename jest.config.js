@@ -29,8 +29,11 @@ const customJestConfig = {
   ],
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'], // Ensure TS files are recognized
   transform: {
-    '^.+\\.(ts|tsx)$': 'babel-jest', // Use babel-jest for TS files
+    '^.+\\.(ts|tsx|js|jsx|mjs)$': ['babel-jest', { presets: ['next/babel'] }],
   },
+  transformIgnorePatterns: [
+    '/node_modules/(?!(refractor)/)',
+  ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
   },
