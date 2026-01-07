@@ -13,10 +13,10 @@ export default function MainSection() {
         borderRadius={12}
         borderWidth={2}
         color="#6366f1"
-        className="mx-auto flex max-w-5xl flex-col items-center gap-10 bg-background/80 p-10 backdrop-blur md:flex-row"
+        className="bg-background/80 mx-auto flex max-w-5xl flex-col items-center gap-10 p-10 backdrop-blur md:flex-row"
       >
         <div className="flex-1 text-center md:text-left">
-          <h1 className="bg-gradient-to-br from-primary to-primary/70 bg-clip-text text-4xl font-bold leading-tight tracking-tight text-transparent sm:text-5xl md:text-6xl">
+          <h1 className="from-primary to-primary/70 bg-gradient-to-br bg-clip-text text-4xl font-bold leading-tight tracking-tight text-transparent sm:text-5xl md:text-6xl">
             Accelerate Your Development
             <br className="hidden md:block" /> with Coder
           </h1>
