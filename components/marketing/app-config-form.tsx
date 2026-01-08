@@ -93,9 +93,8 @@ export function AppConfigForm({ defaultValues }: AppConfigFormProps) {
           </div>
           {state.message ? (
             <p
-              className={`text-sm ${
-                state.status === "success" ? "text-emerald-600" : "text-destructive"
-              }`}
+              className={`text-sm ${state.status === "success" ? "text-emerald-600" : "text-destructive"
+                }`}
             >
               {state.message}
             </p>
