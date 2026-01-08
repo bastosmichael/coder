@@ -49,10 +49,10 @@ jest.mock("../../../components/instructions/message-markdown-memoized", () => {
 describe("MessageMarkdown", () => {
   it("renders inline code and paragraphs", () => {
     const { container, queryByTestId } = render(
-      <MessageMarkdown content={"Use `npm start`"} />
+      <MessageMarkdown content={"Use `pnpm start`"} />
     )
     const code = container.querySelector("code")
-    expect(code).toHaveTextContent("npm start")
+    expect(code).toHaveTextContent("pnpm start")
     expect(queryByTestId("codeblock")).toBeNull()
   })
 

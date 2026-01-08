@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react"
-import MarketingPage from "../../app/(marketing)/page"
 
 jest.mock("react-dom", () => {
   const actual = jest.requireActual("react-dom")
@@ -22,6 +21,7 @@ jest.mock("../../db/queries/app-config-queries", () => ({
 
 describe("MarketingPage", () => {
   it("renders the config form", async () => {
+    const { default: MarketingPage } = await import("../../app/(marketing)/page")
     const Page = await MarketingPage()
     render(Page as React.ReactElement)
     expect(screen.getByText("Connect your APIs")).toBeInTheDocument()
