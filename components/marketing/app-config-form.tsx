@@ -1,7 +1,7 @@
 "use client"
 
-import { useActionState, useEffect } from "react"
-// import { useFormState } from "react-dom" -- Removed
+import { useEffect } from "react"
+import { useFormState } from "react-dom"
 import { useRouter } from "next/navigation"
 import { saveAppConfig } from "@/app/(marketing)/actions"
 import { Button } from "@/components/ui/button"
@@ -25,7 +25,7 @@ const initialState = {
 
 export function AppConfigForm({ defaultValues }: AppConfigFormProps) {
   const router = useRouter()
-  const [state, formAction] = useActionState(saveAppConfig, initialState)
+  const [state, formAction] = useFormState(saveAppConfig, initialState)
 
   useEffect(() => {
     if (state.status === "success" && state.message) {
