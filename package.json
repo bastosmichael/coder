@@ -24,7 +24,7 @@
     "@ai-sdk/anthropic": "^3.0.8",
     "@ai-sdk/google": "^3.0.5",
     "@ai-sdk/openai": "^3.0.7",
-    "@anthropic-ai/sdk": "^0.77.0",
+    "@anthropic-ai/sdk": "^0.78.0",
     "@hookform/resolvers": "^5.2.2",
     "@neondatabase/serverless": "^1.0.2",
     "@octokit/rest": "^22.0.1",
